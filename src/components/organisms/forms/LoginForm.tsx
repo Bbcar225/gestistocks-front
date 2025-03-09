@@ -1,56 +1,51 @@
-import {Card, FormProps} from 'antd';
-import {Button, Checkbox, Form, Input} from 'antd';
+import {Card, Flex} from 'antd';
+import {Button, Form, Input} from 'antd';
+import {useNavigate} from "react-router-dom";
 
-type FieldType = {
-	username?: string;
-	password?: string;
-	remember?: string;
-};
 
 export default function LoginForm() {
-	const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-		console.log('Success:', values);
-	};
+	const [form] = Form.useForm<ILoginFormInterface>();
+	const navigate = useNavigate()
 	
-	const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-		console.log('Failed:', errorInfo);
+	const onFinish = (values: ILoginFormInterface) => {
+		console.log('Success:', values);
+		return navigate('/123/dashboard')
 	};
 	
 	return <Card
 		className="w-[100%]"
 	>
 		<Form
-			initialValues={{remember: true}}
+			form={form}
+			initialValues={{
+				email: 'boubacarly93@gmail.com',
+				password: '123'
+		}}
 			onFinish={onFinish}
-			onFinishFailed={onFinishFailed}
 			autoComplete="off"
 			layout='vertical'
 		>
-			<Form.Item<FieldType>
-				label="Username"
-				name="username"
-				rules={[{required: true, message: 'Please input your username!'}]}
+			<Form.Item
+				label="Adresse email"
+				name="email"
+				rules={[{required: true}]}
 			>
-				<Input/>
+				<Input type='email'/>
 			</Form.Item>
 			
-			<Form.Item<FieldType>
-				label="Password"
+			<Form.Item
+				label="Mot de passe"
 				name="password"
-				rules={[{required: true, message: 'Please input your password!'}]}
+				rules={[{required: true}]}
 			>
 				<Input.Password/>
 			</Form.Item>
 			
-			<Form.Item<FieldType> name="remember" valuePropName="checked" label={null}>
-				<Checkbox>Remember me</Checkbox>
-			</Form.Item>
-			
-			<Form.Item label={null}>
-				<Button type="primary" htmlType="submit">
-					Submit
+			<Flex justify='center'>
+				<Button type="primary" htmlType="submit" className='w-1/2'>
+					Connexion
 				</Button>
-			</Form.Item>
+			</Flex>
 		</Form>
 	</Card>
 }

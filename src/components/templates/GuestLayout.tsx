@@ -4,7 +4,7 @@ import {Content} from "antd/es/layout/layout";
 
 export function GuestLayout() {
 	return <Layout>
-		<Content className="container">
+		<Content>
 			<Outlet/>
 		</Content>
 	</Layout>

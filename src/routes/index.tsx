@@ -1,8 +1,8 @@
 import {RouteObject} from "react-router-dom";
 import {lazy} from "react";
 import {GuestLayout} from "../components/templates/GuestLayout.tsx";
-import {AuthLayout} from "../components/templates/AuthLayout.tsx";
 import NotFoundPage from "../components/pages/NotFoundPage.tsx";
+import AuthLayout from "../components/templates/AuthLayout.tsx";
 
 const index: RouteObject[] = [
 	{

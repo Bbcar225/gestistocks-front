@@ -14,7 +14,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 		<ReactQueryClientProvider>
 			<ConfigProvider locale={frFR} theme={theme}>
 				<Suspense fallback={<SuspensePage/>}>
-					<RouterProvider router={router}/>
+					<RouterProvider
+						router={router}
+						future={{
+							v7_startTransition: true,
+							v7_relativeSplatPath: true
+						}}
+					/>
 				</Suspense>
 			</ConfigProvider>
 		</ReactQueryClientProvider>

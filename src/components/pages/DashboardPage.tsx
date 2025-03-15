@@ -10,10 +10,6 @@ export default function DashboardPage() {
 	} = theme.useToken();
 	
 	return <>
-		<Card className='w-screen'>
-			<Title level={4}>fwefe</Title>
-		</Card>
-		
 		<div
 			style={{
 				padding: 24,

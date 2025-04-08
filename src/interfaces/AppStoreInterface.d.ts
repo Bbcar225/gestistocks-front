@@ -1,0 +1,3 @@
+interface AppStoreInterface {
+	title?: string
+}

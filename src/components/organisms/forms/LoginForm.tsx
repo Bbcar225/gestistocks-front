@@ -2,12 +2,11 @@ import {Card, Flex} from 'antd';
 import {Button, Form, Input} from 'antd';
 import {useNavigate} from "react-router-dom";
 
-
 export default function LoginForm() {
-	const [form] = Form.useForm<ILoginFormInterface>();
+	const [form] = Form.useForm<LoginFormInterface>();
 	const navigate = useNavigate()
 	
-	const onFinish = (values: ILoginFormInterface) => {
+	const onFinish = (values: LoginFormInterface) => {
 		console.log('Success:', values);
 		return navigate('/123/dashboard')
 	};

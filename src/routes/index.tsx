@@ -1,8 +1,10 @@
-import {RouteObject} from "react-router-dom";
+import {RouteObject, useNavigate} from "react-router-dom";
 import {lazy} from "react";
 import {GuestLayout} from "../components/templates/GuestLayout.tsx";
 import NotFoundPage from "../components/pages/NotFoundPage.tsx";
 import AuthLayout from "../components/templates/AuthLayout.tsx";
+import unitRoutes from "./unitRoutes.ts";
+import {useSidebarStore} from "../store/useAppStore.ts";
 
 const index: RouteObject[] = [
 	{
@@ -56,6 +58,21 @@ const index: RouteObject[] = [
 		path: "*",
 		element: <NotFoundPage/>,
 	},
+	...unitRoutes
 ]
+
+export const useIndexRoutes = () => {
+	const navigate = useNavigate();
+	const {setSidebar} = useSidebarStore()
+	
+	const goToDashboard = () => {
+		setSidebar({field: 'title', value: 'Tableau de bord'})
+		navigate('/123/dashboard')
+	}
+	
+	return {
+		goToDashboard
+	}
+}
 
 export default index;

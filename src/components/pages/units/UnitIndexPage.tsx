@@ -1,17 +1,22 @@
 import {useEffect, useState} from "react";
 import {useSidebarStore} from "../../../store/useAppStore.ts";
-import {Button, Col, Flex, Row, Space, Table} from "antd";
-import {useUnitGetAll} from "../../../hooks/Api/tenant/UnitHookAPI.ts";
+import {Button, Col, Flex, Modal, Row, Space, Table} from "antd";
+import {queriesClientsUnit, useUnitGetAll} from "../../../hooks/Api/tenant/UnitHookAPI.ts";
 import {tablePagination} from "../../../constants/tableConstant.ts";
 import {IoIosAddCircle} from "react-icons/io";
 import {useUnitStore} from "../../../store/useUnitStore.ts";
-import {useRoutesUnit} from "../../../routes/unitRoutes.ts";
+import UnitForm from "../../organisms/forms/UnitForm.tsx";
+import dayjs from 'dayjs';
+import {formatDate} from "../../../constants/dateConstant.ts";
+import {FaEdit} from "react-icons/fa";
+import {useQueryClient} from "react-query";
 
 export default function UnitIndexPage() {
 	const {setSidebar} = useSidebarStore()
 	const reqUnitGetAll = useUnitGetAll()
 	const [units, setUnits] = useState<UnitInterface[]>([])
-	const {pagination, queryParams, setFieldPagination, setFieldQueryParams} = useUnitStore()
+	const {pagination, queryParams, setFieldPagination, setFieldQueryParams, setUnit} = useUnitStore()
+	const [isModalOpen, setIsModalOpen] = useState(false);
 	
 	useEffect(() => {
 		setSidebar({field: 'title', value: 'Unités'})
@@ -24,7 +29,6 @@ export default function UnitIndexPage() {
 			setUnits(data.data || [])
 		}
 	}, [reqUnitGetAll.data, reqUnitGetAll.isSuccess, setFieldPagination]);
-	const {goToCreateUnit} = useRoutesUnit()
 	
 	return <Row gutter={[24, 12]}>
 		<Col span={24}>
@@ -32,14 +36,19 @@ export default function UnitIndexPage() {
 				<Button
 					type="primary"
 					icon={<IoIosAddCircle/>}
-					onClick={goToCreateUnit}
-				>Nouvelle unité</Button>
+					onClick={() => {
+						setIsModalOpen(true)
+					}}
+				>
+					Nouvelle unité
+				</Button>
 			</Flex>
 		</Col>
 		
 		<Col span={24}>
 			<Table
 				className="text-nowrap"
+				scroll={{x: true}}
 				rowKey={(row) => row.id}
 				loading={reqUnitGetAll.isLoading}
 				pagination={{
@@ -66,11 +75,23 @@ export default function UnitIndexPage() {
 						render: (_, row) => row.sort_name
 					},
 					{
+						key: 'date',
+						title: 'Date',
+						render: (_, row) => dayjs(row.created_at).format(formatDate),
+					},
+					{
 						key: 'options',
 						title: 'Options',
-						render: () => <Space
+						render: (_, row) => <Space
 							direction='horizontal'
 						>
+							<Button
+								icon={<FaEdit/>}
+								onClick={() => {
+									setUnit(row)
+									setIsModalOpen(true)
+								}}
+							/>
 						</Space>
 					},
 				]}
@@ -80,5 +101,31 @@ export default function UnitIndexPage() {
 				}}
 			/>
 		</Col>
+		
+		<ModalCreateUnit
+			open={isModalOpen}
+			close={() => {
+				setIsModalOpen(false);
+				setUnit(undefined)
+			}}
+		/>
 	</Row>
 }
+
+const ModalCreateUnit = ({open, close}: { open: boolean, close: () => void }) => {
+	const {unit} = useUnitStore()
+	const queryClient = useQueryClient()
+	
+	return <Modal
+		title={unit ? "Mise à jour" : "Nouvelle unité"}
+		open={open}
+		onCancel={close}
+		footer={null}
+	>
+		<UnitForm
+			onSuccess={() => {
+				queryClient.invalidateQueries(queriesClientsUnit.useUnitGetAll).then()
+			}}
+		/>
+	</Modal>
+};

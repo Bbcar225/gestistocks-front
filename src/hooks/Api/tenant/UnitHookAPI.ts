@@ -3,7 +3,8 @@ import unitService from "../../../services/tenant/unitService.ts";
 import {useUnitStore} from "../../../store/useUnitStore.ts";
 
 export const queriesClientsUnit = {
-	useUnitGetAll: 'useUnitGetAll'
+	useUnitGetAll: 'useUnitGetAll',
+	useUnitGetOne: 'useUnitGetOne'
 }
 
 export const useUnitGetAll = (params?: HookApiInterface) => {
@@ -18,4 +19,18 @@ export const useUnitGetAll = (params?: HookApiInterface) => {
 
 export const useUnitCreate = () => {
 	return useMutation<ResponseApiInterface<UnitInterface>, unknown, UnitFormDataInterface>(unitService.create)
+}
+
+export const useUnitGetOne = (id: number, params?: HookApiInterface) => {
+	return useQuery<ResponseApiInterface<UnitInterface>>(
+		[queriesClientsUnit.useUnitGetOne, id],
+		() => unitService.getOne(id),
+		{
+			enabled: params?.enabled
+		}
+	)
+}
+
+export const useUnitUpdate = (id: number) => {
+	return useMutation<ResponseApiInterface<UnitInterface>, unknown, UnitFormDataInterface>((formFormData) => unitService.update(id, formFormData))
 }

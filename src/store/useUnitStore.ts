@@ -7,6 +7,8 @@ interface UnitStoreInterface {
 	pagination: {
 		total?: number
 	},
+	unit?: UnitInterface,
+	
 	setFieldQueryParams: ({field, value}: {
 		field: keyof UnitStoreInterface['queryParams'],
 		value?: unknown
@@ -14,7 +16,8 @@ interface UnitStoreInterface {
 	setFieldPagination: ({field, value}: {
 		field: keyof UnitStoreInterface['pagination'],
 		value?: number
-	}) => void
+	}) => void,
+	setUnit: (unit?: UnitInterface) => void,
 }
 
 export const useUnitStore = create<UnitStoreInterface>((set) => {
@@ -46,6 +49,14 @@ export const useUnitStore = create<UnitStoreInterface>((set) => {
 						...state.pagination,
 						[field]: value,
 					}
+				}
+			})
+		},
+		setUnit: (unit) => {
+			return set((state) => {
+				return {
+					...state,
+					unit
 				}
 			})
 		}

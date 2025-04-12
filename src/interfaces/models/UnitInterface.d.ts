@@ -5,3 +5,8 @@ interface UnitInterface {
 	created_at: string
 	updated_at: string
 }
+
+interface UnitFormDataInterface {
+	name: string
+	sort_name: string
+}

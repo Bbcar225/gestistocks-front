@@ -1,6 +1,7 @@
 import axios from "axios";
 import {notification} from "antd";
 import {authTokenKey} from "../constants/localStorageConstant.ts";
+import {ErrorMessagesProps, errorsValidation} from "../components/organisms/ErrorsValidation.tsx";
 
 const service = axios.create({
 	baseURL: import.meta.env.VITE_API_URL,
@@ -46,6 +47,14 @@ service.interceptors.response.use(
 			notification.error({
 				message: "Vous n'êtes pas autorisé à effectuer l'action."
 			});
+		}
+		
+		if (error?.response?.status === 422) {
+			const allMessages = Object.values(error?.response.data.errors.errors_validation).flat();
+			notification.error({
+				message: error?.response.data.message,
+				description: errorsValidation(allMessages as unknown as ErrorMessagesProps)
+			})
 		}
 		
 		return Promise.reject(error.response);

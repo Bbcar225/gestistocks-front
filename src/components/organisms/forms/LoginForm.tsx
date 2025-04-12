@@ -4,13 +4,15 @@ import {useNavigate} from "react-router-dom";
 import {useAuthTenantService} from "../../../hooks/Api/tenant/AuthHookAPI.ts";
 import {useEffect} from "react";
 import {useTokenStore, useUserStore} from "../../../store/useUserStore.ts";
+import {useRoutesIndex} from "../../../routes";
 
 export default function LoginForm() {
 	const [form] = Form.useForm<LoginFormDataInterface>();
 	const navigate = useNavigate()
 	const reqAuthTenantService = useAuthTenantService()
-	const {setUser} = useUserStore()
+	const {setUser, user} = useUserStore()
 	const {setToken} = useTokenStore()
+	const {goToDashboard} = useRoutesIndex()
 	
 	const onFinish = (values: LoginFormDataInterface) => {
 		return reqAuthTenantService.mutate(values)
@@ -18,7 +20,6 @@ export default function LoginForm() {
 	
 	useEffect(() => {
 		if (reqAuthTenantService.status === 'success') {
-			// return navigate('/123/dashboard')
 			const {data} = reqAuthTenantService.data
 			setUser(data.user)
 			setToken(data.access_token)
@@ -29,7 +30,13 @@ export default function LoginForm() {
 				message: "Échec de connexion"
 			})
 		}
-	}, [navigate, reqAuthTenantService.status]);
+	}, [navigate, reqAuthTenantService.data, reqAuthTenantService.status, setToken, setUser]);
+	
+	useEffect(() => {
+		if (user) {
+			return goToDashboard()
+		}
+	}, [goToDashboard, user]);
 	
 	return <Card
 		className="w-[100%]"
@@ -61,7 +68,12 @@ export default function LoginForm() {
 			</Form.Item>
 			
 			<Flex justify='center'>
-				<Button type="primary" htmlType="submit" className='w-1/2'>
+				<Button
+					type="primary"
+					htmlType="submit"
+					className='w-1/2'
+					loading={reqAuthTenantService.isLoading}
+				>
 					Connexion
 				</Button>
 			</Flex>

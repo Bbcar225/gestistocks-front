@@ -34,7 +34,7 @@ const unitRoutes: RouteObject[] = [
 	},
 ]
 
-export const useUnitRoutes = () => {
+export const useRoutesUnit = () => {
 	const navigate = useNavigate();
 	const {setSidebar} = useSidebarStore()
 	const {user} = useUserStore()
@@ -44,8 +44,14 @@ export const useUnitRoutes = () => {
 		return navigate(`/${user?.userable.slug}/units`)
 	}
 	
+	const goToCreateUnit = () => {
+		setSidebar({field: 'title', value: 'Nouvelle unité'})
+		return navigate(`/${user?.userable.slug}/units/create`)
+	}
+	
 	return {
-		goToUnitIndex
+		goToUnitIndex,
+		goToCreateUnit
 	}
 }
 

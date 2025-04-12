@@ -45,7 +45,7 @@ export default function Sidebar({collapsed, setCollapsed}: {
 				overflow: 'auto'
 			}}
 		>
-			<Menus/>
+			<Menus collapsed={collapsed} setCollapsed={setCollapsed}/>
 		</div>
 	</Layout.Sider>
 }

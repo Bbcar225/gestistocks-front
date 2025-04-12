@@ -5,6 +5,7 @@ import {useUnitGetAll} from "../../../hooks/Api/tenant/UnitHookAPI.ts";
 import {tablePagination} from "../../../constants/tableConstant.ts";
 import {IoIosAddCircle} from "react-icons/io";
 import {useUnitStore} from "../../../store/useUnitStore.ts";
+import {useRoutesUnit} from "../../../routes/unitRoutes.ts";
 
 export default function UnitIndexPage() {
 	const {setSidebar} = useSidebarStore()
@@ -23,6 +24,7 @@ export default function UnitIndexPage() {
 			setUnits(data.data || [])
 		}
 	}, [reqUnitGetAll.data, reqUnitGetAll.isSuccess, setFieldPagination]);
+	const {goToCreateUnit} = useRoutesUnit()
 	
 	return <Row gutter={[24, 12]}>
 		<Col span={24}>
@@ -30,6 +32,7 @@ export default function UnitIndexPage() {
 				<Button
 					type="primary"
 					icon={<IoIosAddCircle/>}
+					onClick={goToCreateUnit}
 				>Nouvelle unité</Button>
 			</Flex>
 		</Col>

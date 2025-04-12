@@ -9,7 +9,6 @@ export const queriesClientsUnit = {
 export const useUnitGetAll = (params?: HookApiInterface) => {
 	const {queryParams} = useUnitStore()
 	
-	
 	return useQuery(
 		[queriesClientsUnit.useUnitGetAll, queryParams],
 		() => unitService.getAll(queryParams),

@@ -2,13 +2,17 @@ import {Menu, MenuProps} from "antd";
 import {AiFillDashboard} from "react-icons/ai";
 import {GrCatalog} from "react-icons/gr";
 import {MdAcUnit} from "react-icons/md";
-import {useUnitRoutes} from "../../routes/unitRoutes.ts";
+import {useRoutesUnit} from "../../routes/unitRoutes.ts";
 import {useRoutesIndex} from "../../routes";
+import {isMobile} from 'react-device-detect';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
-export function Menus() {
-	const {goToUnitIndex} = useUnitRoutes()
+export function Menus({collapsed, setCollapsed}: {
+	collapsed: boolean,
+	setCollapsed: (collapsed: boolean) => void
+}) {
+	const {goToUnitIndex} = useRoutesUnit()
 	const {goToDashboard} = useRoutesIndex()
 	
 	const items: MenuItem[] = [
@@ -16,7 +20,12 @@ export function Menus() {
 			key: '1',
 			icon: <AiFillDashboard/>,
 			label: 'Tableau de bord',
-			onClick: goToDashboard
+			onClick: () => {
+				if (isMobile) {
+					setCollapsed(!collapsed)
+				}
+				goToDashboard()
+			}
 		},
 		{
 			key: '2',
@@ -27,7 +36,12 @@ export function Menus() {
 					key: '21',
 					label: 'Unités',
 					icon: <MdAcUnit/>,
-					onClick: goToUnitIndex
+					onClick: () => {
+						if (isMobile) {
+							setCollapsed(!collapsed)
+						}
+						goToUnitIndex()
+					}
 				},
 			],
 		},

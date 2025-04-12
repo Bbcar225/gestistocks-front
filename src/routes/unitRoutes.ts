@@ -15,20 +15,7 @@ const unitRoutes: RouteObject[] = [
 			},
 			{
 				path: 'create',
-				Component: lazy(() => import("../components/pages/purchases/PurchaseCreatePage.tsx"))
-			},
-			{
-				path: ':purchase',
-				children: [
-					{
-						index: true,
-						Component: lazy(() => import("../components/pages/purchases/PurchaseShowPage.tsx"))
-					},
-					{
-						path: 'edit',
-						Component: lazy(() => import("../components/pages/purchases/PurchaseEditPage.tsx.tsx"))
-					}
-				]
+				Component: lazy(() => import("../components/pages/units/UnitCreatePage.tsx"))
 			},
 		],
 	},

@@ -5,6 +5,8 @@ import {MdAcUnit} from "react-icons/md";
 import {useRoutesUnit} from "../../routes/unitRoutes.ts";
 import {useRoutesIndex} from "../../routes";
 import {isMobile} from 'react-device-detect';
+import {BiSolidCategory} from "react-icons/bi";
+import {useRoutesCategory} from "../../routes/categoryRoutes.ts";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -14,6 +16,7 @@ export function Menus({collapsed, setCollapsed}: {
 }) {
 	const {goToUnitIndex} = useRoutesUnit()
 	const {goToDashboard} = useRoutesIndex()
+	const {goToCategoryIndex} = useRoutesCategory()
 	
 	const items: MenuItem[] = [
 		{
@@ -41,6 +44,17 @@ export function Menus({collapsed, setCollapsed}: {
 							setCollapsed(!collapsed)
 						}
 						goToUnitIndex()
+					}
+				},
+				{
+					key: '22',
+					label: 'Catégories',
+					icon: <BiSolidCategory/>,
+					onClick: () => {
+						if (isMobile) {
+							setCollapsed(!collapsed)
+						}
+						goToCategoryIndex()
 					}
 				},
 			],

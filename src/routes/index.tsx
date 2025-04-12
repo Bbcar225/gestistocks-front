@@ -6,6 +6,7 @@ import AuthLayout from "../components/templates/AuthLayout.tsx";
 import unitRoutes from "./unitRoutes.ts";
 import {useSidebarStore} from "../store/useAppStore.ts";
 import {useUserStore} from "../store/useUserStore.ts";
+import categoryRoutes from "./categoryRoutes.ts";
 
 const index: RouteObject[] = [
 	{
@@ -59,7 +60,8 @@ const index: RouteObject[] = [
 		path: "*",
 		element: <NotFoundPage/>,
 	},
-	...unitRoutes
+	...unitRoutes,
+	...categoryRoutes
 ]
 
 export const useRoutesIndex = () => {

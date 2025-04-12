@@ -2,6 +2,7 @@ import {RouteObject, useNavigate} from "react-router-dom";
 import AuthLayout from "../components/templates/AuthLayout.tsx";
 import {lazy} from "react";
 import {useSidebarStore} from "../store/useAppStore.ts";
+import {useUserStore} from "../store/useUserStore.ts";
 
 const unitRoutes: RouteObject[] = [
 	{
@@ -36,10 +37,11 @@ const unitRoutes: RouteObject[] = [
 export const useUnitRoutes = () => {
 	const navigate = useNavigate();
 	const {setSidebar} = useSidebarStore()
+	const {user} = useUserStore()
 	
 	const goToUnitIndex = () => {
 		setSidebar({field: 'title', value: 'Unités'})
-		return navigate('/123/units')
+		return navigate(`/${user?.userable.slug}/units`)
 	}
 	
 	return {

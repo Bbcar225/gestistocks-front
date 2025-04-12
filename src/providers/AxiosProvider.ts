@@ -14,11 +14,11 @@ const AUTH_TOKEN_TYPE = "Bearer";
 // API Request interceptor
 service.interceptors.request.use(
 	(config) => {
-		const access_token = localStorage.getItem(authTokenKey);
+		const access_token = JSON.parse(String(localStorage.getItem(authTokenKey)));
 		
-		// if (access_token) {
-		// 	config.headers[TOKEN_PAYLOAD_KEY] = AUTH_TOKEN_TYPE + " " + access_token;
-		// }
+		if (access_token) {
+			config.headers[TOKEN_PAYLOAD_KEY] = AUTH_TOKEN_TYPE + " " + access_token.state.token;
+		}
 		
 		return config;
 	},
@@ -39,6 +39,7 @@ service.interceptors.response.use(
 	(error) => {
 		if (error?.response?.status === 401) {
 			localStorage.clear();
+			return window.location.replace('/');
 		}
 		
 		if (error?.response?.status === 403) {

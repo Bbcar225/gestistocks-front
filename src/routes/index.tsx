@@ -5,6 +5,7 @@ import NotFoundPage from "../components/pages/NotFoundPage.tsx";
 import AuthLayout from "../components/templates/AuthLayout.tsx";
 import unitRoutes from "./unitRoutes.ts";
 import {useSidebarStore} from "../store/useAppStore.ts";
+import {useUserStore} from "../store/useUserStore.ts";
 
 const index: RouteObject[] = [
 	{
@@ -61,17 +62,23 @@ const index: RouteObject[] = [
 	...unitRoutes
 ]
 
-export const useIndexRoutes = () => {
+export const useRoutesIndex = () => {
 	const navigate = useNavigate();
 	const {setSidebar} = useSidebarStore()
+	const {user} = useUserStore()
 	
 	const goToDashboard = () => {
 		setSidebar({field: 'title', value: 'Tableau de bord'})
-		navigate('/123/dashboard')
+		navigate(`/${user?.userable.slug}/dashboard`)
+	}
+	
+	const goToLogin = () => {
+		navigate(`/`)
 	}
 	
 	return {
-		goToDashboard
+		goToDashboard,
+		goToLogin
 	}
 }
 

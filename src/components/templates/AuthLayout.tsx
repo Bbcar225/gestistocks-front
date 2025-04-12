@@ -10,23 +10,21 @@ export default function AuthLayout() {
 	} = theme.useToken();
 	const [collapsed, setCollapsed] = useState(false);
 	
-	return (
+	return <Layout>
+		<Sidebar collapsed={collapsed} setCollapsed={setCollapsed}/>
 		<Layout>
-			<Sidebar collapsed={collapsed} setCollapsed={setCollapsed}/>
-			<Layout>
-				<HeaderLayout collapsed={collapsed} setCollapsed={setCollapsed}/>
-				<Layout.Content
-					style={{
-						borderRadius: borderRadiusLG,
-						margin: '7px 7px 0',
-					}}
-				>
-					<Outlet/>
-				</Layout.Content>
-				<Layout.Footer style={{textAlign: 'center'}}>
-					Gestistocks ©{new Date().getFullYear()} Created by Boubacar LY
-				</Layout.Footer>
-			</Layout>
+			<HeaderLayout collapsed={collapsed} setCollapsed={setCollapsed}/>
+			<Layout.Content
+				style={{
+					borderRadius: borderRadiusLG,
+					margin: '7px 7px 0',
+				}}
+			>
+				<Outlet/>
+			</Layout.Content>
+			<Layout.Footer style={{textAlign: 'center'}}>
+				Gestistocks ©{new Date().getFullYear()} Created by Boubacar LY
+			</Layout.Footer>
 		</Layout>
-	);
+	</Layout>;
 };

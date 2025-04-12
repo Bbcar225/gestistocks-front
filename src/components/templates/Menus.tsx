@@ -3,13 +3,13 @@ import {AiFillDashboard} from "react-icons/ai";
 import {GrCatalog} from "react-icons/gr";
 import {MdAcUnit} from "react-icons/md";
 import {useUnitRoutes} from "../../routes/unitRoutes.ts";
-import {useIndexRoutes} from "../../routes";
+import {useRoutesIndex} from "../../routes";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
 export function Menus() {
 	const {goToUnitIndex} = useUnitRoutes()
-	const {goToDashboard} = useIndexRoutes()
+	const {goToDashboard} = useRoutesIndex()
 	
 	const items: MenuItem[] = [
 		{

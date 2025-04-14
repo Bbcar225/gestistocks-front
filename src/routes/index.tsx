@@ -7,6 +7,7 @@ import unitRoutes from "./unitRoutes.ts";
 import {useSidebarStore} from "../store/useAppStore.ts";
 import {useUserStore} from "../store/useUserStore.ts";
 import categoryRoutes from "./categoryRoutes.ts";
+import galleryRoutes from "./galleryRoutes.ts";
 
 const index: RouteObject[] = [
 	{
@@ -61,7 +62,8 @@ const index: RouteObject[] = [
 		element: <NotFoundPage/>,
 	},
 	...unitRoutes,
-	...categoryRoutes
+	...categoryRoutes,
+	...galleryRoutes,
 ]
 
 export const useRoutesIndex = () => {

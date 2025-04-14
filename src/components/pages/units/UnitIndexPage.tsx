@@ -30,7 +30,7 @@ export default function UnitIndexPage() {
 		}
 	}, [reqUnitGetAll.data, reqUnitGetAll.isSuccess, setFieldPagination]);
 	
-	return <Row gutter={[24, 12]}>
+	return <Row>
 		<Col span={24}>
 			<Flex justify='end'>
 				<Button

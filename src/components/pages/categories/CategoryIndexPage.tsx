@@ -32,7 +32,7 @@ export default function CategoryIndexPage() {
 		}
 	}, [reqCategoryGetAll.data, reqCategoryGetAll.isSuccess]);
 	
-	return <Row gutter={[24, 12]}>
+	return <Row>
 		<Col span={24}>
 			<Flex justify='end'>
 				<Button

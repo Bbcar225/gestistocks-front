@@ -10,7 +10,7 @@ export default function UnitCreatePage() {
 		setSidebar({field: 'title', value: 'Nouvelle unité'})
 	}, [setSidebar]);
 	
-	return <Row gutter={[24, 12]}>
+	return <Row>
 		<Col span={24}>
 			<UnitForm />
 		</Col>

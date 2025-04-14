@@ -1,6 +1,6 @@
 import {Menu} from "antd";
 import {AiFillDashboard} from "react-icons/ai";
-import {GrCatalog} from "react-icons/gr";
+import {GrCatalog, GrGallery} from "react-icons/gr";
 import {MdAcUnit} from "react-icons/md";
 import {useRoutesUnit} from "../../routes/unitRoutes.ts";
 import {useRoutesIndex} from "../../routes";
@@ -9,12 +9,13 @@ import {BiSolidCategory} from "react-icons/bi";
 import {useRoutesCategory} from "../../routes/categoryRoutes.ts";
 import {ReactNode, useMemo} from "react";
 import {useLocation} from "react-router-dom";
+import {useRoutesGallery} from "../../routes/galleryRoutes.ts";
 
 type MenuItem = {
 	key: string;
 	label: string;
 	icon?: ReactNode;
-	pathMatch?: string;
+	pathmatch?: string;
 	onClick?: () => void;
 	children?: MenuItem[];
 };
@@ -26,6 +27,7 @@ export function Menus({collapsed, setCollapsed}: {
 	const {goToUnitIndex} = useRoutesUnit()
 	const {goToDashboard} = useRoutesIndex()
 	const {goToCategoryIndex} = useRoutesCategory()
+	const {goToGalleryIndex} = useRoutesGallery()
 	
 	const location = useLocation();
 	const currentPath = location.pathname;
@@ -35,7 +37,7 @@ export function Menus({collapsed, setCollapsed}: {
 			key: "1",
 			icon: <AiFillDashboard/>,
 			label: "Tableau de bord",
-			pathMatch: "/dashboard",
+			pathmatch: "/dashboard",
 			onClick: () => {
 				if (isMobile) setCollapsed(!collapsed);
 				goToDashboard();
@@ -50,7 +52,7 @@ export function Menus({collapsed, setCollapsed}: {
 					key: "21",
 					label: "Unités",
 					icon: <MdAcUnit/>,
-					pathMatch: "/units",
+					pathmatch: "/units",
 					onClick: () => {
 						if (isMobile) setCollapsed(!collapsed);
 						goToUnitIndex();
@@ -60,10 +62,20 @@ export function Menus({collapsed, setCollapsed}: {
 					key: "22",
 					label: "Catégories",
 					icon: <BiSolidCategory/>,
-					pathMatch: "/categories",
+					pathmatch: "/categories",
 					onClick: () => {
 						if (isMobile) setCollapsed(!collapsed);
 						goToCategoryIndex();
+					},
+				},
+				{
+					key: "23",
+					label: "Galeries",
+					icon: <GrGallery/>,
+					pathmatch: "/galleries",
+					onClick: () => {
+						if (isMobile) setCollapsed(!collapsed);
+						goToGalleryIndex();
 					},
 				},
 			],
@@ -77,12 +89,12 @@ export function Menus({collapsed, setCollapsed}: {
 		for (const item of items) {
 			if (item.children) {
 				for (const child of item.children) {
-					if (child.pathMatch && currentPath.includes(child.pathMatch)) {
+					if (child.pathmatch && currentPath.includes(child.pathmatch)) {
 						selected = child.key;
 						open = item.key;
 					}
 				}
-			} else if (item.pathMatch && currentPath.includes(item.pathMatch)) {
+			} else if (item.pathmatch && currentPath.includes(item.pathmatch)) {
 				selected = item.key;
 			}
 		}

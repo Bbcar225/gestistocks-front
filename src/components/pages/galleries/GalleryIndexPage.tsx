@@ -13,9 +13,6 @@ export default function CategoryIndexPage() {
 	const [galleries, setGalleries] = useState<GalleryInterface[]>([])
 	const {pagination, setFieldPagination, setFieldQueryParams, queryParams} = useGalleryStore()
 	
-	console.log(`/Users/boubacarly/Sites/localhost/perso/gestistock2/front/src/components/pages/galleries/GalleryIndexPage.tsx:15`, `pagination =>`, pagination)
-	console.log(`/Users/boubacarly/Sites/localhost/perso/gestistock2/front/src/components/pages/galleries/GalleryIndexPage.tsx:16`, `queryParams =>`, queryParams)
-	
 	useEffect(() => {
 		setSidebar({field: 'title', value: 'Galeries'})
 	}, [setSidebar]);

@@ -1,4 +1,4 @@
-import {useQuery} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import galleryService from "../../../services/tenant/galleryService.ts";
 import useGalleryStore from "../../../store/useGalleryStore.ts";
 
@@ -14,4 +14,8 @@ export const useGalleryGetAll = (params?: HookApiInterface) => {
 		() => galleryService.GetAll(queryParams),
 		{enabled: params?.enabled}
 	)
+}
+
+export const useGalleryCreate = () => {
+	return useMutation(galleryService.Create)
 }

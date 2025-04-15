@@ -2,9 +2,11 @@ import {useEffect, useState} from "react";
 import {useSidebarStore} from "../../../store/useAppStore.ts";
 import {Button, Col, Flex, Image, Modal, Pagination, Row, Spin} from "antd";
 import {IoIosAddCircle} from "react-icons/io";
-import {useGalleryGetAll} from "../../../hooks/Api/tenant/GalleryHookAPI.ts";
+import {galleryQueriesClients, useGalleryGetAll} from "../../../hooks/Api/tenant/GalleryHookAPI.ts";
 import useGalleryStore from "../../../store/useGalleryStore.ts";
 import {tablePagination} from "../../../constants/tableConstant.ts";
+import GalleryForm from "../../organisms/forms/GalleryForm.tsx";
+import {useQueryClient} from "react-query";
 
 export default function CategoryIndexPage() {
 	const {setSidebar} = useSidebarStore()
@@ -49,8 +51,9 @@ export default function CategoryIndexPage() {
 						return <Image
 							key={index}
 							width={170}
+							height={170}
 							src={gallery.url}
-							className='p-1'
+							className='p-1 object-cover'
 						/>
 					})}
 				</Image.PreviewGroup>
@@ -83,12 +86,16 @@ export default function CategoryIndexPage() {
 }
 
 const ModalCreate = ({open, close}: { open: boolean, close: () => void }) => {
+	const queryClient = useQueryClient()
+	
 	return <Modal
 		title="Nouvel"
 		open={open}
 		onCancel={close}
 		footer={null}
 	>
-		<h1>Content</h1>
+		<GalleryForm
+			onSuccess={() => queryClient.invalidateQueries(galleryQueriesClients.useGalleryGetAll)}
+		/>
 	</Modal>
 };

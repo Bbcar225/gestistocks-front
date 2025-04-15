@@ -19,10 +19,12 @@ export default function HeaderLayout({collapsed, setCollapsed}: {
 			margin: 0,
 			background:
 			colorBgContainer,
-			height: '55px',
+			height: '50px',
 			position: 'sticky',
 			top: 0,
+			zIndex: 10000
 		}}
+		className='shadow-lg'
 	>
 		<Space align='center'>
 			<Button

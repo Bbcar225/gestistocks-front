@@ -99,6 +99,58 @@ export default function CategoryIndexPage() {
 			/>
 		</Col>
 		
+		<Col span={24}>
+			<Table
+				className="text-nowrap"
+				scroll={{x: true}}
+				rowKey={(row) => row.id}
+				loading={reqCategoryGetAll.isLoading}
+				pagination={{
+					...tablePagination,
+					total: pagination.total,
+					current: queryParams.page,
+					pageSize: queryParams.per_page,
+				}}
+				dataSource={categories}
+				columns={[
+					{
+						key: 'id',
+						title: 'ID',
+						render: (_, row) => row.id
+					},
+					{
+						key: 'name',
+						title: 'Nom',
+						render: (_, row) => row.name
+					},
+					{
+						key: 'date',
+						title: 'Date',
+						render: (_, row) => dayjs(row.created_at).format(formatDate),
+					},
+					{
+						key: 'options',
+						title: 'Options',
+						render: (_, row) => <Space
+							direction='horizontal'
+						>
+							<Button
+								icon={<FaEdit/>}
+								onClick={() => {
+									setCategory(row)
+									setIsModalOpen(true)
+								}}
+							/>
+						</Space>
+					},
+				]}
+				onChange={(pagination) => {
+					setFieldQueryParams({field: 'page', value: pagination.current})
+					setFieldQueryParams({field: 'per_page', value: pagination.pageSize})
+				}}
+			/>
+		</Col>
+		
 		<ModalCreateCategory
 			open={isModalOpen}
 			close={() => {

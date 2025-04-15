@@ -16,13 +16,13 @@ export default function GalleryForm({onSuccess, ...props}: { onSuccess?: () => v
 			const formData = new FormData();
 			
 			formData.append("type", values.type);
-			formData.append("name", String(values.name));
 			
 			if (values.file && values.file.length > 0) {
 				const file = values.file[0].originFileObj
 				
 				if (file) {
 					formData.append("file", file);
+					formData.append("name", values.name || file.name);
 					
 					reqGalleryCreate.mutate(formData);
 				}

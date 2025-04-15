@@ -45,8 +45,12 @@ export default function CategoryIndexPage() {
 		</Col>
 		
 		<Spin spinning={reqGalleryGetAll.isLoading}>
-			<Col span={24} className='text-center'>
-				<Image.PreviewGroup>
+			<Col
+				span={24}
+				className='text-center'
+			>
+				<Image.PreviewGroup
+				>
 					{galleries.map((gallery, index) => {
 						return <Image
 							key={index}

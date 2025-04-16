@@ -17,8 +17,7 @@ export default function HeaderLayout({collapsed, setCollapsed}: {
 		style={{
 			padding: "0px 10px",
 			margin: 0,
-			background:
-			colorBgContainer,
+			background: colorBgContainer,
 			height: '50px',
 			position: 'sticky',
 			top: 0,

@@ -30,7 +30,7 @@ export default function CategoryIndexPage() {
 	}, [reqGalleryGetAll.data, reqGalleryGetAll.isSuccess, setFieldPagination]);
 	
 	return <Row>
-		<Col span={24} className='mb-1'>
+		<Col span={24} className='mb-4'>
 			<Flex justify='end'>
 				<Button
 					type="primary"
@@ -39,7 +39,7 @@ export default function CategoryIndexPage() {
 						setIsModalOpen(true)
 					}}
 				>
-					Nouvelle
+					Nouvelle image
 				</Button>
 			</Flex>
 		</Col>
@@ -65,7 +65,7 @@ export default function CategoryIndexPage() {
 			
 			<Col span={24} className="my-3">
 				<Pagination
-					align="center"
+					align="end"
 					current={queryParams.page}
 					defaultCurrent={queryParams.page}
 					total={pagination.total}
@@ -93,7 +93,7 @@ const ModalCreate = ({open, close}: { open: boolean, close: () => void }) => {
 	const queryClient = useQueryClient()
 	
 	return <Modal
-		title="Nouvel"
+		title="Nouvelle image"
 		open={open}
 		onCancel={close}
 		footer={null}

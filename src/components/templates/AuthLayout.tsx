@@ -19,7 +19,7 @@ export default function AuthLayout() {
 				<Layout.Content
 					style={{
 						borderRadius: borderRadiusLG,
-						margin: '7px 7px 0',
+						margin: '20px 7px 0',
 					}}
 				>
 					<Outlet/>

@@ -8,6 +8,7 @@ import {useSidebarStore} from "../store/useAppStore.ts";
 import {useUserStore} from "../store/useUserStore.ts";
 import categoryRoutes from "./categoryRoutes.ts";
 import galleryRoutes from "./galleryRoutes.ts";
+import productRoutes from "./productRoutes.ts";
 
 const index: RouteObject[] = [
 	{
@@ -64,6 +65,7 @@ const index: RouteObject[] = [
 	...unitRoutes,
 	...categoryRoutes,
 	...galleryRoutes,
+	...productRoutes,
 ]
 
 export const useRoutesIndex = () => {

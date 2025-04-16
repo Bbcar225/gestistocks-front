@@ -10,6 +10,8 @@ import {useRoutesCategory} from "../../routes/categoryRoutes.ts";
 import {ReactNode, useMemo} from "react";
 import {useLocation} from "react-router-dom";
 import {useRoutesGallery} from "../../routes/galleryRoutes.ts";
+import {RiProductHuntLine} from "react-icons/ri";
+import {useRoutesProduct} from "../../routes/productRoutes.ts";
 
 type MenuItem = {
 	key: string;
@@ -28,6 +30,7 @@ export function Menus({collapsed, setCollapsed}: {
 	const {goToDashboard} = useRoutesIndex()
 	const {goToCategoryIndex} = useRoutesCategory()
 	const {goToGalleryIndex} = useRoutesGallery()
+	const {goToProductIndex} = useRoutesProduct()
 	
 	const location = useLocation();
 	const currentPath = location.pathname;
@@ -76,6 +79,16 @@ export function Menus({collapsed, setCollapsed}: {
 					onClick: () => {
 						if (isMobile) setCollapsed(!collapsed);
 						goToGalleryIndex();
+					},
+				},
+				{
+					key: "24",
+					label: "Produits",
+					icon: <RiProductHuntLine/>,
+					pathmatch: "/products",
+					onClick: () => {
+						if (isMobile) setCollapsed(!collapsed);
+						goToProductIndex();
 					},
 				},
 			],

@@ -31,7 +31,7 @@ export default function UnitIndexPage() {
 	}, [reqUnitGetAll.data, reqUnitGetAll.isSuccess, setFieldPagination]);
 	
 	return <Row>
-		<Col span={24}>
+		<Col span={24} className='mb-4'>
 			<Flex justify='end'>
 				<Button
 					type="primary"

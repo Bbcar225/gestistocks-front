@@ -18,17 +18,22 @@ interface CategoryStoreInterface {
 		value?: number
 	}) => void,
 	setCategory: (category?: CategoryInterface) => void,
+	resetQueryParams: () => void
+}
+
+const queryParams = {
+	page: 1,
+	per_page: 20
+}
+
+const pagination = {
+	total: 20
 }
 
 export const useCategoryStore = create<CategoryStoreInterface>((set) => {
 	return {
-		queryParams: {
-			page: 1,
-			per_page: 20
-		},
-		pagination: {
-			total: 20
-		},
+		queryParams,
+		pagination,
 		
 		setFieldQueryParams: ({field, value}) => {
 			return set((state) => {
@@ -57,6 +62,14 @@ export const useCategoryStore = create<CategoryStoreInterface>((set) => {
 				return {
 					...state,
 					category
+				}
+			})
+		},
+		resetQueryParams: () => {
+			return set((state) => {
+				return {
+					...state,
+					queryParams
 				}
 			})
 		}

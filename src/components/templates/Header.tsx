@@ -2,7 +2,7 @@ import {Button, Space, theme} from "antd";
 import {AiOutlineMenuFold, AiOutlineMenuUnfold} from "react-icons/ai";
 import Title from "antd/es/typography/Title";
 import {Header} from "antd/es/layout/layout";
-import {useSidebarStore} from "../../store/useAppStore.ts";
+import {useAppStore} from "../../store/useAppStore.ts";
 
 export default function HeaderLayout({collapsed, setCollapsed}: {
 	collapsed: boolean,
@@ -11,7 +11,7 @@ export default function HeaderLayout({collapsed, setCollapsed}: {
 	const {
 		token: {colorBgContainer},
 	} = theme.useToken();
-	const {sidebar} = useSidebarStore()
+	const {sidebar} = useAppStore()
 	
 	return <Header
 		style={{

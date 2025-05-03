@@ -4,7 +4,7 @@ import {GuestLayout} from "../components/templates/GuestLayout.tsx";
 import NotFoundPage from "../components/pages/NotFoundPage.tsx";
 import AuthLayout from "../components/templates/AuthLayout.tsx";
 import unitRoutes from "./unitRoutes.ts";
-import {useSidebarStore} from "../store/useAppStore.ts";
+import {useAppStore} from "../store/useAppStore.ts";
 import {useUserStore} from "../store/useUserStore.ts";
 import categoryRoutes from "./categoryRoutes.ts";
 import galleryRoutes from "./galleryRoutes.ts";
@@ -70,7 +70,7 @@ const index: RouteObject[] = [
 
 export const useRoutesIndex = () => {
 	const navigate = useNavigate();
-	const {setSidebar} = useSidebarStore()
+	const {setSidebar} = useAppStore()
 	const {user} = useUserStore()
 	
 	const goToDashboard = () => {

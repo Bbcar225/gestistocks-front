@@ -7,7 +7,8 @@ interface ResponseApiInterface<Data> {
 
 interface RequestApiInterface {
 	page?: number
-	per_page?: number
+	per_page?: number,
+	search?: string | null;
 }
 
 interface ResponsePaginateInterface<Data> {

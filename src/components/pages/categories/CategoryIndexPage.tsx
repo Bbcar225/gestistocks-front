@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useSidebarStore} from "../../../store/useAppStore.ts";
+import {useAppStore} from "../../../store/useAppStore.ts";
 import {Button, Col, Flex, Modal, Row, Space, Table} from "antd";
 import {tablePagination} from "../../../constants/tableConstant.ts";
 import {IoIosAddCircle} from "react-icons/io";
@@ -12,7 +12,7 @@ import CategoryForm from "../../organisms/forms/CategoryForm.tsx";
 import {useCategoryStore} from "../../../store/useCategoryStore.ts";
 
 export default function CategoryIndexPage() {
-	const {setSidebar} = useSidebarStore()
+	const {setSidebar} = useAppStore()
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const reqCategoryGetAll = useCategoryGetAll()
 	const [categories, setCategories] = useState<CategoryInterface[]>([])

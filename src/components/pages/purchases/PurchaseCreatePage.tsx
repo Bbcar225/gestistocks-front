@@ -1,10 +1,10 @@
 import {useEffect} from "react";
-import {useSidebarStore} from "../../../store/useAppStore.ts";
+import {useAppStore} from "../../../store/useAppStore.ts";
 import {Col, Row} from "antd";
 import UnitForm from "../../organisms/forms/UnitForm.tsx";
 
 export default function PurchaseCreatePage() {
-	const {setSidebar} = useSidebarStore()
+	const {setSidebar} = useAppStore()
 	
 	useEffect(() => {
 		setSidebar({field: 'title', value: 'Nouvelle unité'})

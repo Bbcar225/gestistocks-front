@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useSidebarStore} from "../../../store/useAppStore.ts";
+import {useAppStore} from "../../../store/useAppStore.ts";
 import {Button, Col, Flex, Image, Row, Space, Table, Tag} from "antd";
 import {useProductGetAll} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
 import {formatPrice} from "../../../utils/priceUtils.ts";
@@ -8,7 +8,7 @@ import {useRoutesProduct} from "../../../routes/productRoutes.ts";
 import {IoIosAddCircle} from "react-icons/io";
 
 export default function ProductIndexPage() {
-	const {setSidebar} = useSidebarStore()
+	const {setSidebar} = useAppStore()
 	const reqProductGetAll = useProductGetAll()
 	const [products, setProducts] = useState<ProductInterface[]>([])
 	const {goToProductShow, goToProductCreate} = useRoutesProduct()
@@ -53,9 +53,11 @@ export default function ProductIndexPage() {
 						key: "image",
 						title: "Image",
 						render: (_, row) => <Image
-							width={80}
+							width={70}
+							height={70}
 							src={row.gallery.url}
 							alt={row.name}
+							className="object-cover"
 						/>
 					},
 					{
@@ -68,7 +70,7 @@ export default function ProductIndexPage() {
 						title: "Prix",
 						render: (_, row) => {
 							const stock = row.stock
-							return formatPrice(stock.price)
+							return formatPrice(stock?.price || 0)
 						}
 					},
 					{
@@ -78,10 +80,10 @@ export default function ProductIndexPage() {
 							const stock = row.stock
 							const unit = row.unit
 							return <Tag
-								color={stock.quantity > 2 ? 'green' : 'red'}
+								color={stock?.quantity > 2 ? 'green' : 'red'}
 								className='font-bold'
 							>
-								{`${stock.quantity} ${unit.name}`}
+								{`${stock?.quantity} ${unit.name}`}
 							</Tag>
 						}
 					},

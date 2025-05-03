@@ -1,6 +1,6 @@
 import {Button, Col, Flex, Form, Input, notification, Row} from "antd";
 import {useEffect} from "react";
-import {successCreate, successUpdate} from "../../../constants/messages.ts";
+import {successCreate, successUpdate} from "../../../constants/messagesConstant.ts";
 import {useCategoryCreate, useCategoryUpdate} from "../../../hooks/Api/tenant/CategoryHookAPI.ts";
 import {useCategoryStore} from "../../../store/useCategoryStore.ts";
 

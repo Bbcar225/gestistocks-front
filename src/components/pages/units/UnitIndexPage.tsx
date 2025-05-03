@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useSidebarStore} from "../../../store/useAppStore.ts";
+import {useAppStore} from "../../../store/useAppStore.ts";
 import {Button, Col, Flex, Modal, Row, Space, Table} from "antd";
 import {queriesClientsUnit, useUnitGetAll} from "../../../hooks/Api/tenant/UnitHookAPI.ts";
 import {tablePagination} from "../../../constants/tableConstant.ts";
@@ -12,7 +12,7 @@ import {FaEdit} from "react-icons/fa";
 import {useQueryClient} from "react-query";
 
 export default function UnitIndexPage() {
-	const {setSidebar} = useSidebarStore()
+	const {setSidebar} = useAppStore()
 	const reqUnitGetAll = useUnitGetAll()
 	const [units, setUnits] = useState<UnitInterface[]>([])
 	const {pagination, queryParams, setFieldPagination, setFieldQueryParams, setUnit} = useUnitStore()

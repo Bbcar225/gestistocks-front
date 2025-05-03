@@ -7,6 +7,7 @@ interface GalleryStoreInterface {
 	pagination: {
 		total?: number
 	},
+	gallery?: GalleryInterface,
 	
 	setFieldQueryParams: ({field, value}: {
 		field: keyof GalleryStoreInterface['queryParams'],
@@ -16,6 +17,7 @@ interface GalleryStoreInterface {
 		field: keyof GalleryStoreInterface['pagination'],
 		value?: number
 	}) => void,
+	setGallery: (gallery?: GalleryInterface) => void,
 }
 
 const useGalleryStore = create<GalleryStoreInterface>((set) => {
@@ -27,6 +29,7 @@ const useGalleryStore = create<GalleryStoreInterface>((set) => {
 		pagination: {
 			total: 0
 		},
+		gallery: undefined,
 		
 		setFieldPagination: ({field, value}) => {
 			return set((state) => {
@@ -47,6 +50,14 @@ const useGalleryStore = create<GalleryStoreInterface>((set) => {
 						...state.queryParams,
 						[field]: value
 					}
+				}
+			})
+		},
+		setGallery: (gallery?: GalleryInterface) => {
+			return set((state) => {
+				return {
+					...state,
+					gallery: gallery
 				}
 			})
 		}

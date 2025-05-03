@@ -2,7 +2,7 @@ import {Upload, Modal} from 'antd';
 import type {UploadFile} from 'antd/es/upload/interface';
 import {useState} from 'react';
 
-export default function ImageUpload({accept, maxCount, ...props}: {accept: string, maxCount: number}) {
+export default function ImageUpload({accept, maxCount, ...props}: { accept: string, maxCount: number }) {
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
 	const [previewOpen, setPreviewOpen] = useState(false);
 	const [previewImage, setPreviewImage] = useState('');
@@ -55,10 +55,11 @@ export default function ImageUpload({accept, maxCount, ...props}: {accept: strin
 	);
 };
 
-const getBase64 = (file: File): Promise<string> =>
-	new Promise((resolve, reject) => {
+const getBase64 = (file: File): Promise<string> => {
+	return new Promise((resolve, reject) => {
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
 		reader.onload = () => resolve(reader.result as string);
 		reader.onerror = error => reject(error);
-	});
+	})
+}

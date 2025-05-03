@@ -18,17 +18,22 @@ interface UnitStoreInterface {
 		value?: number
 	}) => void,
 	setUnit: (unit?: UnitInterface) => void,
+	resetQueryParams: () => void
+}
+
+const queryParams = {
+	page: 1,
+	per_page: 20
+}
+
+const pagination = {
+	total: 20
 }
 
 export const useUnitStore = create<UnitStoreInterface>((set) => {
 	return {
-		queryParams: {
-			page: 1,
-			per_page: 20
-		},
-		pagination: {
-			total: 20
-		},
+		queryParams,
+		pagination,
 		
 		setFieldQueryParams: ({field, value}) => {
 			return set((state) => {
@@ -57,6 +62,14 @@ export const useUnitStore = create<UnitStoreInterface>((set) => {
 				return {
 					...state,
 					unit
+				}
+			})
+		},
+		resetQueryParams: () => {
+			return set((state) => {
+				return {
+					...state,
+					queryParams
 				}
 			})
 		}

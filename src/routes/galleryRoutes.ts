@@ -1,7 +1,7 @@
 import {RouteObject, useNavigate} from "react-router-dom";
 import AuthLayout from "../components/templates/AuthLayout.tsx";
 import {lazy} from "react";
-import {useSidebarStore} from "../store/useAppStore.ts";
+import {useAppStore} from "../store/useAppStore.ts";
 import {useUserStore} from "../store/useUserStore.ts";
 
 const galleryRoutes: RouteObject[] = [
@@ -19,7 +19,7 @@ const galleryRoutes: RouteObject[] = [
 
 export const useRoutesGallery = () => {
 	const navigate = useNavigate();
-	const {setSidebar} = useSidebarStore()
+	const {setSidebar} = useAppStore()
 	const {user} = useUserStore()
 	
 	return {

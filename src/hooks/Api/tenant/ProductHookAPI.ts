@@ -1,4 +1,4 @@
-import {useQuery} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import productService from "../../../services/tenant/productService.ts";
 
 export const productQueriesClients = {
@@ -11,4 +11,12 @@ export const useProductGetAll = (params?: HookApiInterface) => {
 		() => productService.GetAll(),
 		{enabled: params?.enabled}
 	)
+}
+
+export const useProductCreate = () => {
+	return useMutation(productService.Create)
+}
+
+export const useProductCreateUnitEquivalence = (id: number) => {
+	return useMutation<ResponseApiInterface<UnitEquivalenceInterface>, never, UnitEquivalenceFormDataInterface>((formData) => productService.CreateUnitEquivalence(id, formData))
 }

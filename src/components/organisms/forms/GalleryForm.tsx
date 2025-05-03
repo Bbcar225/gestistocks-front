@@ -1,12 +1,12 @@
 import {Button, Col, Flex, Form, Input, notification, Row, Select, UploadFile} from "antd";
 import {useEffect} from "react";
-import {successCreate} from "../../../constants/messages.ts";
+import {successCreate} from "../../../constants/messagesConstant.ts";
 import {useGalleryCreate} from "../../../hooks/Api/tenant/GalleryHookAPI.ts";
 import {galleryTypes} from "../../../constants/formConstant.ts";
 import ImageUpload from "../../molecules/ImageUpload.tsx";
-import {UploadChangeParam} from "antd/es/upload";
+import {normFile} from "../../../utils/formUtils.ts";
 
-export default function GalleryForm({onSuccess, ...props}: { onSuccess?: () => void; }) {
+export default function GalleryForm({onSuccess, ...props}: { onSuccess?: (data: {gallery?: GalleryInterface}) => void; }) {
 	const [form] = Form.useForm();
 	const [api, contextHolder] = notification.useNotification();
 	const reqGalleryCreate = useGalleryCreate()
@@ -35,14 +35,6 @@ export default function GalleryForm({onSuccess, ...props}: { onSuccess?: () => v
 		}
 	}
 	
-	const normFile = (e: UploadChangeParam) => {
-		if (Array.isArray(e)) {
-			return e;
-		}
-		return e?.fileList;
-	};
-	
-	
 	useEffect(() => {
 		if (reqGalleryCreate.isSuccess) {
 			const res = reqGalleryCreate.data
@@ -52,7 +44,7 @@ export default function GalleryForm({onSuccess, ...props}: { onSuccess?: () => v
 			})
 			form.resetFields()
 			
-			onSuccess?.()
+			onSuccess?.({ gallery: res.data });
 		}
 	}, [api, form, reqGalleryCreate.data, reqGalleryCreate.isSuccess]);
 	

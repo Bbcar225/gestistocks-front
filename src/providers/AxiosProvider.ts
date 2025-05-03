@@ -2,6 +2,9 @@ import axios from "axios";
 import {notification} from "antd";
 import {authTokenKey} from "../constants/localStorageConstant.ts";
 import {ErrorMessagesProps, errorsValidation} from "../components/organisms/ErrorsValidation.tsx";
+import {config} from "../constants/notifcationConstant.ts";
+
+notification.config(config)
 
 const service = axios.create({
 	baseURL: import.meta.env.VITE_API_URL,

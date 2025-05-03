@@ -2,18 +2,34 @@ import {create} from "zustand";
 
 interface SidebarStoreInterface {
 	sidebar: AppStoreInterface,
-	setSidebar: ({field, value}: { field: keyof SidebarStoreInterface['sidebar'], value: string }) => void
+	openModal: boolean,
+	
+	setSidebar: ({field, value}: { field: keyof SidebarStoreInterface['sidebar'], value: string }) => void,
+	setOpenModal: () => void,
 }
 
-export const useSidebarStore = create<SidebarStoreInterface>((set) => ({
-	sidebar: {
-		title: "Tableau de bord"
-	},
-	setSidebar: ({field, value}) =>
-		set((state) => ({
-			sidebar: {
-				...state.sidebar,
-				[field]: value,
-			},
-		})),
-}))
+export const useAppStore = create<SidebarStoreInterface>((set) => {
+	return {
+		sidebar: {
+			title: "Tableau de bord",
+		},
+		openModal: false,
+		
+		setSidebar: ({field, value}) => {
+			return set((state) => ({
+				sidebar: {
+					...state.sidebar,
+					[field]: value,
+				},
+			}))
+		},
+		setOpenModal: () => {
+			return set((state) => {
+				return {
+					...state,
+					openModal: !state.openModal
+				}
+			})
+		}
+	}
+})

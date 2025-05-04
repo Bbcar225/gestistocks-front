@@ -21,6 +21,10 @@ const productRoutes: RouteObject[] = [
 				path: 'create',
 				Component: lazy(() => import("../components/pages/products/ProductCreatePage.tsx"))
 			},
+			{
+				path: ':product/edit',
+				Component: lazy(() => import("../components/pages/products/ProductCreatePage.tsx"))
+			},
 		],
 	},
 ]
@@ -36,12 +40,20 @@ export const useRoutesProduct = () => {
 			return navigate(`/${user?.userable.slug}/products`)
 		},
 		goToProductShow: (product: ProductInterface) => {
-			setSidebar({field: 'title', value: 'Détails du produit'})
+			setSidebar({field: 'title', value: 'Détails de produit'})
 			return navigate(`/${user?.userable.slug}/products/${product.id}/show`)
 		},
 		goToProductCreate: () => {
-			setSidebar({field: 'title', value: 'Détails du produit'})
+			setSidebar({field: 'title', value: 'Nouveau produit'})
 			return navigate(`/${user?.userable.slug}/products/create`)
+		},
+		goToEdit: (params: { product?: ProductInterface, id?: number }) => {
+			if (!params?.id) {
+				params.id = params.product?.id
+			}
+			
+			setSidebar({field: 'title', value: 'Édition de produit'})
+			return navigate(`/${user?.userable.slug}/products/${params.id}/edit`)
 		}
 	}
 }

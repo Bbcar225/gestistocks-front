@@ -28,6 +28,7 @@ export default function WarehouseForm({onSuccess, ...props}: { onSuccess?: () =>
 				message: res.message,
 				description: successCreate
 			})
+			
 			form.resetFields()
 			
 			onSuccess?.()

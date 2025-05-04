@@ -56,7 +56,8 @@ service.interceptors.response.use(
 			const allMessages = Object.values(error?.response.data.errors.errors_validation).flat();
 			notification.error({
 				message: error?.response.data.message,
-				description: errorsValidation(allMessages as unknown as ErrorMessagesProps)
+				description: errorsValidation(allMessages as unknown as ErrorMessagesProps),
+				showProgress: true
 			})
 		}
 		

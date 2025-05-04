@@ -3,15 +3,18 @@ import {useAppStore} from "../../../store/useAppStore.ts";
 import {Button, Col, Flex, Image, Row, Space, Table, Tag} from "antd";
 import {useProductGetAll} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
 import {formatPrice} from "../../../utils/priceUtils.ts";
-import {FaEye} from "react-icons/fa";
+import {FaEdit, FaEye} from "react-icons/fa";
 import {useRoutesProduct} from "../../../routes/productRoutes.ts";
 import {IoIosAddCircle} from "react-icons/io";
+import {tablePagination} from "../../../constants/tableConstant.ts";
+import {useProductStore} from "../../../store/useProductStore.ts";
 
 export default function ProductIndexPage() {
 	const {setSidebar} = useAppStore()
-	const reqProductGetAll = useProductGetAll()
 	const [products, setProducts] = useState<ProductInterface[]>([])
-	const {goToProductShow, goToProductCreate} = useRoutesProduct()
+	const {goToProductShow, goToProductCreate, goToEdit} = useRoutesProduct()
+	const {pagination, queryParams, setFieldPagination, setFieldQueryParams, setProduct} = useProductStore()
+	const reqProductGetAll = useProductGetAll({queryParams})
 	
 	useEffect(() => {
 		setSidebar({field: 'title', value: 'Produits'})
@@ -22,6 +25,7 @@ export default function ProductIndexPage() {
 			const res = reqProductGetAll.data
 			const data = res.data
 			const products = data.data || []
+			setFieldPagination({field: 'total', value: data.meta.total})
 			setProducts(products)
 		}
 	}, [reqProductGetAll.data, reqProductGetAll.isSuccess]);
@@ -41,6 +45,9 @@ export default function ProductIndexPage() {
 		
 		<Col span={24}>
 			<Table
+				className="text-nowrap"
+				scroll={{x: true}}
+				loading={reqProductGetAll.isLoading}
 				rowKey={(row) => row.id}
 				dataSource={products}
 				columns={[
@@ -97,10 +104,28 @@ export default function ProductIndexPage() {
 									icon={<FaEye/>}
 									onClick={() => goToProductShow(row)}
 								/>
+								<Button
+									type="default"
+									icon={<FaEdit/>}
+									onClick={() => {
+										setProduct(row)
+										goToEdit({id: row.id})
+									}}
+								/>
 							</Space>
 						}
 					}
 				]}
+				pagination={{
+					...tablePagination,
+					total: pagination.total,
+					current: queryParams.page,
+					pageSize: queryParams.per_page,
+				}}
+				onChange={(pagination) => {
+					setFieldQueryParams({field: 'page', value: pagination.current})
+					setFieldQueryParams({field: 'per_page', value: pagination.pageSize})
+				}}
 			/>
 		</Col>
 	</Row>

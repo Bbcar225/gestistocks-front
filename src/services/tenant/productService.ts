@@ -6,6 +6,12 @@ const unitEquivalence = {
 	}
 }
 
+const stock = {
+	CreateStock: (productId: number, data: StockFormDataInterface): Promise<ResponseApiInterface<StockInterface>> => {
+		return service.post(`/tenant/products/${productId}/stocks`, data)
+	}
+}
+
 const productService = {
 	GetAll: (params: RequestApiInterface = {}): Promise<ResponseApiInterface<ResponsePaginateInterface<ProductInterface[]>>> => {
 		return service.get(`/tenant/products`, {params})
@@ -13,7 +19,8 @@ const productService = {
 	Create: (data: ProductFormDataInterface): Promise<ResponseApiInterface<ProductInterface>> => {
 		return service.post(`/tenant/products`, data)
 	},
-	...unitEquivalence
+	...unitEquivalence,
+	...stock
 }
 
 export default productService

@@ -7,8 +7,8 @@ export const productQueriesClients = {
 
 export const useProductGetAll = (params?: HookApiInterface) => {
 	return useQuery(
-		[productQueriesClients.useProductGetAll],
-		() => productService.GetAll(),
+		[productQueriesClients.useProductGetAll, params?.queryParams],
+		() => productService.GetAll(params?.queryParams),
 		{enabled: params?.enabled}
 	)
 }
@@ -19,4 +19,8 @@ export const useProductCreate = () => {
 
 export const useProductCreateUnitEquivalence = (id: number) => {
 	return useMutation<ResponseApiInterface<UnitEquivalenceInterface>, never, UnitEquivalenceFormDataInterface>((formData) => productService.CreateUnitEquivalence(id, formData))
+}
+
+export const useProductCreateStock = (productId: number) => {
+	return useMutation<ResponseApiInterface<StockInterface>, never, StockFormDataInterface>((formData) => productService.CreateStock(productId, formData))
 }

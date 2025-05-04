@@ -1,23 +1,23 @@
 import {create} from "zustand";
 
-interface UnitStoreInterface {
+interface ProductStoreInterface {
 	queryParams: RequestApiInterface & {
 		search?: string
 	},
 	pagination: {
 		total?: number
 	},
-	unit?: UnitInterface,
+	product?: ProductInterface,
 	
 	setFieldQueryParams: ({field, value}: {
-		field: keyof UnitStoreInterface['queryParams'],
+		field: keyof ProductStoreInterface['queryParams'],
 		value?: unknown
 	}) => void,
 	setFieldPagination: ({field, value}: {
-		field: keyof UnitStoreInterface['pagination'],
+		field: keyof ProductStoreInterface['pagination'],
 		value?: number
 	}) => void,
-	setUnit: (unit?: UnitInterface) => void,
+	setProduct: (product?: ProductInterface) => void,
 	resetQueryParams: () => void
 }
 
@@ -30,7 +30,7 @@ const pagination = {
 	total: 0
 }
 
-export const useUnitStore = create<UnitStoreInterface>((set) => {
+export const useProductStore = create<ProductStoreInterface>((set) => {
 	return {
 		queryParams,
 		pagination,
@@ -57,11 +57,11 @@ export const useUnitStore = create<UnitStoreInterface>((set) => {
 				}
 			})
 		},
-		setUnit: (unit) => {
+		setProduct: (product) => {
 			return set((state) => {
 				return {
 					...state,
-					unit
+					product
 				}
 			})
 		},

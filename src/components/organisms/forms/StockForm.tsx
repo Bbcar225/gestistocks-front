@@ -1,5 +1,9 @@
-import {Col, Form, InputNumber, notification, Row} from "antd";
+import {Button, Col, Flex, Form, InputNumber, notification, Row, Switch} from "antd";
 import {config} from "../../../constants/notifcationConstant.ts";
+import SelectWarehouse from "../../molecules/SelectWarehouse.tsx";
+import {useProductCreateStock} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
+import {useEffect} from "react";
+import {successCreate} from "../../../constants/messagesConstant.ts";
 
 export default function StockForm({onSuccess, product, ...props}: {
 	onSuccess?: () => void;
@@ -7,10 +11,26 @@ export default function StockForm({onSuccess, product, ...props}: {
 }) {
 	const [form] = Form.useForm();
 	const [notificationInstance, contextHolder] = notification.useNotification(config);
+	const reqProductCreateStock = useProductCreateStock(product.id)
 	
 	const handleFinish = (values: StockFormDataInterface) => {
-		console.log(`/Users/boubacarly/Sites/localhost/perso/gestistock2/front/src/components/organisms/forms/StockForm.tsx:12`, `values =>`, values)
+		return reqProductCreateStock.mutate(values)
 	}
+	
+	useEffect(() => {
+		if (reqProductCreateStock.status === 'success') {
+			const res = reqProductCreateStock.data
+			
+			notificationInstance.success({
+				message: res.message,
+				description: successCreate
+			})
+			
+			form.resetFields()
+			
+			onSuccess?.()
+		}
+	}, [reqProductCreateStock.data, reqProductCreateStock.status]);
 	
 	return <Form
 		form={form}
@@ -18,6 +38,9 @@ export default function StockForm({onSuccess, product, ...props}: {
 		{...props}
 		onFinish={handleFinish}
 		disabled={false}
+		initialValues={{
+			active: true
+		}}
 	>
 		{contextHolder}
 		<Row gutter={[12, 12]}>
@@ -27,6 +50,7 @@ export default function StockForm({onSuccess, product, ...props}: {
 					name="warehouse_id"
 					rules={[{required: true}]}
 				>
+					<SelectWarehouse/>
 				</Form.Item>
 			</Col>
 			
@@ -36,6 +60,12 @@ export default function StockForm({onSuccess, product, ...props}: {
 					name="price"
 					rules={[{required: true}]}
 				>
+					<InputNumber
+						style={{
+							width: "100%",
+						}}
+						suffix={`Fr / ${product.unit.name}`}
+					/>
 				</Form.Item>
 			</Col>
 			
@@ -49,18 +79,30 @@ export default function StockForm({onSuccess, product, ...props}: {
 						style={{
 							width: "100%",
 						}}
+						suffix={`${product.unit.name}`}
 					/>
 				</Form.Item>
 			</Col>
 			
 			<Col span={12}>
 				<Form.Item<StockFormDataInterface>
-					label="Active ?"
+					label="Stock de vente ?"
 					name="active"
-					rules={[{required: true}]}
 				>
+					<Switch defaultChecked/>
 				</Form.Item>
 			</Col>
+			
+			<Flex justify='center' className='w-screen'>
+				<Button
+					type="primary"
+					htmlType="submit"
+					className='w-1/2'
+					loading={false}
+				>
+					Valider
+				</Button>
+			</Flex>
 		</Row>
 	</Form>
 }

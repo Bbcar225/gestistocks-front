@@ -27,7 +27,7 @@ const queryParams = {
 }
 
 const pagination = {
-	total: 20
+	total: 0
 }
 
 export const useWarehouseStore = create<WarehouseStoreInterface>((set) => {

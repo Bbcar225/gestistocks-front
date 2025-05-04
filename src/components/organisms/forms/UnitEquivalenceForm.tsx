@@ -36,37 +36,38 @@ export default function UnitEquivalenceForm({onSuccess, product, ...props}: {
 	>
 		{contextHolder}
 		<Row gutter={[12, 12]}>
-			<Col span={8}>
+			<Col xs={24} sm={12}>
 				<Form.Item
 					label="Unité de base"
 				>
 					<Input
-						value={product.unit.name}
+						value={`1 ${product.unit.name} font(fait)`}
 						disabled={true}
 						className="font-bold text-center !text-red-600"
 					/>
 				</Form.Item>
 			</Col>
 			
-			<Col span={8}>
-				<Form.Item<UnitEquivalenceFormDataInterface>
-					label="Unité de destination"
-					name="unit_id"
-					rules={[{required: true}]}
-				>
-					<SelectUnit/>
-				</Form.Item>
-			</Col>
-			
-			<Col span={8}>
+			<Col xs={24} sm={12}>
 				<Form.Item<UnitEquivalenceFormDataInterface>
 					label="Valeur de l'unité"
 					name="value"
 					rules={[{required: true}]}
 				>
 					<InputNumber
+						placeholder="Valeur d'équivalence"
 						min={0.0000001}
-						style={{width: "100%"}}
+						addonAfter={<Form.Item<UnitEquivalenceFormDataInterface>
+							name="unit_id"
+							rules={[{required: true}]}
+							noStyle
+						>
+							<SelectUnit
+								placeholder="Unité de destination"
+								className="w-[230px]"
+							/>
+						</Form.Item>}
+						style={{width: '100%'}}
 					/>
 				</Form.Item>
 			</Col>

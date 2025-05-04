@@ -3,7 +3,7 @@ interface AppStoreInterface {
 }
 
 interface HookApiInterface {
-	enabled: boolean,
+	enabled?: boolean,
 	id?: number|string
 }
 

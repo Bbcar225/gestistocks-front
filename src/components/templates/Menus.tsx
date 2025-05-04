@@ -12,6 +12,8 @@ import {useLocation} from "react-router-dom";
 import {useRoutesGallery} from "../../routes/galleryRoutes.ts";
 import {RiProductHuntLine} from "react-icons/ri";
 import {useRoutesProduct} from "../../routes/productRoutes.ts";
+import {FaWarehouse} from "react-icons/fa";
+import {useRoutesWarehouse} from "../../routes/warehouseRoutes.ts";
 
 type MenuItem = {
 	key: string;
@@ -31,6 +33,7 @@ export function Menus({collapsed, setCollapsed}: {
 	const {goToCategoryIndex} = useRoutesCategory()
 	const {goToGalleryIndex} = useRoutesGallery()
 	const {goToProductIndex} = useRoutesProduct()
+	const routesWarehouse = useRoutesWarehouse()
 	
 	const location = useLocation();
 	const currentPath = location.pathname;
@@ -89,6 +92,23 @@ export function Menus({collapsed, setCollapsed}: {
 					onClick: () => {
 						if (isMobile) setCollapsed(!collapsed);
 						goToProductIndex();
+					},
+				},
+			],
+		},
+		{
+			key: "3",
+			label: "Stocks",
+			icon: <GrCatalog/>,
+			children: [
+				{
+					key: "31",
+					label: "Dépôts",
+					icon: <FaWarehouse/>,
+					pathmatch: "/warehouses",
+					onClick: () => {
+						if (isMobile) setCollapsed(!collapsed);
+						routesWarehouse.goToIndex()
 					},
 				},
 			],

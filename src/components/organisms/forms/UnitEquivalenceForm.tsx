@@ -4,13 +4,14 @@ import {useProductCreateUnitEquivalence} from "../../../hooks/Api/tenant/Product
 import {useEffect} from "react";
 import {config} from "../../../constants/notifcationConstant.ts";
 import {successCreate} from "../../../constants/messagesConstant.ts";
+import {useProductStore} from "../../../store/useProductStore.ts";
 
-export default function UnitEquivalenceForm({onSuccess, product, ...props}: {
+export default function UnitEquivalenceForm({onSuccess, ...props}: {
 	onSuccess?: (data: { unitEquivalence?: UnitEquivalenceInterface }) => void;
-	product: ProductInterface
 }) {
+	const {product} = useProductStore()
 	const [form] = Form.useForm();
-	const reqProductCreateUnitEquivalence = useProductCreateUnitEquivalence(product.id)
+	const reqProductCreateUnitEquivalence = useProductCreateUnitEquivalence(Number(product?.id))
 	const [api, contextHolder] = notification.useNotification(config);
 	
 	const handleFinish = (values: UnitEquivalenceFormDataInterface) => {
@@ -41,7 +42,7 @@ export default function UnitEquivalenceForm({onSuccess, product, ...props}: {
 					label="Unité de base"
 				>
 					<Input
-						value={`1 ${product.unit.name} font(fait)`}
+						value={`1 ${product?.unit.name} fait`}
 						disabled={true}
 						className="font-bold text-center !text-red-600"
 					/>

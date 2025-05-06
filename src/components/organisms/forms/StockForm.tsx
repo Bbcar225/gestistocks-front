@@ -4,14 +4,15 @@ import SelectWarehouse from "../../molecules/SelectWarehouse.tsx";
 import {useProductCreateStock} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
 import {useEffect} from "react";
 import {successCreate} from "../../../constants/messagesConstant.ts";
+import {useProductStore} from "../../../store/useProductStore.ts";
 
-export default function StockForm({onSuccess, product, ...props}: {
+export default function StockForm({onSuccess, ...props}: {
 	onSuccess?: () => void;
-	product: ProductInterface
 }) {
 	const [form] = Form.useForm();
+	const {product} = useProductStore()
 	const [notificationInstance, contextHolder] = notification.useNotification(config);
-	const reqProductCreateStock = useProductCreateStock(product.id)
+	const reqProductCreateStock = useProductCreateStock(Number(product?.id))
 	
 	const handleFinish = (values: StockFormDataInterface) => {
 		return reqProductCreateStock.mutate(values)
@@ -64,7 +65,7 @@ export default function StockForm({onSuccess, product, ...props}: {
 						style={{
 							width: "100%",
 						}}
-						suffix={`Fr / ${product.unit.name}`}
+						suffix={`Fr / ${product?.unit.name}`}
 					/>
 				</Form.Item>
 			</Col>
@@ -79,7 +80,7 @@ export default function StockForm({onSuccess, product, ...props}: {
 						style={{
 							width: "100%",
 						}}
-						suffix={`${product.unit.name}`}
+						suffix={`${product?.unit.name}`}
 					/>
 				</Form.Item>
 			</Col>

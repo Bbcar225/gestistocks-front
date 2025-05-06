@@ -2,7 +2,8 @@ import {useMutation, useQuery} from "react-query";
 import productService from "../../../services/tenant/productService.ts";
 
 export const productQueriesClients = {
-	useProductGetAll: 'useProductGetAll'
+	useProductGetAll: 'useProductGetAll',
+	useProductGetOne: 'useProductGetOne'
 }
 
 export const useProductGetAll = (params?: HookApiInterface) => {
@@ -23,4 +24,18 @@ export const useProductCreateUnitEquivalence = (id: number) => {
 
 export const useProductCreateStock = (productId: number) => {
 	return useMutation<ResponseApiInterface<StockInterface>, never, StockFormDataInterface>((formData) => productService.CreateStock(productId, formData))
+}
+
+export const useProductGetOne = (params?: HookApiInterface) => {
+	return useQuery(
+		[productQueriesClients.useProductGetOne, params?.id],
+		() => productService.GetOne(Number(params?.id)),
+		{
+			enabled: params?.enabled
+		}
+	)
+}
+
+export const useProductUpdate = (id: number) => {
+	return useMutation<ResponseApiInterface<ProductInterface>, never, ProductFormDataInterface>((formData) => productService.Update(id, formData))
 }

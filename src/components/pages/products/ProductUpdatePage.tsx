@@ -1,19 +1,25 @@
 import {useEffect, useState} from "react";
 import {useAppStore} from "../../../store/useAppStore.ts";
-import {Button, Card, Col, Flex, Row, Steps} from "antd";
+import {Button, Card, Col, Flex, Row, Spin, Steps} from "antd";
 import {ProductForm} from "../../organisms/forms/ProductForm.tsx";
 import UnitEquivalenceForm from "../../organisms/forms/UnitEquivalenceForm.tsx";
 import StockForm from "../../organisms/forms/StockForm.tsx";
 import {useRoutesProduct} from "../../../routes/productRoutes.ts";
 import useGalleryStore from "../../../store/useGalleryStore.ts";
+import {useProductGetOne} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
+import {useParams} from "react-router-dom";
 import {useProductStore} from "../../../store/useProductStore.ts";
 
-export default function ProductIndexPage() {
+export default function ProductUpdatePage() {
+	const {product: productId} = useParams()
 	const {setSidebar} = useAppStore()
 	const [current, setCurrent] = useState(0);
 	const [unitEquivalences, setUnitEquivalences] = useState<UnitEquivalenceInterface[]>([])
 	const {goToProductShow} = useRoutesProduct()
 	const {setGallery} = useGalleryStore()
+	const reqProductGetOne = useProductGetOne({
+		id: productId
+	})
 	const {product, setProduct} = useProductStore()
 	
 	const steps = [
@@ -77,22 +83,30 @@ export default function ProductIndexPage() {
 	}
 	
 	useEffect(() => {
-		setSidebar({field: 'title', value: 'Nouveau produit'})
-		setProduct(undefined)
-		setGallery(undefined)
-	}, [setGallery, setProduct, setSidebar]);
+		setSidebar({field: 'title', value: 'Édition de produit'})
+	}, [setSidebar]);
 	
-	return <Row>
-		<Col span={24}>
-			<Card
-				title={<Steps current={current} items={items}/>}
-			>
-				<Row>
-					<Col span={24}>
-						{steps[current].content}
-					</Col>
-				</Row>
-			</Card>
-		</Col>
-	</Row>
+	useEffect(() => {
+		if (reqProductGetOne.status === 'success') {
+			const res = reqProductGetOne.data
+			const product = res.data
+			setProduct(product)
+		}
+	}, [reqProductGetOne.status, reqProductGetOne.data]);
+	
+	return <Spin spinning={reqProductGetOne.isLoading}>
+		<Row>
+			<Col span={24}>
+				<Card
+					title={<Steps current={current} items={items}/>}
+				>
+					<Row>
+						<Col span={24}>
+							{steps[current].content}
+						</Col>
+					</Row>
+				</Card>
+			</Col>
+		</Row>
+	</Spin>
 }

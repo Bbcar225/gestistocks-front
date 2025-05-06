@@ -23,7 +23,7 @@ const productRoutes: RouteObject[] = [
 			},
 			{
 				path: ':product/edit',
-				Component: lazy(() => import("../components/pages/products/ProductCreatePage.tsx"))
+				Component: lazy(() => import("../components/pages/products/ProductUpdatePage.tsx"))
 			},
 		],
 	},

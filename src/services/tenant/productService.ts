@@ -19,6 +19,12 @@ const productService = {
 	Create: (data: ProductFormDataInterface): Promise<ResponseApiInterface<ProductInterface>> => {
 		return service.post(`/tenant/products`, data)
 	},
+	GetOne: (id: number): Promise<ResponseApiInterface<ProductInterface>> => {
+		return service.get(`/tenant/products/${id}`)
+	},
+	Update: (id: number, data: ProductFormDataInterface): Promise<ResponseApiInterface<ProductInterface>> => {
+		return service.put(`/tenant/products/${id}`, data)
+	},
 	...unitEquivalence,
 	...stock
 }

@@ -3,5 +3,6 @@ interface ProductFormDataInterface {
 	category_id: number
 	gallery_id: number
 	name: string
-	sku: string
+	sku: string,
+	active?: boolean
 }

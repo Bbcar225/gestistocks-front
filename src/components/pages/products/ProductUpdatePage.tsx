@@ -80,7 +80,7 @@ export default function ProductUpdatePage() {
 				className='w-1/3'
 				loading={false}
 				onClick={next}
-				icon={<GrLinkNext />}
+				icon={<GrLinkNext/>}
 			>
 			  Suivant
 			</Button>
@@ -108,9 +108,15 @@ export default function ProductUpdatePage() {
 		setCurrent(current + 1);
 	}
 	
+	const handleChange = (value: number) => {
+		if (product) {
+			setCurrent(value);
+		}
+	};
+	
 	useEffect(() => {
-		setSidebar({field: 'title', value: 'Édition de produit'})
-	}, [setSidebar]);
+		setSidebar({field: 'title', value: `Édition du produit : ${product?.name}`});
+	}, [product, setSidebar]);
 	
 	useEffect(() => {
 		if (reqProductGetOne.status === 'success') {
@@ -125,7 +131,12 @@ export default function ProductUpdatePage() {
 		<Row>
 			<Col span={24}>
 				<Card
-					title={<Steps current={current} items={items}/>}
+					title={<Steps
+						current={current}
+						items={items}
+						onChange={handleChange}
+						responsive={true}
+					/>}
 				>
 					<Row>
 						<Col span={24}>

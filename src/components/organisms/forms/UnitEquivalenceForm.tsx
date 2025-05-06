@@ -93,7 +93,7 @@ export default function UnitEquivalenceForm({onSuccess, unitEquivalence, ...prop
 						>
 							<SelectUnit
 								placeholder="Unité de destination"
-								className="w-[230px]"
+								className="w-[180px]"
 							/>
 						</Form.Item>}
 						style={{width: '100%'}}

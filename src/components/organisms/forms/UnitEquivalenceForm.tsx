@@ -1,20 +1,29 @@
 import {Button, Col, Flex, Form, Input, InputNumber, notification, Row} from "antd";
 import SelectUnit from "../../molecules/SelectUnit.tsx";
-import {useProductCreateUnitEquivalence} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
+import {
+	useProductCreateUnitEquivalence,
+	useProductUpdateUnitEquivalence
+} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
 import {useEffect} from "react";
 import {config} from "../../../constants/notifcationConstant.ts";
-import {successCreate} from "../../../constants/messagesConstant.ts";
+import {successCreate, successUpdate} from "../../../constants/messagesConstant.ts";
 import {useProductStore} from "../../../store/useProductStore.ts";
 
-export default function UnitEquivalenceForm({onSuccess, ...props}: {
+export default function UnitEquivalenceForm({onSuccess, unitEquivalence, ...props}: {
 	onSuccess?: (data: { unitEquivalence?: UnitEquivalenceInterface }) => void;
+	unitEquivalence?: UnitEquivalenceInterface
 }) {
 	const {product} = useProductStore()
 	const [form] = Form.useForm();
 	const reqProductCreateUnitEquivalence = useProductCreateUnitEquivalence(Number(product?.id))
 	const [api, contextHolder] = notification.useNotification(config);
+	const reqProductUpdateUnitEquivalence = useProductUpdateUnitEquivalence(Number(product?.id), Number(unitEquivalence?.id))
 	
 	const handleFinish = (values: UnitEquivalenceFormDataInterface) => {
+		if (unitEquivalence) {
+			return reqProductUpdateUnitEquivalence.mutate(values)
+		}
+		
 		return reqProductCreateUnitEquivalence.mutate(values)
 	}
 	
@@ -28,12 +37,31 @@ export default function UnitEquivalenceForm({onSuccess, ...props}: {
 		}
 	}, [reqProductCreateUnitEquivalence.data, reqProductCreateUnitEquivalence.status]);
 	
+	useEffect(() => {
+		if (reqProductUpdateUnitEquivalence.status === 'success') {
+			api.success({
+				message: successUpdate
+			})
+			onSuccess?.({unitEquivalence: reqProductUpdateUnitEquivalence.data?.data})
+		}
+	}, [reqProductUpdateUnitEquivalence.data, reqProductUpdateUnitEquivalence.status]);
+	
+	useEffect(() => {
+		if (unitEquivalence) {
+			form.setFieldsValue({
+				value: unitEquivalence.value,
+				unit_id: unitEquivalence.unit_id
+			})
+		} else {
+			form.resetFields()
+		}
+	}, [unitEquivalence]);
+	
 	return <Form
 		form={form}
 		layout="vertical"
-		{...props}
 		onFinish={handleFinish}
-		disabled={reqProductCreateUnitEquivalence.isLoading}
+		{...props}
 	>
 		{contextHolder}
 		<Row gutter={[12, 12]}>

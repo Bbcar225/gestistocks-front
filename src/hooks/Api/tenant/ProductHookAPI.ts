@@ -22,6 +22,10 @@ export const useProductCreateUnitEquivalence = (id: number) => {
 	return useMutation<ResponseApiInterface<UnitEquivalenceInterface>, never, UnitEquivalenceFormDataInterface>((formData) => productService.CreateUnitEquivalence(id, formData))
 }
 
+export const useProductUpdateUnitEquivalence = (productId: number, unitEquivalenceId: number) => {
+	return useMutation<ResponseApiInterface<UnitEquivalenceInterface>, never, UnitEquivalenceFormDataInterface>((formData) => productService.UpdateUnitEquivalence(productId, unitEquivalenceId, formData))
+}
+
 export const useProductCreateStock = (productId: number) => {
 	return useMutation<ResponseApiInterface<StockInterface>, never, StockFormDataInterface>((formData) => productService.CreateStock(productId, formData))
 }

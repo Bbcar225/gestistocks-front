@@ -9,6 +9,7 @@ import useGalleryStore from "../../../store/useGalleryStore.ts";
 import {useProductGetOne} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
 import {useParams} from "react-router-dom";
 import {useProductStore} from "../../../store/useProductStore.ts";
+import {GrLinkNext} from "react-icons/gr";
 
 export default function ProductUpdatePage() {
 	const {product: productId} = useParams()
@@ -30,23 +31,47 @@ export default function ProductUpdatePage() {
 					setGallery(undefined)
 					next()
 				}}
+				product={product}
 			/>,
 		},
 		{
-			title: 'Unité',
+			title: 'Unités',
 			content: product ?
 				<Row gutter={[0, 12]}>
-					<Col span={24}>
-						<UnitEquivalenceForm
-							onSuccess={({unitEquivalence}) => {
-								if (unitEquivalence) {
-									setUnitEquivalences((prevState) => {
-										const unitEquivalences = [...prevState]
-										return [...unitEquivalences, unitEquivalence]
-									})
-								}
-							}}
-						/>
+					{product.unit_equivalences.map((unitEquivalence, index) => {
+						return <Col span={24} key={index}>
+							<Card
+								title={`Mise de l'équivalence : ${product.unit.name} vers ${unitEquivalence.unit.name}`}
+							>
+								<UnitEquivalenceForm
+									onSuccess={({unitEquivalence}) => {
+										if (unitEquivalence) {
+											setUnitEquivalences((prevState) => {
+												const unitEquivalences = [...prevState]
+												return [...unitEquivalences, unitEquivalence]
+											})
+										}
+									}}
+									unitEquivalence={unitEquivalence}
+								/>
+							</Card>
+						</Col>
+					})}
+					<Col span={24} className='mt-3'>
+						<Card
+							title="Nouvelle équivalence"
+						>
+							<UnitEquivalenceForm
+								onSuccess={({unitEquivalence}) => {
+									if (unitEquivalence) {
+										setUnitEquivalences((prevState) => {
+											const unitEquivalences = [...prevState]
+											return [...unitEquivalences, unitEquivalence]
+										})
+									}
+								}}
+							/>
+						</Card>
 					</Col>
 					
 					{unitEquivalences.length > 0 && <Flex justify='center' className='w-screen'>
@@ -55,6 +80,7 @@ export default function ProductUpdatePage() {
 				className='w-1/3'
 				loading={false}
 				onClick={next}
+				icon={<GrLinkNext />}
 			>
 			  Suivant
 			</Button>
@@ -90,6 +116,7 @@ export default function ProductUpdatePage() {
 		if (reqProductGetOne.status === 'success') {
 			const res = reqProductGetOne.data
 			const product = res.data
+			setUnitEquivalences(product.unit_equivalences || [])
 			setProduct(product)
 		}
 	}, [reqProductGetOne.status, reqProductGetOne.data]);

@@ -6,7 +6,8 @@ interface UnitEquivalenceInterface {
 	unit_id: number
 	value: number
 	created_at: string
-	updated_at: string
+	updated_at: string,
+	unit: UnitInterface
 }
 
 interface UnitEquivalenceFormDataInterface {

@@ -3,6 +3,9 @@ import service from "../../providers/AxiosProvider.ts";
 const unitEquivalence = {
 	CreateUnitEquivalence: (id: number, data: UnitEquivalenceFormDataInterface): Promise<ResponseApiInterface<UnitEquivalenceInterface>> => {
 		return service.post(`/tenant/products/${id}/unit-equivalences`, data)
+	},
+	UpdateUnitEquivalence: (productId: number, unitEquivalenceId: number, data: UnitEquivalenceFormDataInterface): Promise<ResponseApiInterface<UnitEquivalenceInterface>> => {
+		return service.put(`/tenant/products/${productId}/unit-equivalences/${unitEquivalenceId}`, data)
 	}
 }
 

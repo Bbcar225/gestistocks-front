@@ -1,4 +1,4 @@
-import {Button, Col, Flex, Form, Input, notification, Row} from "antd";
+import {Button, Col, Flex, Form, Input, notification, Row, Switch} from "antd";
 import SelectUnit from "../../molecules/SelectUnit.tsx";
 import SelectCategory from "../../molecules/SelectCategory.tsx";
 import ImagePreviewWithGallery from "../../molecules/ImagePreviewWithGallery.tsx";
@@ -9,15 +9,17 @@ import {useProductCreate, useProductUpdate} from "../../../hooks/Api/tenant/Prod
 import {successCreate, successUpdate} from "../../../constants/messagesConstant.ts";
 import {useProductStore} from "../../../store/useProductStore.ts";
 
-export function ProductForm({onSuccess, ...props}: {
+export function ProductForm({onSuccess, product, ...props}: {
 	onSuccess?: () => void;
+	product?: ProductInterface
 }) {
 	const [form] = Form.useForm();
 	const [api, contextHolder] = notification.useNotification(config);
 	const {gallery, setGallery} = useGalleryStore()
-	const {product, setProduct} = useProductStore()
+	const {setProduct} = useProductStore()
 	const reqProductCreate = useProductCreate()
 	const reqProductUpdate = useProductUpdate(Number(product?.id))
+	const isLoading = reqProductCreate.isLoading || reqProductUpdate.isLoading
 	
 	const handleFinish = (values: ProductFormDataInterface) => {
 		if (!gallery) {
@@ -33,8 +35,7 @@ export function ProductForm({onSuccess, ...props}: {
 		}
 		
 		if (product) {
-			console.log(`/Users/boubacarly/Sites/localhost/perso/gestistock2/front/src/components/organisms/forms/ProductForm.tsx:34`, `formData =>`, formData)
-			return
+			return reqProductUpdate.mutate(formData)
 		}
 		
 		return reqProductCreate.mutate(formData)
@@ -52,7 +53,10 @@ export function ProductForm({onSuccess, ...props}: {
 			api.success({
 				message: successCreate
 			})
-			setProduct(reqProductCreate.data?.data)
+			setProduct({
+				...product,
+				...reqProductCreate.data?.data
+			})
 			onSuccess?.()
 		}
 	}, [reqProductCreate.data, reqProductCreate.status]);
@@ -63,7 +67,10 @@ export function ProductForm({onSuccess, ...props}: {
 			api.success({
 				message: successUpdate
 			})
-			setProduct(reqProductUpdate.data?.data)
+			setProduct({
+				...product,
+				...reqProductUpdate.data?.data
+			})
 			onSuccess?.()
 		}
 	}, [reqProductUpdate.data, reqProductUpdate.status]);
@@ -75,6 +82,7 @@ export function ProductForm({onSuccess, ...props}: {
 				sku: product.sku,
 				unit_id: product.unit_id,
 				category_id: product.category_id,
+				active: product.active
 			})
 			setGallery(product.gallery)
 		} else {
@@ -86,7 +94,6 @@ export function ProductForm({onSuccess, ...props}: {
 		form={form}
 		onFinish={handleFinish}
 		layout='vertical'
-		disabled={reqProductCreate.isLoading}
 		{...props}
 	>
 		{contextHolder}
@@ -133,6 +140,15 @@ export function ProductForm({onSuccess, ...props}: {
 				</Form.Item>
 			</Col>
 			
+			{product && <Col span={12}>
+		<Form.Item<StockFormDataInterface>
+			label="Active ?"
+			name="active"
+		>
+		  <Switch defaultChecked/>
+		</Form.Item>
+	  </Col>}
+			
 			<Col span={12}>
 				<Form.Item label="Image" required>
 					<ImagePreviewWithGallery/>
@@ -144,7 +160,7 @@ export function ProductForm({onSuccess, ...props}: {
 					type="primary"
 					htmlType="submit"
 					className='w-1/2'
-					loading={reqProductCreate.isLoading}
+					loading={isLoading}
 				>
 					Valider
 				</Button>

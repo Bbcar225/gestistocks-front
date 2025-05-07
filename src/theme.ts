@@ -8,7 +8,8 @@ const theme: ThemeConfig = {
 		colorWarning: '#FD7E14', // Orange pour les alertes
 		colorError: '#DC3545', // Rouge pour les erreurs
 		colorText: '#343A40', // Texte principal
-		colorBgBase: '#F8F9FA', // Fond général
+		colorBgBase: '#F8F9FA', // Fond général,
+		fontSize: 15,
 	},
 	components: {}
 };

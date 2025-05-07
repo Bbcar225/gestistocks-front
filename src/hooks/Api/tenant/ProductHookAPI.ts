@@ -30,6 +30,10 @@ export const useProductCreateStock = (productId: number) => {
 	return useMutation<ResponseApiInterface<StockInterface>, never, StockFormDataInterface>((formData) => productService.CreateStock(productId, formData))
 }
 
+export const useProductActiveStock = (productId: number, stockId: number) => {
+	return useMutation(() => productService.ActiveStock(productId, stockId))
+}
+
 export const useProductGetOne = (params?: HookApiInterface) => {
 	return useQuery(
 		[productQueriesClients.useProductGetOne, params?.id],

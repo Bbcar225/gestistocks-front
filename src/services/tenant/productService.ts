@@ -12,6 +12,9 @@ const unitEquivalence = {
 const stock = {
 	CreateStock: (productId: number, data: StockFormDataInterface): Promise<ResponseApiInterface<StockInterface>> => {
 		return service.post(`/tenant/products/${productId}/stocks`, data)
+	},
+	ActiveStock: (productId: number, stockId: number): Promise<ResponseApiInterface<StockInterface>> => {
+		return service.post(`/tenant/products/${productId}/stocks/${stockId}/active`)
 	}
 }
 

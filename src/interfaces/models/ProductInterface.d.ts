@@ -11,5 +11,6 @@ interface ProductInterface {
 	category: CategoryInterface
 	gallery: GalleryInterface
 	unit_equivalences: UnitEquivalenceInterface[]
-	stock: StockInterface
+	stock: StockInterface,
+	stocks: StockInterface[]
 }

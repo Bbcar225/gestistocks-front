@@ -36,7 +36,14 @@ export default function HeaderLayout({collapsed, setCollapsed}: {
 				}}
 			/>
 			
-			<Title level={4}>{sidebar.title}</Title>
+			<Title
+				level={5}
+				ellipsis={{
+					rows: 2,
+				}}
+			>
+				{sidebar.title}
+			</Title>
 		</Space>
 	</Header>
 }

@@ -1,10 +1,12 @@
 interface StockInterface {
 	id: number
+	product_id: number
 	active: boolean
 	price: number
 	quantity: number
 	created_at: string
-	updated_at: string
+	updated_at: string,
+	warehouse: WarehouseInterface
 }
 
 interface StockFormDataInterface {

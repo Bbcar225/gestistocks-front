@@ -1,7 +1,7 @@
 import {Table} from "antd";
-import {formatPrice} from "../../utils/priceUtils.ts";
+import {formatPrice} from "../../../utils/priceUtils.ts";
 import dayjs from "dayjs";
-import ToggleActiveStock from "./ToggleActiveStock.tsx";
+import ToggleActiveStock from "../ToggleActiveStock.tsx";
 
 export default function StockTable({data, unit, ...props}: {
 	data: StockInterface[],
@@ -56,6 +56,10 @@ export default function StockTable({data, unit, ...props}: {
 		]}
 		dataSource={data}
 		rowKey={row => row.id}
+		scroll={{
+			x: true,
+		}}
+		className="text-nowrap"
 		{...props}
 	/>
 }

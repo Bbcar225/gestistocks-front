@@ -1,6 +1,6 @@
 import {Button, Col, Flex, Form, Input, notification, Row} from "antd";
 import {useEffect} from "react";
-import {successCreate, successUpdate} from "../../../constants/messagesConstant.ts";
+import {successCreate, successUpdate} from "../../../constants/textsConstant.ts";
 import {useWarehouseCreate, useWarehouseUpdate} from "../../../hooks/Api/tenant/WarehouseHookAPI.ts";
 import {useWarehouseStore} from "../../../store/useWarehouseStore.ts";
 import {config} from "../../../constants/notifcationConstant.ts";

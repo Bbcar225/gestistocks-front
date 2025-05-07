@@ -1,7 +1,7 @@
 import {Select} from "antd";
 import {useEffect, useState} from "react";
-import {useCategoryGetAll} from "../../hooks/Api/tenant/CategoryHookAPI.ts";
-import {useCategoryStore} from "../../store/useCategoryStore.ts";
+import {useCategoryGetAll} from "../../../hooks/Api/tenant/CategoryHookAPI.ts";
+import {useCategoryStore} from "../../../store/useCategoryStore.ts";
 
 export default function SelectCategory({...props}) {
 	const reqGetData = useCategoryGetAll()

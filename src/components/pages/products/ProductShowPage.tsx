@@ -7,7 +7,11 @@ import {useProductStore} from "../../../store/useProductStore.ts";
 import {isMobile} from "react-device-detect";
 import {formatPrice} from "../../../utils/priceUtils.ts";
 import dayjs from "dayjs";
-import StockTable from "../../molecules/StockTable.tsx";
+import StockTable from "../../molecules/Tables/StockTable.tsx";
+import UnitEquivalenceTable from "../../molecules/Tables/UnitEquivalenceTable.tsx";
+import {notDefined} from "../../../constants/textsConstant.ts";
+import unitEquivalenceStore from "../../../store/useUnitEquivalenceStore.ts";
+import UnitEquivalenceCreateModal from "../../organisms/Modals/UnitEquivalenceCreateModal.tsx";
 
 export default function ProductIndexPage() {
 	const {setSidebar} = useAppStore()
@@ -16,6 +20,7 @@ export default function ProductIndexPage() {
 		id: productId
 	})
 	const {product, setProduct} = useProductStore()
+	const {unitEquivalence} = unitEquivalenceStore()
 	
 	useEffect(() => {
 		setSidebar({field: 'title', value: `Détails du produit : ${product?.name}`});
@@ -30,27 +35,40 @@ export default function ProductIndexPage() {
 	}, [reqProductGetOne.status, reqProductGetOne.data]);
 	
 	return <Spin spinning={reqProductGetOne.isLoading}>
-		<Row gutter={[12, 12]}>
-			<Col span={24}>
-				<Card>
-					{product && <DescriptionsProduct product={product}/>}
-					<Divider/>
-					{product && <DescriptionsProductSale product={product}/>}
-				</Card>
-			</Col>
-			
-			<Col span={24}>
-				{product &&
-			<Card
-				title="Historique du stock"
-			>
-			  <StockTable
-				  data={product.stocks}
-				  unit={product.unit}
-			  />
-			</Card>}
-			</Col>
-		</Row>
+		{product && <Row gutter={[12, 12]}>
+	  <Col span={24}>
+		<Card>
+		  <DescriptionsProduct product={product}/>
+		  <Divider/>
+		  <DescriptionsProductSale product={product}/>
+		</Card>
+	  </Col>
+
+	  <Col span={24}>
+		<Card
+			title="Équivalences d'unités"
+		>
+		  <UnitEquivalenceTable
+			  unitEquivalences={product.unit_equivalences}
+			  unit={product.unit}
+		  />
+		</Card>
+	  </Col>
+
+	  <Col span={24}>
+		<Card
+			title="Historique du stock"
+		>
+		  <StockTable
+			  data={product.stocks}
+			  unit={product.unit}
+		  />
+		</Card>
+	  </Col>
+			{
+				unitEquivalence && <UnitEquivalenceCreateModal/>
+			}
+	</Row>}
 	</Spin>
 }
 
@@ -100,22 +118,23 @@ const DescriptionsProductSale = ({product}: { product: ProductInterface }) => {
 		{
 			key: 'Prix de vente',
 			label: 'Prix de vente',
-			children: <p>{formatPrice(product?.stock?.price || 0)}</p>,
+			children: <p>{product?.stock?.price ? formatPrice(product?.stock?.price || 0) : notDefined}</p>,
 		},
 		{
 			key: 'Quantité en stock',
 			label: 'Quantité en stock',
-			children: <p>{`${product?.stock?.quantity} ${product.unit.name}`}</p>,
+			children: <p>{`${product?.stock?.quantity || notDefined} ${product.unit.name}`}</p>,
 		},
 		{
 			key: 'Dépot du stock',
 			label: 'Dépot du stock',
-			children: <p>{product?.stock?.warehouse.name}</p>,
+			children: <p>{product?.stock?.warehouse?.name || notDefined}</p>,
 		},
 		{
 			key: 'Date',
 			label: 'Date',
-			children: <p>{dayjs(product?.stock?.created_at).format('DD-MM-YYYY à HH:mm')}</p>,
+			children:
+				<p>{product?.stock?.created_at ? dayjs(product?.stock?.created_at).format('DD-MM-YYYY à HH:mm') : notDefined}</p>,
 		},
 		{
 			key: 'Santé du stock',

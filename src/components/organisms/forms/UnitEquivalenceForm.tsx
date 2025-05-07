@@ -1,12 +1,12 @@
 import {Button, Col, Flex, Form, Input, InputNumber, notification, Row} from "antd";
-import SelectUnit from "../../molecules/SelectUnit.tsx";
+import SelectUnit from "../../molecules/Selects/SelectUnit.tsx";
 import {
 	useProductCreateUnitEquivalence,
 	useProductUpdateUnitEquivalence
 } from "../../../hooks/Api/tenant/ProductHookAPI.ts";
 import {useEffect} from "react";
 import {config} from "../../../constants/notifcationConstant.ts";
-import {successCreate, successUpdate} from "../../../constants/messagesConstant.ts";
+import {successCreate, successUpdate} from "../../../constants/textsConstant.ts";
 import {useProductStore} from "../../../store/useProductStore.ts";
 
 export default function UnitEquivalenceForm({onSuccess, unitEquivalence, ...props}: {
@@ -106,7 +106,7 @@ export default function UnitEquivalenceForm({onSuccess, unitEquivalence, ...prop
 					type="primary"
 					htmlType="submit"
 					className='w-1/2'
-					loading={reqProductCreateUnitEquivalence.isLoading}
+					loading={reqProductCreateUnitEquivalence.isLoading || reqProductUpdateUnitEquivalence.isLoading}
 				>
 					Valider
 				</Button>

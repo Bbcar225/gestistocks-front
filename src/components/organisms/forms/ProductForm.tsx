@@ -1,12 +1,12 @@
 import {Button, Col, Flex, Form, Input, notification, Row, Switch} from "antd";
-import SelectUnit from "../../molecules/SelectUnit.tsx";
-import SelectCategory from "../../molecules/SelectCategory.tsx";
-import ImagePreviewWithGallery from "../../molecules/ImagePreviewWithGallery.tsx";
+import SelectUnit from "../../molecules/Selects/SelectUnit.tsx";
+import SelectCategory from "../../molecules/Selects/SelectCategory.tsx";
+import ImagePreviewWithGallery from "../Modals/ImagePreviewWithGallery.tsx";
 import useGalleryStore from "../../../store/useGalleryStore.ts";
 import {useEffect} from "react";
 import {config} from "../../../constants/notifcationConstant.ts";
 import {useProductCreate, useProductUpdate} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
-import {successCreate, successUpdate} from "../../../constants/messagesConstant.ts";
+import {successCreate, successUpdate} from "../../../constants/textsConstant.ts";
 import {useProductStore} from "../../../store/useProductStore.ts";
 
 export function ProductForm({onSuccess, product, ...props}: {

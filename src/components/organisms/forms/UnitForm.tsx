@@ -1,7 +1,7 @@
 import {Button, Col, Flex, Form, Input, notification, Row} from "antd";
 import {useUnitCreate, useUnitUpdate} from "../../../hooks/Api/tenant/UnitHookAPI.ts";
 import {useEffect} from "react";
-import {successCreate, successUpdate} from "../../../constants/messagesConstant.ts";
+import {successCreate, successUpdate} from "../../../constants/textsConstant.ts";
 import {useUnitStore} from "../../../store/useUnitStore.ts";
 
 export default function UnitForm({onSuccess, ...props}: { onSuccess?: () => void; }) {

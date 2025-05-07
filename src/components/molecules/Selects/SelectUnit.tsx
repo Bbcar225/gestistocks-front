@@ -1,12 +1,12 @@
 import {Select} from "antd";
+import {useUnitGetAll} from "../../../hooks/Api/tenant/UnitHookAPI.ts";
 import {useEffect, useState} from "react";
-import {useWarehouseGetAll} from "../../hooks/Api/tenant/WarehouseHookAPI.ts";
-import {useWarehouseStore} from "../../store/useWarehouseStore.ts";
+import {useUnitStore} from "../../../store/useUnitStore.ts";
 
-export default function SelectWarehouse({...props}) {
-	const {setFieldQueryParams, resetQueryParams, queryParams} = useWarehouseStore()
-	const reqGetData = useWarehouseGetAll({queryParams})
+export default function SelectUnit({...props}) {
+	const reqGetData = useUnitGetAll()
 	const [options, setOptions] = useState<BaseOptionType[]>([]);
+	const {setFieldQueryParams, resetQueryParams} = useUnitStore()
 	
 	useEffect(() => {
 		setFieldQueryParams({field: 'per_page', value: 5000000});
@@ -23,7 +23,7 @@ export default function SelectWarehouse({...props}) {
 			const data = res.data.data
 			const options: BaseOptionType[] = data.map((item) => {
 				return {
-					label: `${item.name} - ${item.location}`,
+					label: item.name,
 					value: item.id
 				}
 			})

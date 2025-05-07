@@ -1,9 +1,9 @@
 import {Button, Col, Flex, Form, Input, notification, Row, Select, UploadFile} from "antd";
 import {useEffect} from "react";
-import {successCreate} from "../../../constants/messagesConstant.ts";
+import {successCreate} from "../../../constants/textsConstant.ts";
 import {useGalleryCreate} from "../../../hooks/Api/tenant/GalleryHookAPI.ts";
 import {galleryTypes} from "../../../constants/formConstant.ts";
-import ImageUpload from "../../molecules/ImageUpload.tsx";
+import ImageUpload from "../ImageUpload.tsx";
 import {normFile} from "../../../utils/formUtils.ts";
 
 export default function GalleryForm({onSuccess, ...props}: { onSuccess?: (data: {gallery?: GalleryInterface}) => void; }) {

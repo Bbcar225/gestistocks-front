@@ -2,7 +2,7 @@ import {notification, Switch} from "antd";
 import {productQueriesClients, useProductActiveStock} from "../../hooks/Api/tenant/ProductHookAPI.ts";
 import {useEffect, useState} from "react";
 import {config} from "../../constants/notifcationConstant.ts";
-import {successUpdate} from "../../constants/messagesConstant.ts";
+import {successUpdate} from "../../constants/textsConstant.ts";
 import {useQueryClient} from "react-query";
 
 export default function ToggleActiveStock({stock, ...props}: { stock: StockInterface }) {

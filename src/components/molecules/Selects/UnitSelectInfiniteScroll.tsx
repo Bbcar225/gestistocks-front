@@ -1,6 +1,6 @@
 import {useState} from "react";
-import SelectInfiniteScroll from "../atoms/SelectInfinitScroll.tsx";
-import unitService from "../../services/tenant/unitService.ts";
+import SelectInfiniteScroll from "../../atoms/SelectInfinitScroll.tsx";
+import unitService from "../../../services/tenant/unitService.ts";
 
 export default function UnitSelectInfiniteScroll({ ...props }) {
 	const [link, setLink] = useState<string | undefined>(undefined);

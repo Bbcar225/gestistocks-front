@@ -1,8 +1,8 @@
 import {Button, Image, Space} from 'antd';
 import {IoIosAddCircle} from 'react-icons/io';
-import ImageGalleryModal from './ImageGalleryModal';
-import useGalleryStore from "../../store/useGalleryStore.ts";
-import {useAppStore} from "../../store/useAppStore.ts";
+import ImageGalleryModal from './ImageGalleryModal.tsx';
+import useGalleryStore from "../../../store/useGalleryStore.ts";
+import {useAppStore} from "../../../store/useAppStore.ts";
 
 export default function ImagePreviewWithGallery() {
 	const {gallery} = useGalleryStore()

@@ -1,9 +1,9 @@
 import {Button, Col, Flex, Form, InputNumber, notification, Row, Switch} from "antd";
 import {config} from "../../../constants/notifcationConstant.ts";
-import SelectWarehouse from "../../molecules/SelectWarehouse.tsx";
+import SelectWarehouse from "../../molecules/Selects/SelectWarehouse.tsx";
 import {useProductCreateStock} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
 import {useEffect} from "react";
-import {successCreate} from "../../../constants/messagesConstant.ts";
+import {successCreate} from "../../../constants/textsConstant.ts";
 import {useProductStore} from "../../../store/useProductStore.ts";
 
 export default function StockForm({onSuccess, ...props}: {

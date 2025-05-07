@@ -1,4 +1,4 @@
-import {useQuery} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import supplyService from "../../../services/tenant/supplyService.ts";
 
 export const supplyQueriesClients = {
@@ -13,4 +13,8 @@ export const useSupplyGetAll = (params?: HookApiInterface) => {
 			enabled: params?.enabled
 		}
 	)
+}
+
+export const useSupplyCreate = () => {
+	return useMutation(supplyService.Create)
 }

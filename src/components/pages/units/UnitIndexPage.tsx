@@ -5,7 +5,7 @@ import {queriesClientsUnit, useUnitGetAll} from "../../../hooks/Api/tenant/UnitH
 import {tablePagination} from "../../../constants/tableConstant.ts";
 import {IoIosAddCircle} from "react-icons/io";
 import {useUnitStore} from "../../../store/useUnitStore.ts";
-import UnitForm from "../../organisms/forms/UnitForm.tsx";
+import UnitForm from "../../organisms/Forms/UnitForm.tsx";
 import dayjs from 'dayjs';
 import {formatDate} from "../../../constants/dateConstant.ts";
 import {FaEdit} from "react-icons/fa";

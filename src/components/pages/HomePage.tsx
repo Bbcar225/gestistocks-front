@@ -1,4 +1,4 @@
-import LoginForm from "../organisms/forms/LoginForm.tsx";
+import LoginForm from "../organisms/Forms/LoginForm.tsx";
 
 export default function HomePage() {
 	return <div

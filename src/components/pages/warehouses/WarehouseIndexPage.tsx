@@ -10,7 +10,7 @@ import {FaEdit} from "react-icons/fa";
 import {useQueryClient} from "react-query";
 import {useWarehouseGetAll, warehouseQueriesClients} from "../../../hooks/Api/tenant/WarehouseHookAPI.ts";
 import {useWarehouseStore} from "../../../store/useWarehouseStore.ts";
-import WarehouseForm from "../../organisms/forms/WarehouseForm.tsx";
+import WarehouseForm from "../../organisms/Forms/WarehouseForm.tsx";
 
 export default function UnitIndexPage() {
 	const {setSidebar} = useAppStore()

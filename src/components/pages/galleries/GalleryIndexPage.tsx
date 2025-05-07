@@ -3,7 +3,7 @@ import {useAppStore} from "../../../store/useAppStore.ts";
 import {Button, Col, Flex, Modal, Row} from "antd";
 import {IoIosAddCircle} from "react-icons/io";
 import {galleryQueriesClients} from "../../../hooks/Api/tenant/GalleryHookAPI.ts";
-import GalleryForm from "../../organisms/forms/GalleryForm.tsx";
+import GalleryForm from "../../organisms/Forms/GalleryForm.tsx";
 import {useQueryClient} from "react-query";
 import Gallery from "../../molecules/Gallery.tsx";
 

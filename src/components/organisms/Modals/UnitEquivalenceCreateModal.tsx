@@ -1,7 +1,7 @@
 import {Col, Modal, Row} from "antd";
 import {useAppStore} from "../../../store/useAppStore.ts";
 import useUnitEquivalenceStore from "../../../store/useUnitEquivalenceStore.ts";
-import UnitEquivalenceForm from "../forms/UnitEquivalenceForm.tsx";
+import UnitEquivalenceForm from "../Forms/UnitEquivalenceForm.tsx";
 import {useQueryClient} from "react-query";
 import {productQueriesClients} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
 

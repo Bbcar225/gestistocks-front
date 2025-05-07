@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
 import {useAppStore} from "../../../store/useAppStore.ts";
 import {Button, Card, Col, Flex, Row, Steps} from "antd";
-import {ProductForm} from "../../organisms/forms/ProductForm.tsx";
-import UnitEquivalenceForm from "../../organisms/forms/UnitEquivalenceForm.tsx";
-import StockForm from "../../organisms/forms/StockForm.tsx";
+import {ProductForm} from "../../organisms/Forms/ProductForm.tsx";
+import UnitEquivalenceForm from "../../organisms/Forms/UnitEquivalenceForm.tsx";
+import StockForm from "../../organisms/Forms/StockForm.tsx";
 import {useRoutesProduct} from "../../../routes/productRoutes.ts";
 import useGalleryStore from "../../../store/useGalleryStore.ts";
 import {useProductStore} from "../../../store/useProductStore.ts";

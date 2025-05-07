@@ -8,3 +8,10 @@ interface SupplyInterface {
 	updated_at: string
 	contacts: ContactInterface[]
 }
+
+interface SupplyFormData {
+	name: string
+	country: string
+	city: string
+	address: string
+}

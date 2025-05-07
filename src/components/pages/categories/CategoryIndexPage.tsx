@@ -8,7 +8,7 @@ import {formatDate} from "../../../constants/dateConstant.ts";
 import {FaEdit} from "react-icons/fa";
 import {categoryQueriesClients, useCategoryGetAll} from "../../../hooks/Api/tenant/CategoryHookAPI.ts";
 import {useQueryClient} from "react-query";
-import CategoryForm from "../../organisms/forms/CategoryForm.tsx";
+import CategoryForm from "../../organisms/Forms/CategoryForm.tsx";
 import {useCategoryStore} from "../../../store/useCategoryStore.ts";
 
 export default function CategoryIndexPage() {

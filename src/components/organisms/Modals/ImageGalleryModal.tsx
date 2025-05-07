@@ -1,7 +1,7 @@
 import {Modal, Tabs} from 'antd';
 import Gallery from "../../molecules/Gallery.tsx";
 import {useAppStore} from "../../../store/useAppStore.ts";
-import GalleryForm from "../forms/GalleryForm.tsx";
+import GalleryForm from "../Forms/GalleryForm.tsx";
 import useGalleryStore from "../../../store/useGalleryStore.ts";
 
 export default function ImageGalleryModal() {

@@ -1,24 +1,21 @@
 import {useEffect, useState} from "react";
 import {useAppStore} from "../../../store/useAppStore.ts";
-import {Button, Col, Flex, Modal, Row, Space, Table} from "antd";
+import {Button, Col, Flex, Row, Space, Table} from "antd";
 import {tablePagination} from "../../../constants/tableConstant.ts";
 import {IoIosAddCircle} from "react-icons/io";
-import {useUnitStore} from "../../../store/useUnitStore.ts";
 import dayjs from 'dayjs';
 import {formatDate} from "../../../constants/dateConstant.ts";
 import {FaEdit} from "react-icons/fa";
-import {useQueryClient} from "react-query";
-import {warehouseQueriesClients} from "../../../hooks/Api/tenant/WarehouseHookAPI.ts";
-import WarehouseForm from "../../organisms/forms/WarehouseForm.tsx";
 import {useSupplyGetAll} from "../../../hooks/Api/tenant/SupplyHookAPI.ts";
 import {useSupplyStore} from "../../../store/useSupplyStore.ts";
+import SupplyFormModal from "../../organisms/Modals/SupplyFormModal.tsx";
 
 export default function UnitIndexPage() {
 	const {setSidebar} = useAppStore()
 	const [supplies, setSupplies] = useState<SupplyInterface[]>([])
 	const {pagination, queryParams, setFieldPagination, setFieldQueryParams, setSupply} = useSupplyStore()
-	const [isModalOpen, setIsModalOpen] = useState(false);
 	const reqSupplyGetAll = useSupplyGetAll({queryParams})
+	const {setOpenModal} = useAppStore()
 	
 	useEffect(() => {
 		setSidebar({field: 'title', value: 'Fournisseurs'})
@@ -39,7 +36,7 @@ export default function UnitIndexPage() {
 					type="primary"
 					icon={<IoIosAddCircle/>}
 					onClick={() => {
-						setIsModalOpen(true)
+						setOpenModal()
 					}}
 				>
 					Nouveau fournisseur
@@ -101,7 +98,7 @@ export default function UnitIndexPage() {
 								icon={<FaEdit/>}
 								onClick={() => {
 									setSupply(row)
-									setIsModalOpen(true)
+									setOpenModal()
 								}}
 							/>
 						</Space>
@@ -114,30 +111,6 @@ export default function UnitIndexPage() {
 			/>
 		</Col>
 		
-		<ModalCreateUnit
-			open={isModalOpen}
-			close={() => {
-				setIsModalOpen(false);
-				setSupply(undefined)
-			}}
-		/>
+		<SupplyFormModal/>
 	</Row>
 }
-
-const ModalCreateUnit = ({open, close}: { open: boolean, close: () => void }) => {
-	const {unit} = useUnitStore()
-	const queryClient = useQueryClient()
-	
-	return <Modal
-		title={unit ? "Mise à jour" : "Nouveau dépôt"}
-		open={open}
-		onCancel={close}
-		footer={null}
-	>
-		<WarehouseForm
-			onSuccess={() => {
-				queryClient.invalidateQueries(warehouseQueriesClients.useWarehouseGetAll).then()
-			}}
-		/>
-	</Modal>
-};

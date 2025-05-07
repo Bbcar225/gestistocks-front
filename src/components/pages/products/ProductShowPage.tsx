@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {useAppStore} from "../../../store/useAppStore.ts";
-import {Badge, Card, Col, Descriptions, DescriptionsProps, Divider, Row, Spin, Tag} from "antd";
+import {Badge, Button, Card, Col, Descriptions, DescriptionsProps, Divider, Row, Spin, Tag} from "antd";
 import {useParams} from "react-router-dom";
 import {useProductGetOne} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
 import {useProductStore} from "../../../store/useProductStore.ts";
@@ -12,6 +12,8 @@ import UnitEquivalenceTable from "../../molecules/Tables/UnitEquivalenceTable.ts
 import {notDefined} from "../../../constants/textsConstant.ts";
 import unitEquivalenceStore from "../../../store/useUnitEquivalenceStore.ts";
 import UnitEquivalenceCreateModal from "../../organisms/Modals/UnitEquivalenceCreateModal.tsx";
+import {FaEdit} from "react-icons/fa";
+import {useRoutesProduct} from "../../../routes/productRoutes.ts";
 
 export default function ProductIndexPage() {
 	const {setSidebar} = useAppStore()
@@ -73,6 +75,8 @@ export default function ProductIndexPage() {
 }
 
 const DescriptionsProduct = ({product}: { product: ProductInterface }) => {
+	const routesProduct = useRoutesProduct()
+	
 	const items: DescriptionsProps['items'] = [
 		{
 			key: 'ID',
@@ -102,7 +106,18 @@ const DescriptionsProduct = ({product}: { product: ProductInterface }) => {
 	];
 	
 	return <Descriptions
-		title="Informations globales"
+		title={<>
+			Informations globales
+			<Button
+				type='link'
+				icon={<FaEdit/>}
+				onClick={() => {
+					routesProduct.goToEdit({
+						product
+					})
+				}}
+			/>
+		</>}
 		items={items}
 		column={isMobile ? 1 : 3}
 	/>

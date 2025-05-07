@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import {FaEdit} from "react-icons/fa";
 import {useAppStore} from "../../../store/useAppStore.ts";
 import unitEquivalenceStore from "../../../store/useUnitEquivalenceStore.ts";
+import {formatDate} from "../../../constants/dateConstant.ts";
 
 export default function UnitEquivalenceTable({unitEquivalences, unit, ...props}: {
 	unitEquivalences?: UnitEquivalenceInterface[],
@@ -32,7 +33,7 @@ export default function UnitEquivalenceTable({unitEquivalences, unit, ...props}:
 				key: "Date",
 				title: "Date",
 				render: (_, row) => {
-					return dayjs(row.created_at).format('DD-MM-YYYY HH:mm')
+					return dayjs(row.created_at).format(formatDate)
 				}
 			},
 			{

@@ -14,6 +14,8 @@ import {RiProductHuntLine} from "react-icons/ri";
 import {useRoutesProduct} from "../../routes/productRoutes.ts";
 import {FaWarehouse} from "react-icons/fa";
 import {useRoutesWarehouse} from "../../routes/warehouseRoutes.ts";
+import {TbUserDollar} from "react-icons/tb";
+import {useRoutesSupply} from "../../routes/supplyRoutes.ts";
 
 type MenuItem = {
 	key: string;
@@ -34,6 +36,7 @@ export function Menus({collapsed, setCollapsed}: {
 	const {goToGalleryIndex} = useRoutesGallery()
 	const {goToProductIndex} = useRoutesProduct()
 	const routesWarehouse = useRoutesWarehouse()
+	const routesSupply = useRoutesSupply()
 	
 	const location = useLocation();
 	const currentPath = location.pathname;
@@ -98,20 +101,23 @@ export function Menus({collapsed, setCollapsed}: {
 		},
 		{
 			key: "3",
-			label: "Stocks",
-			icon: <GrCatalog/>,
-			children: [
-				{
-					key: "31",
-					label: "Dépôts",
-					icon: <FaWarehouse/>,
-					pathmatch: "/warehouses",
-					onClick: () => {
-						if (isMobile) setCollapsed(!collapsed);
-						routesWarehouse.goToIndex()
-					},
-				},
-			],
+			label: "Dépôts",
+			icon: <FaWarehouse/>,
+			pathmatch: "/warehouses",
+			onClick: () => {
+				if (isMobile) setCollapsed(!collapsed);
+				routesWarehouse.goToIndex()
+			},
+		},
+		{
+			key: "4",
+			icon: <TbUserDollar/>,
+			label: "Fournisseurs",
+			pathmatch: "/supplies",
+			onClick: () => {
+				if (isMobile) setCollapsed(!collapsed);
+				routesSupply.goToIndex();
+			},
 		},
 	];
 	

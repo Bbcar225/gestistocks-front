@@ -2,6 +2,7 @@ import {Col, Modal, Row} from "antd";
 import {useAppStore} from "../../../store/useAppStore.ts";
 import {useQueryClient} from "react-query";
 import {useSupplyStore} from "../../../store/useSupplyStore.ts";
+import SupplyForm from "../Forms/SupplyForm.tsx";
 
 export default function SupplyFormModal({...props}) {
 	const {openModal, setOpenModal} = useAppStore()
@@ -21,6 +22,7 @@ export default function SupplyFormModal({...props}) {
 	>
 		<Row gutter={[12, 12]}>
 			<Col span={24}>
+				<SupplyForm/>
 			</Col>
 		</Row>
 	</Modal>

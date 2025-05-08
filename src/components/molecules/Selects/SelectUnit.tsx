@@ -36,6 +36,9 @@ export default function SelectUnit({...props}) {
 		loading={reqGetData.isLoading}
 		options={options}
 		showSearch
+		filterOption={(input, option) =>
+      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+    }
 		{...props}
 	/>
 }

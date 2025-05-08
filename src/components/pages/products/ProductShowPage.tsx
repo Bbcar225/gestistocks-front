@@ -11,7 +11,7 @@ import StockTable from "../../molecules/Tables/StockTable.tsx";
 import UnitEquivalenceTable from "../../molecules/Tables/UnitEquivalenceTable.tsx";
 import {notDefined} from "../../../constants/textsConstant.ts";
 import unitEquivalenceStore from "../../../store/useUnitEquivalenceStore.ts";
-import UnitEquivalenceCreateModal from "../../organisms/Modals/UnitEquivalenceCreateModal.tsx";
+import UnitEquivalenceFormModal from "../../organisms/Modals/UnitEquivalenceFormModal.tsx";
 import {FaEdit} from "react-icons/fa";
 import {useRoutesProduct} from "../../../routes/productRoutes.ts";
 
@@ -68,7 +68,7 @@ export default function ProductIndexPage() {
 		</Card>
 	  </Col>
 			{
-				unitEquivalence && <UnitEquivalenceCreateModal/>
+				unitEquivalence && <UnitEquivalenceFormModal/>
 			}
 	</Row>}
 	</Spin>

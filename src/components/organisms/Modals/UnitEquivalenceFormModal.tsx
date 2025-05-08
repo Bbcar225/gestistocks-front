@@ -5,7 +5,7 @@ import UnitEquivalenceForm from "../Forms/UnitEquivalenceForm.tsx";
 import {useQueryClient} from "react-query";
 import {productQueriesClients} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
 
-export default function UnitEquivalenceCreateModal({...props}) {
+export default function UnitEquivalenceFormModal({...props}) {
 	const {openModal, setOpenModal} = useAppStore()
 	const {unitEquivalence, setUnitEquivalence} = useUnitEquivalenceStore()
 	const queryClient = useQueryClient()

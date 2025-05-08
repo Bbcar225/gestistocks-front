@@ -2,7 +2,8 @@ import {useMutation, useQuery} from "react-query";
 import supplyService from "../../../services/tenant/supplyService.ts";
 
 export const supplyQueriesClients = {
-	useSupplyGetAll: 'useSupplyGetAll'
+	useSupplyGetAll: 'useSupplyGetAll',
+	useSupplyGetOne: 'useSupplyGetOne'
 }
 
 export const useSupplyGetAll = (params?: HookApiInterface) => {
@@ -21,4 +22,14 @@ export const useSupplyCreate = () => {
 
 export const useSupplyUpdate = (id: number) => {
 	return useMutation<ResponseApiInterface<SupplyInterface>, never, SupplyFormData>((formData) => supplyService.Update(id, formData))
+}
+
+export const useSupplyGetOne = (params?: HookApiInterface) => {
+	return useQuery(
+		[supplyQueriesClients.useSupplyGetOne, params?.queryParams, params?.id],
+		() => supplyService.GetOne(Number(params?.id)),
+		{
+			enabled: params?.enabled
+		}
+	)
 }

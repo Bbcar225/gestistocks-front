@@ -13,10 +13,6 @@ const supplyRoutes: RouteObject[] = [
 				index: true,
 				Component: lazy(() => import("../components/pages/supplies/SupplyIndexPage.tsx"))
 			},
-			{
-				path: 'create',
-				Component: lazy(() => import("../components/pages/warehouses/WarehouseIndexPage.tsx"))
-			},
 		],
 	},
 ]

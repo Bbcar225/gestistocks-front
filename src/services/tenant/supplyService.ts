@@ -10,6 +10,9 @@ const supplyService = {
 	Update: (id: number, data: SupplyFormData): Promise<ResponseApiInterface<SupplyInterface>> => {
 		return service.put(`/tenant/suppliers/${id}`, data)
 	},
+	GetOne: (id: number): Promise<ResponseApiInterface<SupplyInterface>> => {
+		return service.get(`/tenant/suppliers/${id}`)
+	},
 }
 
 export default supplyService

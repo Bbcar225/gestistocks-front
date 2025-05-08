@@ -18,3 +18,7 @@ export const useSupplyGetAll = (params?: HookApiInterface) => {
 export const useSupplyCreate = () => {
 	return useMutation(supplyService.Create)
 }
+
+export const useSupplyUpdate = (id: number) => {
+	return useMutation<ResponseApiInterface<SupplyInterface>, never, SupplyFormData>((formData) => supplyService.Update(id, formData))
+}

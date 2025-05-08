@@ -2,6 +2,7 @@ import {Select} from "antd";
 import {useEffect, useState} from "react";
 import {useWarehouseGetAll} from "../../../hooks/Api/tenant/WarehouseHookAPI.ts";
 import {useWarehouseStore} from "../../../store/useWarehouseStore.ts";
+import {filterOptionSelect} from "../../../utils/formUtils.ts";
 
 export default function SelectWarehouse({...props}) {
 	const {setFieldQueryParams, resetQueryParams, queryParams} = useWarehouseStore()
@@ -36,9 +37,7 @@ export default function SelectWarehouse({...props}) {
 		loading={reqGetData.isLoading}
 		options={options}
 		showSearch
-		filterOption={(input, option) =>
-      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-    }
+		filterOption={filterOptionSelect}
 		{...props}
 	/>
 }

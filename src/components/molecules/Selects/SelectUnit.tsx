@@ -2,6 +2,7 @@ import {Select} from "antd";
 import {useUnitGetAll} from "../../../hooks/Api/tenant/UnitHookAPI.ts";
 import {useEffect, useState} from "react";
 import {useUnitStore} from "../../../store/useUnitStore.ts";
+import {filterOptionSelect} from "../../../utils/formUtils.ts";
 
 export default function SelectUnit({...props}) {
 	const reqGetData = useUnitGetAll()
@@ -36,9 +37,7 @@ export default function SelectUnit({...props}) {
 		loading={reqGetData.isLoading}
 		options={options}
 		showSearch
-		filterOption={(input, option) =>
-      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-    }
+		filterOption={filterOptionSelect}
 		{...props}
 	/>
 }

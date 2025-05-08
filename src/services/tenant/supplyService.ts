@@ -6,7 +6,10 @@ const supplyService = {
 	},
 	Create: (data: SupplyFormData): Promise<ResponseApiInterface<SupplyInterface>> => {
 		return service.post(`/tenant/suppliers`, data)
-	}
+	},
+	Update: (id: number, data: SupplyFormData): Promise<ResponseApiInterface<SupplyInterface>> => {
+		return service.put(`/tenant/suppliers/${id}`, data)
+	},
 }
 
 export default supplyService

@@ -1,6 +1,7 @@
 import {Select} from "antd";
 import {useEffect, useState} from "react";
 import {useFormDataGetCountries} from "../../../hooks/Api/app/FormDataHookAPI.ts";
+import {filterOptionSelect} from "../../../utils/formUtils.ts";
 
 export default function SelectCity({filterFn, ...props}: { filterFn?: (country: CountryInterface) => boolean; }) {
 	const reqGetData = useFormDataGetCountries()
@@ -32,9 +33,7 @@ export default function SelectCity({filterFn, ...props}: { filterFn?: (country: 
 		loading={reqGetData.isLoading}
 		options={options}
 		showSearch
-		filterOption={(input, option) =>
-			(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-		}
+		filterOption={filterOptionSelect}
 		mode="tags"
 		{...props}
 	/>

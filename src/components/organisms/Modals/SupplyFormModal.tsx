@@ -3,6 +3,7 @@ import {useAppStore} from "../../../store/useAppStore.ts";
 import {useQueryClient} from "react-query";
 import {useSupplyStore} from "../../../store/useSupplyStore.ts";
 import SupplyForm from "../Forms/SupplyForm.tsx";
+import {supplyQueriesClients} from "../../../hooks/Api/tenant/SupplyHookAPI.ts";
 
 export default function SupplyFormModal({...props}) {
 	const {openModal, setOpenModal} = useAppStore()
@@ -22,7 +23,11 @@ export default function SupplyFormModal({...props}) {
 	>
 		<Row gutter={[12, 12]}>
 			<Col span={24}>
-				<SupplyForm/>
+				<SupplyForm
+					onSuccess={() => {
+						queryClient.invalidateQueries(supplyQueriesClients.useSupplyGetAll).then()
+					}}
+				/>
 			</Col>
 		</Row>
 	</Modal>

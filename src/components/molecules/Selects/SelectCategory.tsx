@@ -2,6 +2,7 @@ import {Select} from "antd";
 import {useEffect, useState} from "react";
 import {useCategoryGetAll} from "../../../hooks/Api/tenant/CategoryHookAPI.ts";
 import {useCategoryStore} from "../../../store/useCategoryStore.ts";
+import {filterOptionSelect} from "../../../utils/formUtils.ts";
 
 export default function SelectCategory({...props}) {
 	const reqGetData = useCategoryGetAll()
@@ -36,9 +37,7 @@ export default function SelectCategory({...props}) {
 		loading={reqGetData.isLoading}
 		options={options}
 		showSearch
-		filterOption={(input, option) =>
-			(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-		}
+		filterOption={filterOptionSelect}
 		{...props}
 	/>
 }

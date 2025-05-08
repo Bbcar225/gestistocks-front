@@ -6,3 +6,13 @@ export const normFile = (e: UploadChangeParam) => {
 	}
 	return e?.fileList;
 };
+
+export const filterOptionSelect = (input: string, option?: BaseOptionType) => {
+	const normalize = (text: string) =>
+		text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+	
+	const normalizedInput = normalize(input);
+	const normalizedLabel = normalize(option?.label ?? "");
+	
+	return normalizedLabel.includes(normalizedInput);
+}

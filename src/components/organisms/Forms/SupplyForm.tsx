@@ -1,8 +1,8 @@
 import {Button, Col, Flex, Form, Input, notification, Row} from "antd";
 import {useEffect} from "react";
-import {successCreate} from "../../../constants/textsConstant.ts";
+import {successCreate, successUpdate} from "../../../constants/textsConstant.ts";
 import {config} from "../../../constants/notifcationConstant.ts";
-import {useSupplyCreate} from "../../../hooks/Api/tenant/SupplyHookAPI.ts";
+import {useSupplyCreate, useSupplyUpdate} from "../../../hooks/Api/tenant/SupplyHookAPI.ts";
 import {useSupplyStore} from "../../../store/useSupplyStore.ts";
 import SelectCity from "../../molecules/Selects/SelectCity.tsx";
 import {useWatch} from "antd/es/form/Form";
@@ -13,19 +13,22 @@ export default function SupplyForm({onSuccess, ...props}: { onSuccess?: () => vo
 	const reqSupplyCreate = useSupplyCreate()
 	const [notificationInstance, contextHolder] = notification.useNotification(config);
 	const {supply} = useSupplyStore()
+	const reqSupplyUpdate = useSupplyUpdate(Number(supply?.id))
 	
 	const selectedCountry = useWatch('country', form);
 	
 	const handleFinish = (values: SupplyFormData) => {
-		if (supply) {
-			// return reqWarehouseUpdate.mutate(values)
+		const formData = {
+			...values,
+			country: values.country?.[0],
+			city: values.city?.[0]
 		}
 		
-		console.log(`/Users/boubacarly/Sites/localhost/perso/gestistock2/front/src/components/organisms/Forms/SupplyForm.tsx:24`, `values =>`, values)
+		if (supply) {
+			return reqSupplyUpdate.mutate(formData)
+		}
 		
-		return
-		
-		return reqSupplyCreate.mutate(values)
+		return reqSupplyCreate.mutate(formData)
 	}
 	
 	useEffect(() => {
@@ -44,9 +47,25 @@ export default function SupplyForm({onSuccess, ...props}: { onSuccess?: () => vo
 	}, [notificationInstance, form, reqSupplyCreate.data, reqSupplyCreate.isSuccess]);
 	
 	useEffect(() => {
+		if (reqSupplyUpdate.isSuccess) {
+			const res = reqSupplyUpdate.data
+			
+			notificationInstance.success({
+				message: res.message,
+				description: successUpdate
+			})
+			
+			onSuccess?.()
+		}
+	}, [notificationInstance, form, reqSupplyUpdate.data, reqSupplyUpdate.isSuccess]);
+	
+	useEffect(() => {
 		if (supply) {
 			form.setFieldsValue({
 				name: supply.name,
+				country: [supply.country],
+				city: [supply.city],
+				address: supply.address
 			})
 		} else {
 			form.resetFields()
@@ -54,7 +73,7 @@ export default function SupplyForm({onSuccess, ...props}: { onSuccess?: () => vo
 	}, [form, supply]);
 	
 	useEffect(() => {
-		form.setFieldValue('city', undefined)
+		form.setFieldValue('city', undefined);
 	}, [form, selectedCountry]);
 	
 	return <Form
@@ -91,7 +110,19 @@ export default function SupplyForm({onSuccess, ...props}: { onSuccess?: () => vo
 					rules={[{required: true, max: 1, type: 'array'}]}
 				>
 					<SelectCity
-						filterFn={(country) => country.name === selectedCountry?.[0]}
+						filterFn={(country) => country.name === selectedCountry?.[0] || country.name === supply?.country}
+					/>
+				</Form.Item>
+			</Col>
+			
+			<Col span={12}>
+				<Form.Item<SupplyFormData>
+					label="Adresse"
+					name="address"
+					rules={[{required: true}]}
+				>
+					<Input.TextArea
+						rows={1}
 					/>
 				</Form.Item>
 			</Col>

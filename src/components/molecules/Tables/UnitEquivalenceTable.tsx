@@ -44,7 +44,7 @@ export default function UnitEquivalenceTable({unitEquivalences, unit, ...props}:
 						<Button
 							icon={<FaEdit/>}
 							onClick={() => {
-								setOpenModal()
+								setOpenModal(true)
 								setUnitEquivalence(row)
 							}}
 						/>

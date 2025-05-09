@@ -6,7 +6,7 @@ interface SidebarStoreInterface {
 	typeModal: TModal
 	
 	setSidebar: ({field, value}: { field: keyof SidebarStoreInterface['sidebar'], value: string }) => void,
-	setOpenModal: () => void,
+	setOpenModal: (openModal: boolean) => void,
 	setTypeModal: (type: TModal) => void
 }
 
@@ -26,11 +26,11 @@ export const useAppStore = create<SidebarStoreInterface>((set) => {
 				},
 			}))
 		},
-		setOpenModal: () => {
+		setOpenModal: (openModal) => {
 			return set((state) => {
 				return {
 					...state,
-					openModal: !state.openModal,
+					openModal,
 					typeModal: state.openModal ? undefined : state.typeModal
 				}
 			})

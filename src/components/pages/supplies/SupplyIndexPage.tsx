@@ -38,7 +38,7 @@ export default function UnitIndexPage() {
 					type="primary"
 					icon={<IoIosAddCircle/>}
 					onClick={() => {
-						setOpenModal()
+						setOpenModal(true)
 						setTypeModal('create')
 					}}
 				>
@@ -104,7 +104,7 @@ export default function UnitIndexPage() {
 									type='primary'
 									icon={<MdContactPhone/>}
 									onClick={() => {
-										setOpenModal()
+										setOpenModal(true)
 										setTypeModal('other')
 										setSupply(row)
 									}}
@@ -114,7 +114,7 @@ export default function UnitIndexPage() {
 								icon={<FaEdit/>}
 								onClick={() => {
 									setSupply(row)
-									setOpenModal()
+									setOpenModal(true)
 									setTypeModal('update')
 								}}
 							/>
@@ -153,7 +153,7 @@ const ContactTableModal = ({...props}) => {
 		title={`Liste de contacts: ${supply?.name}`}
 		open={openModal}
 		onCancel={() => {
-			setOpenModal()
+			setOpenModal(false)
 			setSupply(undefined)
 		}}
 		footer={null}

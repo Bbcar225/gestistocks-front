@@ -25,7 +25,7 @@ export default function ImagePreviewWithGallery() {
 				<Button
 					type="primary"
 					icon={<IoIosAddCircle/>}
-					onClick={setOpenModal}
+					onClick={() => setOpenModal(true)}
 					style={{marginBottom: 16}}
 				>
 					Sélectionner une image

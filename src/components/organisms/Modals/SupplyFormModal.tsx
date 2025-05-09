@@ -14,7 +14,7 @@ export default function SupplyFormModal({...props}) {
 		title={supply ? `Mise à jour` : 'Nouveau fournisseur'}
 		open={openModal}
 		onCancel={() => {
-			setOpenModal()
+			setOpenModal(false)
 			setSupply(undefined)
 		}}
 		footer={null}

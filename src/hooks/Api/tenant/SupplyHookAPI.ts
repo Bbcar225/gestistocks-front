@@ -33,3 +33,11 @@ export const useSupplyGetOne = (params?: HookApiInterface) => {
 		}
 	)
 }
+
+export const useSupplyCreateContact = (supplyId: number) => {
+	return useMutation<ResponseApiInterface<ContactInterface>, never, ContactFormData>((formData) => supplyService.CreateContact(supplyId, formData))
+}
+
+export const useSupplyUpdateContact = (supplyId: number, contactId: number) => {
+	return useMutation<ResponseApiInterface<ContactInterface>, never, ContactFormData>((formData) => supplyService.UpdateContact(supplyId, contactId, formData))
+}

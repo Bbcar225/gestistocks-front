@@ -14,7 +14,7 @@ export default function UnitEquivalenceFormModal({...props}) {
 		title={unitEquivalence ? `Mise à jour` : 'Nouvel équivalence'}
 		open={openModal}
 		onCancel={() => {
-			setOpenModal()
+			setOpenModal(false)
 			setUnitEquivalence(undefined)
 		}}
 		footer={null}

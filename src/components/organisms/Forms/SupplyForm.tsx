@@ -99,7 +99,9 @@ export default function SupplyForm({onSuccess, ...props}: { onSuccess?: () => vo
 					name="country"
 					rules={[{required: true, max: 1, type: 'array'}]}
 				>
-					<SelectCountry/>
+					<SelectCountry
+						mode="tags"
+					/>
 				</Form.Item>
 			</Col>
 			

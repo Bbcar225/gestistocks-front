@@ -18,7 +18,7 @@ interface SupplyStoreInterface {
 		value?: number
 	}) => void,
 	setSupply: (supply?: SupplyInterface) => void,
-	resetQueryParams: () => void
+	resetQueryParams: () => void,
 }
 
 const queryParams = {

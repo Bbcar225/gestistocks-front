@@ -5,9 +5,10 @@ interface ContactInterface {
 	position_id: number
 	name: string
 	phoneNumber: string
+	is_whatsapp: boolean
+	position: PositionInterface
 	created_at: string
 	updated_at: string
-	position: PositionInterface
 }
 
 interface PositionInterface {
@@ -15,4 +16,12 @@ interface PositionInterface {
 	name: string
 	created_at: string
 	updated_at: string
+}
+
+interface ContactFormData {
+	position_id: number
+	name: string
+	phoneNumber: string
+	is_whatsapp: boolean,
+	position?: BaseOptionType
 }

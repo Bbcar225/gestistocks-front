@@ -11,7 +11,7 @@ export default function ImageGalleryModal() {
 	return <Modal
 		title="Sélectionner une image"
 		open={openModal}
-		onCancel={setOpenModal}
+		onCancel={() => setOpenModal(false)}
 		footer={null}
 		width={1000}
 	>
@@ -31,7 +31,7 @@ export default function ImageGalleryModal() {
 					children: <GalleryForm
 						onSuccess={({gallery}) => {
 							setGallery(gallery);
-							setOpenModal()
+							setOpenModal(true)
 						}}
 					/>
 				}

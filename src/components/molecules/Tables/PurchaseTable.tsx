@@ -10,7 +10,7 @@ import {FaEye} from "react-icons/fa";
 import {useRoutesPurchase} from "../../../routes/purchaseRoutes.ts";
 import {usePurchaseStore} from "../../../store/usePurchaseStore.ts";
 
-export default function PurchaseTable({purchases, ...props}: { purchases: PurchaseInterface[] }) {
+export default function PurchaseTable({purchases, loading = false, ...props}: { purchases: PurchaseInterface[], loading?: boolean}) {
 	const [openModalSupplier, setOpenModalSupplier] = useState(false)
 	const {setSupplier} = useSupplierStore()
 	const reqRoutesPurchase = useRoutesPurchase()
@@ -98,6 +98,7 @@ export default function PurchaseTable({purchases, ...props}: { purchases: Purcha
 				setFieldQueryParams({field: 'page', value: pagination.current})
 				setFieldQueryParams({field: 'per_page', value: pagination.pageSize})
 			}}
+			loading={loading}
 			{...props}
 		/>
 		

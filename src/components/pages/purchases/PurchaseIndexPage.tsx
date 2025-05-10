@@ -51,6 +51,7 @@ export default function PurchaseIndexPage() {
 		<Col span={24}>
 			<PurchaseTable
 				purchases={purchases}
+				loading={reqPurchaseGetAll.isLoading}
 			/>
 		</Col>
 	</Row>

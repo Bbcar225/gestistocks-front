@@ -15,11 +15,10 @@ import {RiUserAddFill} from "react-icons/ri";
 import ContactFormModal from "../../organisms/Modals/ContactFormModal.tsx";
 
 export default function SupplierIndexPage() {
-	const {setSidebar} = useAppStore()
+	const {setSidebar, setOpenModal, setTypeModal, typeModal} = useAppStore()
 	const [supplies, setSupplies] = useState<SupplierInterface[]>([])
 	const {pagination, queryParams, supplier, setFieldPagination, setFieldQueryParams, setSupplier} = useSupplierStore()
 	const reqSupplierGetAll = useSupplierGetAll({queryParams})
-	const {setOpenModal, setTypeModal, typeModal} = useAppStore()
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	
 	useEffect(() => {

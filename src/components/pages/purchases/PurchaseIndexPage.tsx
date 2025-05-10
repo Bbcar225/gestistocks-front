@@ -1,9 +1,57 @@
-import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useAppStore} from "../../../store/useAppStore.ts";
+import {Button, Col, Flex, Row} from "antd";
+import {IoIosAddCircle} from "react-icons/io";
+import {usePurchaseGetAll} from "../../../hooks/Api/tenant/PurchaseHookAPI.ts";
+import PurchaseTable from "../../molecules/Tables/PurchaseTable.tsx";
+import {useRoutesPurchase} from "../../../routes/purchaseRoutes.ts";
+import {usePurchaseStore} from "../../../store/usePurchaseStore.ts";
 
 export default function PurchaseIndexPage() {
-	return <>
-		<h1>Purchases List</h1>
-		<p><Link to='/tenant_slug/purchases/create'>New</Link></p>
-		<p><Link to='/tenant_slug/purchases/123'>A purchase</Link></p>
-	</>
+	const {setSidebar} = useAppStore()
+	const {queryParams, setFieldPagination} = usePurchaseStore()
+	const reqPurchaseGetAll = usePurchaseGetAll({
+		queryParams
+	})
+	const [purchases, setPurchases] = useState<PurchaseInterface[]>([])
+	const {goToCreate} = useRoutesPurchase()
+	
+	useEffect(() => {
+		setSidebar({field: 'title', value: 'Achats'})
+	}, [setSidebar]);
+	
+	useEffect(() => {
+		if (reqPurchaseGetAll.status === 'success') {
+			const res = reqPurchaseGetAll.data
+			const data = res?.data
+			setFieldPagination({
+				field: 'total',
+				value: data?.meta?.total || 0
+			})
+			const purchases = data?.data || []
+			setPurchases(purchases)
+		}
+	}, [reqPurchaseGetAll.status, reqPurchaseGetAll.data]);
+	
+	return <Row
+		gutter={[12, 12]}
+	>
+		<Col span={24} className='mb-4'>
+			<Flex justify='end'>
+				<Button
+					type="primary"
+					icon={<IoIosAddCircle/>}
+					onClick={goToCreate}
+				>
+					Nouvel achat
+				</Button>
+			</Flex>
+		</Col>
+		
+		<Col span={24}>
+			<PurchaseTable
+				purchases={purchases}
+			/>
+		</Col>
+	</Row>
 }

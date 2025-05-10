@@ -1,11 +1,11 @@
 import {Menu} from "antd";
 import {AiFillDashboard} from "react-icons/ai";
 import {GrCatalog, GrGallery} from "react-icons/gr";
-import {MdAcUnit} from "react-icons/md";
+import {MdAcUnit, MdCalculate} from "react-icons/md";
 import {useRoutesUnit} from "../../routes/unitRoutes.ts";
 import {useRoutesIndex} from "../../routes";
 import {isMobile} from 'react-device-detect';
-import {BiSolidCategory} from "react-icons/bi";
+import {BiSolidCategory, BiSolidPurchaseTag} from "react-icons/bi";
 import {useRoutesCategory} from "../../routes/categoryRoutes.ts";
 import {ReactNode, useMemo} from "react";
 import {useLocation} from "react-router-dom";
@@ -16,6 +16,7 @@ import {FaWarehouse} from "react-icons/fa";
 import {useRoutesWarehouse} from "../../routes/warehouseRoutes.ts";
 import {TbUserDollar} from "react-icons/tb";
 import {useRoutesSupplier} from "../../routes/supplierRoutes.ts";
+import {useRoutesPurchase} from "../../routes/purchaseRoutes.ts";
 
 type MenuItem = {
 	key: string;
@@ -37,6 +38,7 @@ export function Menus({collapsed, setCollapsed}: {
 	const {goToProductIndex} = useRoutesProduct()
 	const routesWarehouse = useRoutesWarehouse()
 	const routesSupplier = useRoutesSupplier()
+	const routesPurchase = useRoutesPurchase()
 	
 	const location = useLocation();
 	const currentPath = location.pathname;
@@ -100,24 +102,41 @@ export function Menus({collapsed, setCollapsed}: {
 			],
 		},
 		{
-			key: "3",
-			label: "Dépôts",
-			icon: <FaWarehouse/>,
-			pathmatch: "/warehouses",
-			onClick: () => {
-				if (isMobile) setCollapsed(!collapsed);
-				routesWarehouse.goToIndex()
-			},
-		},
-		{
 			key: "4",
 			icon: <TbUserDollar/>,
 			label: "Fournisseurs",
-			pathmatch: "/supplies",
+			pathmatch: "/suppliers",
 			onClick: () => {
 				if (isMobile) setCollapsed(!collapsed);
 				routesSupplier.goToIndex();
 			},
+		},
+		{
+			key: "5",
+			label: "Stocks",
+			icon: <MdCalculate/>,
+			children: [
+				{
+					key: "51",
+					label: "Dépôts",
+					icon: <FaWarehouse/>,
+					pathmatch: "/warehouses",
+					onClick: () => {
+						if (isMobile) setCollapsed(!collapsed);
+						routesWarehouse.goToIndex()
+					},
+				},
+				{
+					key: "52",
+					label: "Achats",
+					icon: <BiSolidPurchaseTag/>,
+					pathmatch: "/purchases",
+					onClick: () => {
+						if (isMobile) setCollapsed(!collapsed);
+						routesPurchase.goToIndex();
+					},
+				},
+			],
 		},
 	];
 	

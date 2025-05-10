@@ -16,6 +16,13 @@ export default function UnitEquivalenceTable({unitEquivalences, unit, ...props}:
 	return <Table
 		columns={[
 			{
+				key: "ID",
+				title: "ID",
+				render: (_, row) => {
+					return row.id
+				}
+			},
+			{
 				key: "Unité de base",
 				title: "Unité de base",
 				render: () => {

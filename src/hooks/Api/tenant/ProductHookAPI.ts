@@ -3,7 +3,8 @@ import productService from "../../../services/tenant/productService.ts";
 
 export const productQueriesClients = {
 	useProductGetAll: 'useProductGetAll',
-	useProductGetOne: 'useProductGetOne'
+	useProductGetOne: 'useProductGetOne',
+	useProductGetAllUnitEquivalence: 'useProductGetAllUnitEquivalence'
 }
 
 export const useProductGetAll = (params?: HookApiInterface) => {
@@ -46,4 +47,12 @@ export const useProductGetOne = (params?: HookApiInterface) => {
 
 export const useProductUpdate = (id: number) => {
 	return useMutation<ResponseApiInterface<ProductInterface>, never, ProductFormDataInterface>((formData) => productService.Update(id, formData))
+}
+
+export const useProductGetAllUnitEquivalence = (params?: HookApiInterface) => {
+	return useQuery(
+		[productQueriesClients.useProductGetAllUnitEquivalence, params?.queryParams],
+		() => productService.GetAllUnitEquivalence(Number(params?.id)),
+		{enabled: params?.enabled}
+	)
 }

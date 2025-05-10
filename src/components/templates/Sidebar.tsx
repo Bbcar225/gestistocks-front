@@ -12,6 +12,7 @@ const siderStyle: React.CSSProperties = {
 	bottom: 0,
 	scrollbarWidth: 'thin',
 	scrollbarGutter: 'stable',
+	zIndex: 1000
 };
 
 export default function Sidebar({collapsed, setCollapsed}: {

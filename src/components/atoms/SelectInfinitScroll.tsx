@@ -11,7 +11,7 @@ export default function SelectInfiniteScroll({
 	const [fetching, setFetching] = useState<boolean>(false);
 	const [options, setOptions] = useState<BaseOptionType[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [search, setSearch] = useState<string|undefined>(undefined);
+	const [search, setSearch] = useState<string | undefined>(undefined);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	
 	const debounceFetcher = useMemo(() => {

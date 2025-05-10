@@ -6,7 +6,10 @@ const unitEquivalence = {
 	},
 	UpdateUnitEquivalence: (productId: number, unitEquivalenceId: number, data: UnitEquivalenceFormDataInterface): Promise<ResponseApiInterface<UnitEquivalenceInterface>> => {
 		return service.put(`/tenant/products/${productId}/unit-equivalences/${unitEquivalenceId}`, data)
-	}
+	},
+	GetAllUnitEquivalence: (id: number): Promise<ResponseApiInterface<UnitEquivalenceInterface[]>> => {
+		return service.get(`/tenant/products/${id}/unit-equivalences`)
+	},
 }
 
 const stock = {

@@ -35,33 +35,6 @@ const index: RouteObject[] = [
 		],
 	},
 	{
-		path: ":tenant_slug/purchases",
-		Component: AuthLayout,
-		children: [
-			{
-				index: true,
-				Component: lazy(() => import("../components/pages/purchases/PurchaseIndexPage"))
-			},
-			{
-				path: 'create',
-				Component: lazy(() => import("../components/pages/purchases/PurchaseCreatePage.tsx"))
-			},
-			{
-				path: ':purchase',
-				children: [
-					{
-						index: true,
-						Component: lazy(() => import("../components/pages/purchases/PurchaseShowPage.tsx"))
-					},
-					{
-						path: 'edit',
-						Component: lazy(() => import("../components/pages/purchases/PurchaseEditPage.tsx.tsx"))
-					}
-				]
-			},
-		],
-	},
-	{
 		path: "*",
 		element: <NotFoundPage/>,
 	},

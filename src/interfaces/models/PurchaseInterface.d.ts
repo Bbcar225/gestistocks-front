@@ -10,3 +10,30 @@ interface PurchaseInterface {
 	items: PurchaseItem[]
 	items_count?: number
 }
+
+interface PurchaseFormDataInterface {
+	supplier_id: number
+	reference: string
+	items: PurchaseItemCartInterface[]
+}
+
+interface PurchaseItemFormDataInterface {
+	product_id: number
+	unit_id: number
+	quantity: number
+	unit_price: number
+}
+
+interface PurchaseCartInterface {
+	supplier?: BaseOptionType,
+	reference?: string,
+	items?: PurchaseItemCartItemInterface[],
+	date?: string
+}
+
+interface PurchaseItemCartItemInterface {
+	product: Partial<ProductInterface>,
+	unit: Partial<UnitInterface>,
+	quantity: number,
+	unit_price: number
+}

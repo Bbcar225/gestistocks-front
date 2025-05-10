@@ -16,7 +16,11 @@ const purchaseRoutes: RouteObject[] = [
 			{
 				path: ':purchase/show',
 				Component: lazy(() => import("../components/pages/purchases/PurchaseShowPage.tsx"))
-			}
+			},
+			{
+				path: 'create',
+				Component: lazy(() => import("../components/pages/purchases/PurchaseCreatePage.tsx"))
+			},
 		],
 	},
 ]

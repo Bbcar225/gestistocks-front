@@ -2,7 +2,7 @@ import {useState} from "react";
 import SelectInfiniteScroll from "../../atoms/SelectInfinitScroll.tsx";
 import unitService from "../../../services/tenant/unitService.ts";
 
-export default function UnitSelectInfiniteScroll({ ...props }) {
+export default function SelectScrollInfiniteUnit({ ...props }) {
 	const [link, setLink] = useState<string | undefined>(undefined);
   
   async function getData({ search, page }: RequestApiInterface) {
@@ -29,7 +29,7 @@ export default function UnitSelectInfiniteScroll({ ...props }) {
     hasMore={link}
     fetchOptions={getData}
     allowClear
-    placeholder="Produit"
+    placeholder="Unité"
     {...props}
   />;
 }

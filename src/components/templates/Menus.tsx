@@ -15,7 +15,7 @@ import {useRoutesProduct} from "../../routes/productRoutes.ts";
 import {FaWarehouse} from "react-icons/fa";
 import {useRoutesWarehouse} from "../../routes/warehouseRoutes.ts";
 import {TbUserDollar} from "react-icons/tb";
-import {useRoutesSupply} from "../../routes/supplyRoutes.ts";
+import {useRoutesSupplier} from "../../routes/supplierRoutes.ts";
 
 type MenuItem = {
 	key: string;
@@ -36,7 +36,7 @@ export function Menus({collapsed, setCollapsed}: {
 	const {goToGalleryIndex} = useRoutesGallery()
 	const {goToProductIndex} = useRoutesProduct()
 	const routesWarehouse = useRoutesWarehouse()
-	const routesSupply = useRoutesSupply()
+	const routesSupplier = useRoutesSupplier()
 	
 	const location = useLocation();
 	const currentPath = location.pathname;
@@ -116,7 +116,7 @@ export function Menus({collapsed, setCollapsed}: {
 			pathmatch: "/supplies",
 			onClick: () => {
 				if (isMobile) setCollapsed(!collapsed);
-				routesSupply.goToIndex();
+				routesSupplier.goToIndex();
 			},
 		},
 	];

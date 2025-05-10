@@ -1,4 +1,4 @@
-interface SupplyInterface {
+interface SupplierInterface {
 	id: number
 	name: string
 	country: string
@@ -9,7 +9,7 @@ interface SupplyInterface {
 	contacts: ContactInterface[]
 }
 
-interface SupplyFormData {
+interface SupplierFormData {
 	name: string
 	country: string
 	city: string

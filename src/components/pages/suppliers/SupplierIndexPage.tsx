@@ -6,17 +6,17 @@ import {IoIosAddCircle} from "react-icons/io";
 import dayjs from 'dayjs';
 import {formatDate} from "../../../constants/dateConstant.ts";
 import {FaEdit} from "react-icons/fa";
-import {useSupplyGetAll, useSupplyGetOne} from "../../../hooks/Api/tenant/SupplyHookAPI.ts";
-import {useSupplyStore} from "../../../store/useSupplyStore.ts";
-import SupplyFormModal from "../../organisms/Modals/SupplyFormModal.tsx";
+import {useSupplierGetAll, useSupplierGetOne} from "../../../hooks/Api/tenant/SupplierHookAPI.ts";
+import {useSupplierStore} from "../../../store/useSupplierStore.ts";
+import SupplierFormModal from "../../organisms/Modals/SupplierFormModal.tsx";
 import {MdContactPhone} from "react-icons/md";
 import ContactTable from "../../molecules/Tables/ContactTable.tsx";
 
-export default function UnitIndexPage() {
+export default function SupplierIndexPage() {
 	const {setSidebar} = useAppStore()
-	const [supplies, setSupplies] = useState<SupplyInterface[]>([])
-	const {pagination, queryParams, supply, setFieldPagination, setFieldQueryParams, setSupply} = useSupplyStore()
-	const reqSupplyGetAll = useSupplyGetAll({queryParams})
+	const [supplies, setSupplies] = useState<SupplierInterface[]>([])
+	const {pagination, queryParams, supplier, setFieldPagination, setFieldQueryParams, setSupplier} = useSupplierStore()
+	const reqSupplierGetAll = useSupplierGetAll({queryParams})
 	const {setOpenModal, setTypeModal, typeModal} = useAppStore()
 	
 	useEffect(() => {
@@ -24,12 +24,12 @@ export default function UnitIndexPage() {
 	}, [setSidebar]);
 	
 	useEffect(() => {
-		if (reqSupplyGetAll.isSuccess) {
-			const data = reqSupplyGetAll.data?.data
+		if (reqSupplierGetAll.isSuccess) {
+			const data = reqSupplierGetAll.data?.data
 			setFieldPagination({field: 'total', value: data.meta.total})
 			setSupplies(data?.data || [])
 		}
-	}, [reqSupplyGetAll.data, reqSupplyGetAll.isSuccess, setFieldPagination]);
+	}, [reqSupplierGetAll.data, reqSupplierGetAll.isSuccess, setFieldPagination]);
 	
 	return <Row>
 		<Col span={24} className='mb-4'>
@@ -52,7 +52,7 @@ export default function UnitIndexPage() {
 				className="text-nowrap"
 				scroll={{x: true}}
 				rowKey={(row) => row.id}
-				loading={reqSupplyGetAll.isLoading}
+				loading={reqSupplierGetAll.isLoading}
 				pagination={{
 					...tablePagination,
 					total: pagination.total,
@@ -106,14 +106,14 @@ export default function UnitIndexPage() {
 									onClick={() => {
 										setOpenModal(true)
 										setTypeModal('other')
-										setSupply(row)
+										setSupplier(row)
 									}}
 								/>
 							</Tooltip>
 							<Button
 								icon={<FaEdit/>}
 								onClick={() => {
-									setSupply(row)
+									setSupplier(row)
 									setOpenModal(true)
 									setTypeModal('update')
 								}}
@@ -128,39 +128,39 @@ export default function UnitIndexPage() {
 			/>
 		</Col>
 		
-		{(typeModal === 'create' || typeModal === 'update') && <SupplyFormModal/>}
-		{(typeModal === 'other' && supply) && <ContactTableModal/>}
+		{(typeModal === 'create' || typeModal === 'update') && <SupplierFormModal/>}
+		{(typeModal === 'other' && supplier) && <ContactTableModal/>}
 	</Row>
 }
 
 const ContactTableModal = ({...props}) => {
 	const {openModal, setOpenModal} = useAppStore()
-	const {supply, setSupply} = useSupplyStore()
-	const reqSupplyGetOne = useSupplyGetOne({
-		id: supply?.id,
-		enabled: !!supply
+	const {supplier, setSupplier} = useSupplierStore()
+	const reqSupplierGetOne = useSupplierGetOne({
+		id: supplier?.id,
+		enabled: !!supplier
 	})
 	
 	useEffect(() => {
-		if (reqSupplyGetOne.status === 'success') {
-			const res = reqSupplyGetOne.data
-			const supply = res?.data
-			setSupply(supply)
+		if (reqSupplierGetOne.status === 'success') {
+			const res = reqSupplierGetOne.data
+			const supplier = res?.data
+			setSupplier(supplier)
 		}
-	}, [reqSupplyGetOne.status, reqSupplyGetOne.data]);
+	}, [reqSupplierGetOne.status, reqSupplierGetOne.data]);
 	
 	return <Modal
-		title={`Liste de contacts: ${supply?.name}`}
+		title={`Liste de contacts: ${supplier?.name}`}
 		open={openModal}
 		onCancel={() => {
 			setOpenModal(false)
-			setSupply(undefined)
+			setSupplier(undefined)
 		}}
 		footer={null}
 		width={1100}
-		loading={reqSupplyGetOne.isLoading}
+		loading={reqSupplierGetOne.isLoading}
 		{...props}
 	>
-		<ContactTable contacts={supply?.contacts || []}/>
+		<ContactTable contacts={supplier?.contacts || []}/>
 	</Modal>
 };

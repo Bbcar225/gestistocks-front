@@ -6,13 +6,13 @@ import {FaEdit} from "react-icons/fa";
 import {useState} from "react";
 import useContactStore from "../../../store/useContactStore.ts";
 import {ContactForm} from "../../organisms/Forms/ContactForm.tsx";
-import {useSupplyStore} from "../../../store/useSupplyStore.ts";
+import {useSupplierStore} from "../../../store/useSupplierStore.ts";
 import {notDefined} from "../../../constants/textsConstant.ts";
 
 export default function ContactTable({contacts, ...props}: { contacts: ContactInterface[] }) {
 	const {setContact} = useContactStore()
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const {supply} = useSupplyStore()
+	const {supplier} = useSupplierStore()
 	
 	return <>
 		<Table
@@ -80,7 +80,7 @@ export default function ContactTable({contacts, ...props}: { contacts: ContactIn
 			}}
 			{...props}
 		/>
-		{supply &&
+		{supplier &&
 		<ContactFormModal
 			openModal={isModalOpen}
 			onClose={() => {
@@ -96,6 +96,7 @@ const ContactFormModal = ({openModal, onClose, ...props}: {
 	onClose: () => void
 }) => {
 	const {contact} = useContactStore()
+	const {updateContactOfSupplier} = useSupplierStore()
 	
 	return <Modal
 		title={contact ? 'Mise à jour' : 'Nouveau contact'}
@@ -106,6 +107,11 @@ const ContactFormModal = ({openModal, onClose, ...props}: {
 	>
 		<ContactForm
 			contact={contact}
+			onSuccess={(data) => {
+				if (data?.contact) {
+					updateContactOfSupplier(data.contact)
+				}
+			}}
 		/>
 	</Modal>
 }

@@ -2,38 +2,38 @@ import {Button, Col, Flex, Form, Input, notification, Row} from "antd";
 import {useEffect} from "react";
 import {successCreate, successUpdate} from "../../../constants/textsConstant.ts";
 import {config} from "../../../constants/notifcationConstant.ts";
-import {useSupplyCreate, useSupplyUpdate} from "../../../hooks/Api/tenant/SupplyHookAPI.ts";
-import {useSupplyStore} from "../../../store/useSupplyStore.ts";
+import {useSupplierCreate, useSupplierUpdate} from "../../../hooks/Api/tenant/SupplierHookAPI.ts";
+import {useSupplierStore} from "../../../store/useSupplierStore.ts";
 import SelectCity from "../../molecules/Selects/SelectCity.tsx";
 import {useWatch} from "antd/es/form/Form";
 import SelectCountry from "../../molecules/Selects/SelectCountry.tsx";
 
-export default function SupplyForm({onSuccess, ...props}: { onSuccess?: () => void; }) {
+export default function SupplierForm({onSuccess, ...props}: { onSuccess?: () => void; }) {
 	const [form] = Form.useForm();
-	const reqSupplyCreate = useSupplyCreate()
+	const reqSupplierCreate = useSupplierCreate()
 	const [notificationInstance, contextHolder] = notification.useNotification(config);
-	const {supply} = useSupplyStore()
-	const reqSupplyUpdate = useSupplyUpdate(Number(supply?.id))
+	const {supplier} = useSupplierStore()
+	const reqSupplierUpdate = useSupplierUpdate(Number(supplier?.id))
 	
 	const selectedCountry = useWatch('country', form);
 	
-	const handleFinish = (values: SupplyFormData) => {
+	const handleFinish = (values: SupplierFormData) => {
 		const formData = {
 			...values,
 			country: values.country?.[0],
 			city: values.city?.[0]
 		}
 		
-		if (supply) {
-			return reqSupplyUpdate.mutate(formData)
+		if (supplier) {
+			return reqSupplierUpdate.mutate(formData)
 		}
 		
-		return reqSupplyCreate.mutate(formData)
+		return reqSupplierCreate.mutate(formData)
 	}
 	
 	useEffect(() => {
-		if (reqSupplyCreate.isSuccess) {
-			const res = reqSupplyCreate.data
+		if (reqSupplierCreate.isSuccess) {
+			const res = reqSupplierCreate.data
 			
 			notificationInstance.success({
 				message: res.message,
@@ -44,11 +44,11 @@ export default function SupplyForm({onSuccess, ...props}: { onSuccess?: () => vo
 			
 			onSuccess?.()
 		}
-	}, [notificationInstance, form, reqSupplyCreate.data, reqSupplyCreate.isSuccess]);
+	}, [notificationInstance, form, reqSupplierCreate.data, reqSupplierCreate.isSuccess]);
 	
 	useEffect(() => {
-		if (reqSupplyUpdate.isSuccess) {
-			const res = reqSupplyUpdate.data
+		if (reqSupplierUpdate.isSuccess) {
+			const res = reqSupplierUpdate.data
 			
 			notificationInstance.success({
 				message: res.message,
@@ -57,20 +57,20 @@ export default function SupplyForm({onSuccess, ...props}: { onSuccess?: () => vo
 			
 			onSuccess?.()
 		}
-	}, [notificationInstance, form, reqSupplyUpdate.data, reqSupplyUpdate.isSuccess]);
+	}, [notificationInstance, form, reqSupplierUpdate.data, reqSupplierUpdate.isSuccess]);
 	
 	useEffect(() => {
-		if (supply) {
+		if (supplier) {
 			form.setFieldsValue({
-				name: supply.name,
-				country: [supply.country],
-				city: [supply.city],
-				address: supply.address
+				name: supplier.name,
+				country: [supplier.country],
+				city: [supplier.city],
+				address: supplier.address
 			})
 		} else {
 			form.resetFields()
 		}
-	}, [form, supply]);
+	}, [form, supplier]);
 	
 	useEffect(() => {
 		form.setFieldValue('city', undefined);
@@ -84,7 +84,7 @@ export default function SupplyForm({onSuccess, ...props}: { onSuccess?: () => vo
 	>
 		<Row gutter={[12, 12]}>
 			<Col span={12}>
-				<Form.Item<SupplyFormData>
+				<Form.Item<SupplierFormData>
 					label="Nom complet"
 					name="name"
 					rules={[{required: true}]}
@@ -94,7 +94,7 @@ export default function SupplyForm({onSuccess, ...props}: { onSuccess?: () => vo
 			</Col>
 			
 			<Col span={12}>
-				<Form.Item<SupplyFormData>
+				<Form.Item<SupplierFormData>
 					label="Pays"
 					name="country"
 					rules={[{required: true, max: 1, type: 'array'}]}
@@ -106,19 +106,19 @@ export default function SupplyForm({onSuccess, ...props}: { onSuccess?: () => vo
 			</Col>
 			
 			<Col span={12}>
-				<Form.Item<SupplyFormData>
+				<Form.Item<SupplierFormData>
 					label="Ville"
 					name="city"
 					rules={[{required: true, max: 1, type: 'array'}]}
 				>
 					<SelectCity
-						filterFn={(country) => country.name === selectedCountry?.[0] || country.name === supply?.country}
+						filterFn={(country) => country.name === selectedCountry?.[0] || country.name === supplier?.country}
 					/>
 				</Form.Item>
 			</Col>
 			
 			<Col span={12}>
-				<Form.Item<SupplyFormData>
+				<Form.Item<SupplierFormData>
 					label="Adresse"
 					name="address"
 					rules={[{required: true}]}
@@ -134,7 +134,7 @@ export default function SupplyForm({onSuccess, ...props}: { onSuccess?: () => vo
 					type="primary"
 					htmlType="submit"
 					className='w-1/2'
-					loading={reqSupplyCreate.isLoading}
+					loading={reqSupplierCreate.isLoading}
 				>
 					Valider
 				</Button>

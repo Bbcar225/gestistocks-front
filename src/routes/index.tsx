@@ -10,7 +10,7 @@ import categoryRoutes from "./categoryRoutes.ts";
 import galleryRoutes from "./galleryRoutes.ts";
 import productRoutes from "./productRoutes.ts";
 import warehouseRoutes from "./warehouseRoutes.ts";
-import supplyRoutes from "./supplyRoutes.ts";
+import supplierRoutes from "./supplierRoutes.ts";
 
 const index: RouteObject[] = [
 	{
@@ -69,7 +69,7 @@ const index: RouteObject[] = [
 	...galleryRoutes,
 	...productRoutes,
 	...warehouseRoutes,
-	...supplyRoutes,
+	...supplierRoutes
 ]
 
 export const useRoutesIndex = () => {

@@ -1,24 +1,25 @@
 import {create} from "zustand";
 
-interface SupplyStoreInterface {
+interface SupplierStoreInterface {
 	queryParams: RequestApiInterface & {
 		search?: string
 	},
 	pagination: {
 		total?: number
 	},
-	supply?: SupplyInterface,
+	supplier?: SupplierInterface,
 	
 	setFieldQueryParams: ({field, value}: {
-		field: keyof SupplyStoreInterface['queryParams'],
+		field: keyof SupplierStoreInterface['queryParams'],
 		value?: unknown
 	}) => void,
 	setFieldPagination: ({field, value}: {
-		field: keyof SupplyStoreInterface['pagination'],
+		field: keyof SupplierStoreInterface['pagination'],
 		value?: number
 	}) => void,
-	setSupply: (supply?: SupplyInterface) => void,
+	setSupplier: (supplier?: SupplierInterface) => void,
 	resetQueryParams: () => void,
+	updateContactOfSupplier: (contact: ContactInterface) => void
 }
 
 const queryParams = {
@@ -30,10 +31,11 @@ const pagination = {
 	total: 0
 }
 
-export const useSupplyStore = create<SupplyStoreInterface>((set) => {
+export const useSupplierStore = create<SupplierStoreInterface>((set) => {
 	return {
 		queryParams,
 		pagination,
+		supplier: undefined,
 		
 		setFieldQueryParams: ({field, value}) => {
 			return set((state) => {
@@ -57,11 +59,11 @@ export const useSupplyStore = create<SupplyStoreInterface>((set) => {
 				}
 			})
 		},
-		setSupply: (supply?: SupplyInterface) => {
+		setSupplier: (supplier?: SupplierInterface) => {
 			return set((state) => {
 				return {
 					...state,
-					supply
+					supplier
 				}
 			})
 		},
@@ -70,6 +72,28 @@ export const useSupplyStore = create<SupplyStoreInterface>((set) => {
 				return {
 					...state,
 					queryParams
+				}
+			})
+		},
+		updateContactOfSupplier: (contact) => {
+			return set((state) => {
+				const supplier = state?.supplier
+				
+				if (supplier) {
+					const contacts = [...supplier.contacts || []]
+					
+					const indexContact = contacts.findIndex(ct => ct.id === contact.id)
+					
+					if (indexContact > -1) {
+						contacts[indexContact] = contact
+					}
+					
+					supplier.contacts = contacts
+				}
+				
+				return {
+					...state,
+					supplier
 				}
 			})
 		}

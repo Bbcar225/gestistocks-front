@@ -1,17 +1,20 @@
 import {Button, Col, Flex, Form, Input, notification, Row, Switch} from "antd";
 import {config} from "../../../constants/notifcationConstant.ts";
 import SelectPosition from "../../molecules/Selects/SelectPosition.tsx";
-import {useSupplyCreateContact, useSupplyUpdateContact} from "../../../hooks/Api/tenant/SupplyHookAPI.ts";
-import {useSupplyStore} from "../../../store/useSupplyStore.ts";
+import {useSupplierCreateContact, useSupplierUpdateContact} from "../../../hooks/Api/tenant/SupplierHookAPI.ts";
+import {useSupplierStore} from "../../../store/useSupplierStore.ts";
 import {useEffect} from "react";
 import {successCreate, successUpdate} from "../../../constants/textsConstant.ts";
 
-export function ContactForm({onSuccess, contact, ...props}: { onSuccess?: () => void, contact?: ContactInterface }) {
+export function ContactForm({onSuccess, contact, ...props}: {
+	onSuccess?: (data?: { contact?: ContactInterface }) => void,
+	contact?: ContactInterface
+}) {
 	const [form] = Form.useForm();
 	const [notificationInstance, contextHolder] = notification.useNotification(config);
-	const {supply} = useSupplyStore()
-	const reqSupplyCreateContact = useSupplyCreateContact(Number(supply?.id))
-	const reqSupplyUpdateContact = useSupplyUpdateContact(Number(supply?.id), Number(contact?.id))
+	const {supplier} = useSupplierStore()
+	const reqSupplierCreateContact = useSupplierCreateContact(Number(supplier?.id))
+	const reqSupplierUpdateContact = useSupplierUpdateContact(Number(supplier?.id), Number(contact?.id))
 	
 	const handleFinish = (values: ContactFormData) => {
 		const formData: ContactFormData = {
@@ -24,30 +27,31 @@ export function ContactForm({onSuccess, contact, ...props}: { onSuccess?: () => 
 		}
 		
 		if (contact) {
-			return reqSupplyUpdateContact.mutate(formData)
+			return reqSupplierUpdateContact.mutate(formData)
 		}
 		
-		return reqSupplyCreateContact.mutate(formData)
+		return reqSupplierCreateContact.mutate(formData)
 	}
 	
 	useEffect(() => {
-		if (reqSupplyCreateContact.status === 'success') {
+		if (reqSupplierCreateContact.status === 'success') {
 			notificationInstance.success({
 				message: successCreate
 			})
 			form.resetFields()
 			onSuccess?.()
 		}
-	}, [form, notificationInstance, reqSupplyCreateContact.status]);
+	}, [form, notificationInstance, reqSupplierCreateContact.status]);
 	
 	useEffect(() => {
-		if (reqSupplyUpdateContact.status === 'success') {
+		if (reqSupplierUpdateContact.status === 'success') {
 			notificationInstance.success({
 				message: successUpdate
 			})
-			onSuccess?.()
+			
+			onSuccess?.({contact: reqSupplierUpdateContact.data?.data})
 		}
-	}, [form, notificationInstance, reqSupplyUpdateContact.status]);
+	}, [form, notificationInstance, reqSupplierUpdateContact.data, reqSupplierUpdateContact.status]);
 	
 	useEffect(() => {
 		if (contact) {
@@ -119,7 +123,7 @@ export function ContactForm({onSuccess, contact, ...props}: { onSuccess?: () => 
 					type="primary"
 					htmlType="submit"
 					className='w-1/2'
-					loading={reqSupplyCreateContact.isLoading || reqSupplyUpdateContact.isLoading}
+					loading={reqSupplierCreateContact.isLoading || reqSupplierUpdateContact.isLoading}
 				>
 					Valider
 				</Button>

@@ -11,6 +11,8 @@ import {useSupplierStore} from "../../../store/useSupplierStore.ts";
 import SupplierFormModal from "../../organisms/Modals/SupplierFormModal.tsx";
 import {MdContactPhone} from "react-icons/md";
 import ContactTable from "../../molecules/Tables/ContactTable.tsx";
+import {RiUserAddFill} from "react-icons/ri";
+import ContactFormModal from "../../organisms/Modals/ContactFormModal.tsx";
 
 export default function SupplierIndexPage() {
 	const {setSidebar} = useAppStore()
@@ -18,6 +20,7 @@ export default function SupplierIndexPage() {
 	const {pagination, queryParams, supplier, setFieldPagination, setFieldQueryParams, setSupplier} = useSupplierStore()
 	const reqSupplierGetAll = useSupplierGetAll({queryParams})
 	const {setOpenModal, setTypeModal, typeModal} = useAppStore()
+	const [isModalOpen, setIsModalOpen] = useState(false);
 	
 	useEffect(() => {
 		setSidebar({field: 'title', value: 'Fournisseurs'})
@@ -110,6 +113,18 @@ export default function SupplierIndexPage() {
 									}}
 								/>
 							</Tooltip>
+							<Tooltip
+								title="Nouveau contact"
+							>
+								<Button
+									type='default'
+									icon={<RiUserAddFill/>}
+									onClick={() => {
+										setSupplier(row)
+										setIsModalOpen(true)
+									}}
+								/>
+							</Tooltip>
 							<Button
 								icon={<FaEdit/>}
 								onClick={() => {
@@ -128,13 +143,17 @@ export default function SupplierIndexPage() {
 			/>
 		</Col>
 		
+		{supplier && <ContactFormModal openModal={isModalOpen} onClose={() => {
+			setIsModalOpen(false)
+			setSupplier(undefined)
+		}}/>}
 		{(typeModal === 'create' || typeModal === 'update') && <SupplierFormModal/>}
 		{(typeModal === 'other' && supplier) && <ContactTableModal/>}
 	</Row>
 }
 
 const ContactTableModal = ({...props}) => {
-	const {openModal, setOpenModal} = useAppStore()
+	const {openModal, setOpenModal, setTypeModal} = useAppStore()
 	const {supplier, setSupplier} = useSupplierStore()
 	const reqSupplierGetOne = useSupplierGetOne({
 		id: supplier?.id,
@@ -147,7 +166,7 @@ const ContactTableModal = ({...props}) => {
 			const supplier = res?.data
 			setSupplier(supplier)
 		}
-	}, [reqSupplierGetOne.status, reqSupplierGetOne.data]);
+	}, [reqSupplierGetOne.status, reqSupplierGetOne.data, setSupplier]);
 	
 	return <Modal
 		title={`Liste de contacts: ${supplier?.name}`}
@@ -155,6 +174,7 @@ const ContactTableModal = ({...props}) => {
 		onCancel={() => {
 			setOpenModal(false)
 			setSupplier(undefined)
+			setTypeModal(undefined)
 		}}
 		footer={null}
 		width={1100}

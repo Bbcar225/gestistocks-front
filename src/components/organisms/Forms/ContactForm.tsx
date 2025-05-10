@@ -39,9 +39,9 @@ export function ContactForm({onSuccess, contact, ...props}: {
 				message: successCreate
 			})
 			form.resetFields()
-			onSuccess?.()
+			onSuccess?.({contact: reqSupplierCreateContact.data?.data})
 		}
-	}, [form, notificationInstance, reqSupplierCreateContact.status]);
+	}, [form, notificationInstance, reqSupplierCreateContact.status, reqSupplierCreateContact.data]);
 	
 	useEffect(() => {
 		if (reqSupplierUpdateContact.status === 'success') {

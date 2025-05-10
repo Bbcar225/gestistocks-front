@@ -1,13 +1,13 @@
-import {Button, Modal, Space, Table} from "antd";
+import {Button, Space, Table} from "antd";
 import Link from "antd/es/typography/Link";
 import dayjs from "dayjs";
 import {formatDate} from "../../../constants/dateConstant.ts";
 import {FaEdit} from "react-icons/fa";
 import {useState} from "react";
 import useContactStore from "../../../store/useContactStore.ts";
-import {ContactForm} from "../../organisms/Forms/ContactForm.tsx";
 import {useSupplierStore} from "../../../store/useSupplierStore.ts";
 import {notDefined} from "../../../constants/textsConstant.ts";
+import ContactFormModal from "../../organisms/Modals/ContactFormModal.tsx";
 
 export default function ContactTable({contacts, ...props}: { contacts: ContactInterface[] }) {
 	const {setContact} = useContactStore()
@@ -89,29 +89,4 @@ export default function ContactTable({contacts, ...props}: { contacts: ContactIn
 						}}
 		/>}
 	</>
-}
-
-const ContactFormModal = ({openModal, onClose, ...props}: {
-	openModal: boolean,
-	onClose: () => void
-}) => {
-	const {contact} = useContactStore()
-	const {updateContactOfSupplier} = useSupplierStore()
-	
-	return <Modal
-		title={contact ? 'Mise à jour' : 'Nouveau contact'}
-		open={openModal}
-		onCancel={onClose}
-		footer={null}
-		{...props}
-	>
-		<ContactForm
-			contact={contact}
-			onSuccess={(data) => {
-				if (data?.contact) {
-					updateContactOfSupplier(data.contact)
-				}
-			}}
-		/>
-	</Modal>
 }

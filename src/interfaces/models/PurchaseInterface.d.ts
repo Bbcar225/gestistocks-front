@@ -32,8 +32,8 @@ interface PurchaseCartInterface {
 }
 
 interface PurchaseItemCartItemInterface {
-	product: Partial<ProductInterface>,
-	unit: Partial<UnitInterface>,
-	quantity: number,
-	unit_price: number
+	product?: BaseOptionType,
+	unit?: BaseOptionType,
+	quantity?: number,
+	unit_price?: number
 }

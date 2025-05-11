@@ -12,6 +12,7 @@ interface BaseOptionType {
 	title?: string;
 	label: string,
 	value: string | number | boolean;
+	key?: string | number | boolean;
 }
 
 type TModal = 'create' | 'read' | 'update' | 'delete' | 'other' | undefined

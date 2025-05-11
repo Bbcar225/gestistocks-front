@@ -70,7 +70,7 @@ export default function SelectInfiniteScroll({
 				</Select.Option>;
 			})}
 			{loading && (
-				<Select.Option disabled className="text-center my-2">
+				<Select.Option disabled className="!text-center my-2" value="">
 					<Spin size="small"/>
 				</Select.Option>
 			)}

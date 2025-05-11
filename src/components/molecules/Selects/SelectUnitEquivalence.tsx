@@ -8,9 +8,10 @@ export default function SelectUnitEquivalence({productId, labelInValue = false, 
 	labelInValue?: boolean,
 	unitEquivalences?: UnitEquivalenceInterface[]
 }) {
+	const [enabled, setEnable] = useState<boolean>(false);
 	const reqGetData = useProductGetAllUnitEquivalence({
 		id: productId,
-		enabled: unitEquivalences === undefined
+		enabled
 	})
 	const [options, setOptions] = useState<BaseOptionType[]>([]);
 	
@@ -31,19 +32,27 @@ export default function SelectUnitEquivalence({productId, labelInValue = false, 
 	
 	useEffect(() => {
 		if (unitEquivalences && unitEquivalences?.length > 0) {
-			const options: BaseOptionType[] = unitEquivalences.map((item) => {
+			const options: BaseOptionType[] = unitEquivalences.map((item, index) => {
 				return {
+					key: index,
 					label: item.unit.name,
 					value: item.unit.id
 				}
 			})
-			
+			setEnable(false)
 			setOptions(options)
 		}
 	}, [unitEquivalences]);
 	
+	useEffect(() => {
+		if (productId) {
+			setEnable(true)
+		}
+	}, [productId]);
+	
 	return <Select
 		loading={reqGetData.isLoading}
+		disabled={reqGetData.isLoading}
 		options={options}
 		showSearch
 		filterOption={filterOptionSelect}

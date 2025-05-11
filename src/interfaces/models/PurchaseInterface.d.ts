@@ -14,7 +14,8 @@ interface PurchaseInterface {
 interface PurchaseFormDataInterface {
 	supplier_id: number
 	reference: string
-	items: PurchaseItemCartInterface[]
+	items: PurchaseItemFormDataInterface[]
+	date: string
 }
 
 interface PurchaseItemFormDataInterface {

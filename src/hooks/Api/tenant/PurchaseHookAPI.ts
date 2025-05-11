@@ -1,4 +1,4 @@
-import {useQuery} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import purchaseService from "../../../services/tenant/purchaseService.ts";
 
 export const purchaseQueriesClients = {
@@ -13,4 +13,8 @@ export const usePurchaseGetAll = (params?: HookApiInterface) => {
 			enabled: params?.enabled
 		}
 	)
+}
+
+export const usePurchaseCreate = () => {
+	return useMutation<ResponseApiInterface<PurchaseInterface>, never, PurchaseFormDataInterface>(purchaseService.Create)
 }

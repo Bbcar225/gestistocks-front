@@ -70,7 +70,7 @@ export default function ProductIndexPage() {
 					{
 						key: "name",
 						title: "Nom",
-						render: (_, row) => row.name
+						render: (_, row) => `${row.name} - ${row.sku}`
 					},
 					{
 						key: "price",

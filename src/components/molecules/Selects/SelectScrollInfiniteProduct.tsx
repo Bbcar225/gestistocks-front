@@ -20,7 +20,7 @@ export default function SelectScrollInfiniteProduct({...props}) {
 			setLink(links.next);
 			return data.map(item => {
 				return {
-					label: item.name,
+					label: `${item.name} - ${item.sku}`,
 					value: item.id
 				};
 			});

@@ -24,7 +24,7 @@ export const useRoutesCategory = () => {
 	
 	return {
 		goToCategoryIndex: () => {
-			setSidebar({field: 'title', value: 'Unités'})
+			setSidebar({field: 'title', value: 'Catégories'})
 			return navigate(`/${user?.userable.slug}/categories`)
 		}
 	}

@@ -41,7 +41,7 @@ export default function Gallery({preview = true}: {
 						preview={preview}
 						onClick={() => {
 							setGallery(gallery)
-							setOpenModal(true)
+							setOpenModal(false)
 						}}
 					/>
 				})}

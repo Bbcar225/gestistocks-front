@@ -12,7 +12,7 @@ export default function CategoryIndexPage() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	
 	useEffect(() => {
-		setSidebar({field: 'title', value: 'Galeries'})
+		setSidebar({field: 'title', value: 'Galléries'})
 	}, [setSidebar]);
 	
 	return <Row>

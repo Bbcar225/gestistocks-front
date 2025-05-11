@@ -24,7 +24,7 @@ const useGalleryStore = create<GalleryStoreInterface>((set) => {
 	return {
 		queryParams: {
 			page: 1,
-			per_page: 50
+			per_page: 20
 		},
 		pagination: {
 			total: 0

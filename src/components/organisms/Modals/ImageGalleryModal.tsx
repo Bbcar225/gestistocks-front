@@ -31,7 +31,7 @@ export default function ImageGalleryModal() {
 					children: <GalleryForm
 						onSuccess={({gallery}) => {
 							setGallery(gallery);
-							setOpenModal(true)
+							setOpenModal(false)
 						}}
 					/>
 				}

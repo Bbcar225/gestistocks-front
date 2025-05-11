@@ -41,7 +41,7 @@ export default function ProductUpdatePage() {
 					{product.unit_equivalences.map((unitEquivalence, index) => {
 						return <Col span={24} key={index}>
 							<Card
-								title={`Mise de l'équivalence : ${product.unit.name} vers ${unitEquivalence.unit.name}`}
+								title={`Mise à jour de l'équivalence : ${product.unit.name} vers ${unitEquivalence.unit.name}`}
 							>
 								<UnitEquivalenceForm
 									onSuccess={({unitEquivalence}) => {

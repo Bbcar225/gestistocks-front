@@ -14,7 +14,7 @@ export default function PurchaseIndexPage() {
 		queryParams
 	})
 	const [purchases, setPurchases] = useState<PurchaseInterface[]>([])
-	const {goToCreate} = useRoutesPurchase()
+	const routesPurchase = useRoutesPurchase()
 	
 	useEffect(() => {
 		setSidebar({field: 'title', value: 'Achats'})
@@ -41,7 +41,7 @@ export default function PurchaseIndexPage() {
 				<Button
 					type="primary"
 					icon={<IoIosAddCircle/>}
-					onClick={goToCreate}
+					onClick={routesPurchase.goToCreate}
 				>
 					Nouvel achat
 				</Button>

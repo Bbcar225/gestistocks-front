@@ -12,14 +12,18 @@ import {FaCirclePlus} from "react-icons/fa6";
 import {usePurchaseCreate} from "../../../hooks/Api/tenant/PurchaseHookAPI.ts";
 import {config} from "../../../constants/notifcationConstant.ts";
 import {successCreate} from "../../../constants/textsConstant.ts";
+import {HiPlusCircle} from "react-icons/hi";
 
-export default function PurchaseForm({onSuccess, ...props}: { onSuccess?: () => void; }) {
+export default function PurchaseForm({onSuccess, purchase, ...props}: {
+	onSuccess?: () => void;
+	purchase?: PurchaseInterface
+}) {
 	const [form] = Form.useForm();
 	const reqPurchaseCreate = usePurchaseCreate()
 	const [notificationInstance, contextHolder] = notification.useNotification(config);
 	
 	const handleFinish = (values: PurchaseCartInterface) => {
-		if (values?.items?.length <=0) {
+		if (values?.items && values?.items?.length <= 0) {
 			return notificationInstance.warning({
 				message: "Vous n'avez sélectionné aucun produits."
 			})
@@ -39,6 +43,34 @@ export default function PurchaseForm({onSuccess, ...props}: { onSuccess?: () => 
 			}) || [],
 		}
 		
+		if (purchase) {
+			const purchaseData: Pick<PurchaseFormDataInterface, 'supplier_id' | 'date' | 'reference'> = {
+				date: formData.date,
+				reference: formData.reference,
+				supplier_id: formData.supplier_id
+			}
+			
+			const itemsDeleted = values.items?.filter((item) => item.deleted).map(item => item.id)
+			const itemsUpdated = values.items?.filter((item) => !item.deleted).map(item => {
+				return {
+					id: item.id,
+					product_id: Number(item?.product?.value),
+					unit_id: Number(item?.unit?.value),
+					quantity: Number(item?.quantity),
+					unit_price: Number(item?.unit_price),
+				}
+			})
+			const itemsNew = values.items?.filter((item) => !item.id).map(item => {
+				return {
+					product_id: Number(item?.product?.value),
+					unit_id: Number(item?.unit?.value),
+					quantity: Number(item?.quantity),
+					unit_price: Number(item?.unit_price),
+				}
+			})
+			return
+		}
+		
 		return reqPurchaseCreate.mutate(formData)
 	}
 	
@@ -55,6 +87,40 @@ export default function PurchaseForm({onSuccess, ...props}: { onSuccess?: () => 
 			onSuccess?.()
 		}
 	}, [notificationInstance, form, reqPurchaseCreate.data, reqPurchaseCreate.isSuccess]);
+	
+	useEffect(() => {
+		if (purchase) {
+			form.setFieldsValue({
+				date: dayjs(purchase.date).format('YYYY-MM-DD'),
+				supplier: {
+					label: purchase.supplier.name,
+					value: purchase.supplier.id
+				},
+				reference: purchase.reference,
+				items: purchase.items.length ? purchase.items.map((item) => {
+					return {
+						id: item.id,
+						product: {
+							label: item.product.name,
+							value: item.product.id
+						},
+						quantity: item.quantity,
+						unit: {
+							label: item.unit.name,
+							value: item.unit.id
+						},
+						unit_price: item.unit_price,
+						deleted: false
+					}
+				}) : [{
+					product: undefined,
+					unit: undefined,
+					quantity: undefined,
+					unit_price: undefined,
+				}]
+			})
+		}
+	}, [purchase]);
 	
 	return <Form
 		form={form}
@@ -128,6 +194,7 @@ export default function PurchaseForm({onSuccess, ...props}: { onSuccess?: () => 
 									remove={remove}
 									form={form}
 									isMobile={isMobile}
+									purchase={purchase}
 									{...restField}
 								/>
 							})}
@@ -166,13 +233,15 @@ export default function PurchaseForm({onSuccess, ...props}: { onSuccess?: () => 
 	</Form>
 }
 
-const PurchaseItemRow = ({name, remove, form, isMobile, ...restField}: {
+const PurchaseItemRow = ({name, remove, form, isMobile, purchase, ...props}: {
 	name: number,
 	remove: (index: number) => void,
 	form: FormInstance,
 	isMobile: boolean,
+	purchase?: PurchaseInterface
 }) => {
 	const product = useWatch(['items', name, 'product'], form);
+	const deleted = useWatch(['items', name, 'deleted'], form);
 	const reqProductGetOne = useProductGetOne({
 		id: product?.value,
 		enabled: !!product
@@ -201,58 +270,83 @@ const PurchaseItemRow = ({name, remove, form, isMobile, ...restField}: {
 		<Row gutter={isMobile ? 0 : 12} align='middle'>
 			<Col span={isMobile ? 24 : 6}>
 				<Form.Item
-					{...restField}
+					{...props}
 					name={[name, 'product']}
 					rules={[{required: true}]}
 					label="Produit"
 				>
-					<SelectScrollInfiniteProduct allowClear={false}/>
+					<SelectScrollInfiniteProduct allowClear={false} disabled={deleted}/>
 				</Form.Item>
 			</Col>
 			
 			<Col span={isMobile ? 24 : 5}>
 				<Form.Item
-					{...restField}
+					{...props}
 					name={[name, 'quantity']}
 					label="Quantité"
 					rules={[{required: true}]}
 				>
-					<InputNumber min={0.000001} className='!w-full'/>
+					<InputNumber min={0.000001} className='!w-full' disabled={deleted}/>
 				</Form.Item>
 			</Col>
 			
 			<Col span={isMobile ? 24 : 6}>
 				<Form.Item
-					{...restField}
+					{...props}
 					name={[name, 'unit']}
 					label="Unité"
 				>
 					<SelectUnitEquivalence
 						labelInValue={true}
 						unitEquivalences={productFormBd?.unit_equivalences || []}
+						disabled={deleted}
 					/>
 				</Form.Item>
 			</Col>
 			
 			<Col span={isMobile ? 24 : 5}>
 				<Form.Item
-					{...restField}
+					{...props}
 					name={[name, 'unit_price']}
 					label="Prix unitaire"
 					rules={[{required: true}]}
 				>
-					<InputNumber min={1} className='!w-full'/>
+					<InputNumber min={1} className='!w-full' disabled={deleted}/>
 				</Form.Item>
 			</Col>
 			
+			{
+				purchase && <>
+			<Form.Item name='id' noStyle/>
+			<Form.Item name='deleted' noStyle/>
+		  </>
+			}
+			
 			<Flex justify='center' className='!m-auto'>
-				<Button
-					icon={<IoIosRemoveCircle/>}
-					onClick={() => remove(name)}
-					color="danger"
-					variant="dashed"
-					className='!mt-1'
-				/>
+				{
+					deleted ? <Button
+							icon={<HiPlusCircle/>}
+							onClick={() => {
+								form.setFieldValue(['items', name, 'deleted'], false)
+							}}
+							color="green"
+							variant="dashed"
+							className='!mt-1'
+						/> :
+						<Button
+							icon={<IoIosRemoveCircle/>}
+							onClick={() => {
+								if (purchase && form.getFieldValue(['items', name, 'id'])) {
+									form.setFieldValue(['items', name, 'deleted'], true)
+								} else {
+									remove(name)
+								}
+							}}
+							color="danger"
+							variant="dashed"
+							className='!mt-1'
+						/>
+				}
 			</Flex>
 		</Row>
 	);

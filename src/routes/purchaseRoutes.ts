@@ -21,6 +21,10 @@ const purchaseRoutes: RouteObject[] = [
 				path: 'create',
 				Component: lazy(() => import("../components/pages/purchases/PurchaseCreatePage.tsx"))
 			},
+			{
+				path: ':purchase/edit',
+				Component: lazy(() => import("../components/pages/purchases/PurchaseUpdatePage.tsx"))
+			},
 		],
 	},
 ]
@@ -46,7 +50,15 @@ export const useRoutesPurchase = () => {
 			
 			setSidebar({field: 'title', value: 'Détails achat'})
 			return navigate(`/${user?.userable.slug}/purchases/${id}/show`)
-		}
+		},
+		goToUpdate: ({row, id}: { row?: PurchaseInterface, id?: number }) => {
+			if (!id && row) {
+				id = row.id
+			}
+			
+			setSidebar({field: 'title', value: "Édition d'achat"})
+			return navigate(`/${user?.userable.slug}/purchases/${id}/edit`)
+		},
 	}
 }
 

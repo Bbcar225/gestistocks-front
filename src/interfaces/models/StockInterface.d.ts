@@ -13,5 +13,7 @@ interface StockFormDataInterface {
 	warehouse_id: number
 	price: number
 	active: boolean
-	quantity: number
+	quantity: number,
+	product?: BaseOptionType,
+	purchase_price?: number
 }

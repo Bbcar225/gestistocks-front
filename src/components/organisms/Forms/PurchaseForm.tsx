@@ -19,7 +19,7 @@ import {successCreate, successDelete, successUpdate} from "../../../constants/te
 import {HiPlusCircle} from "react-icons/hi";
 
 export default function PurchaseForm({onSuccess, purchase, ...props}: {
-	onSuccess?: () => void;
+	onSuccess?: (data?: { purchase?: PurchaseInterface }) => void;
 	purchase?: PurchaseInterface
 }) {
 	const [form] = Form.useForm();
@@ -141,7 +141,7 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 			})
 			
 			form.resetFields()
-			onSuccess?.()
+			onSuccess?.({purchase: res.data})
 		}
 	}, [notificationInstance, form, reqPurchaseCreate.data, reqPurchaseCreate.isSuccess]);
 	

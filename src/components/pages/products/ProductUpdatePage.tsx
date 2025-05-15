@@ -95,6 +95,7 @@ export default function ProductUpdatePage() {
 					<Col span={24}>
 						<StockForm
 							onSuccess={() => goToProductShow(product)}
+							product={product}
 						/>
 					</Col>
 				</Row> :

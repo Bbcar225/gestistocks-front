@@ -178,6 +178,7 @@ const PurchaseItems = ({items, ...props}: { items: PurchaseItem[] }) => {
 		dataSource={items}
 		className="text-nowrap"
 		scroll={{x: true}}
+		rowKey={(record) => record.id}
 		{...props}
 	/>
 }

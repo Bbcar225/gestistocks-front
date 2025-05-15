@@ -63,6 +63,7 @@ export default function ProductIndexPage() {
 					<Col span={24}>
 						<StockForm
 							onSuccess={() => goToProductShow(product)}
+							product={product}
 						/>
 					</Col>
 				</Row> :

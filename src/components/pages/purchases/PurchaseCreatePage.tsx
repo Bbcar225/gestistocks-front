@@ -5,7 +5,6 @@ import PurchaseForm from "../../organisms/Forms/PurchaseForm.tsx";
 import StockForm from "../../organisms/Forms/StockForm.tsx";
 import {usePurchaseGetOne} from "../../../hooks/Api/tenant/PurchaseHookAPI.ts";
 import {useRoutesPurchase} from "../../../routes/purchaseRoutes.ts";
-import {isMobile} from "react-device-detect";
 
 export default function PurchaseCreatePage() {
 	const {setSidebar} = useAppStore()
@@ -57,7 +56,7 @@ export default function PurchaseCreatePage() {
 	return <Row>
 		<Col span={24}>
 			<Card
-				title={<Steps current={current} items={items}/>}
+				title={<Steps className='!mt-2' current={current} items={items}/>}
 			>
 				{steps[current].content}
 			</Card>

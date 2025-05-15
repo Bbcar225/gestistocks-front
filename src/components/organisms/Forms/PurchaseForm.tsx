@@ -405,6 +405,8 @@ const PurchaseItemRow = ({name, remove, form, isMobile, purchase, ...props}: {
 						/>
 				}
 			</Flex>
+			
+			<Divider/>
 		</Row>
 	);
 }

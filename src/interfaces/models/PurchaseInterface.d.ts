@@ -18,23 +18,36 @@ interface PurchaseFormDataInterface {
 	date: string
 }
 
+type PurchaseUpdateFormDataInterface = Pick<PurchaseFormDataInterface, 'supplier_id' | 'date' | 'reference'>;
+
 interface PurchaseItemFormDataInterface {
 	product_id: number
 	unit_id: number
 	quantity: number
 	unit_price: number
+	id?: number
+}
+
+interface PurchaseItemWriteFormData {
+	items: PurchaseItemFormDataInterface[]
+}
+
+interface PurchaseItemRemoveFormData {
+	items: number[]
 }
 
 interface PurchaseCartInterface {
 	supplier?: BaseOptionType,
 	reference?: string,
 	items?: PurchaseItemCartItemInterface[],
-	date?: string
+	date?: string,
 }
 
 interface PurchaseItemCartItemInterface {
 	product?: BaseOptionType,
 	unit?: BaseOptionType,
 	quantity?: number,
-	unit_price?: number
+	unit_price?: number,
+	deleted?: boolean,
+	id?: number
 }

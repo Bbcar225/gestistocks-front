@@ -9,9 +9,13 @@ import SelectScrollInfiniteProduct from "../../molecules/Selects/SelectScrollInf
 import SelectUnitEquivalence from "../../molecules/Selects/SelectUnitEquivalence.tsx";
 import {IoIosRemoveCircle} from "react-icons/io";
 import {FaCirclePlus} from "react-icons/fa6";
-import {usePurchaseCreate} from "../../../hooks/Api/tenant/PurchaseHookAPI.ts";
+import {
+	usePurchaseCreate,
+	usePurchaseItemsCreate, usePurchaseItemsRemove, usePurchaseItemsUpdate,
+	usePurchaseUpdate
+} from "../../../hooks/Api/tenant/PurchaseHookAPI.ts";
 import {config} from "../../../constants/notifcationConstant.ts";
-import {successCreate} from "../../../constants/textsConstant.ts";
+import {successCreate, successDelete, successUpdate} from "../../../constants/textsConstant.ts";
 import {HiPlusCircle} from "react-icons/hi";
 
 export default function PurchaseForm({onSuccess, purchase, ...props}: {
@@ -21,6 +25,12 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 	const [form] = Form.useForm();
 	const reqPurchaseCreate = usePurchaseCreate()
 	const [notificationInstance, contextHolder] = notification.useNotification(config);
+	const purchaseId = Number(purchase?.id)
+	const reqPurchaseUpdate = usePurchaseUpdate(purchaseId)
+	const reqPurchaseItemsCreate = usePurchaseItemsCreate(purchaseId)
+	const reqPurchaseItemsUpdate = usePurchaseItemsUpdate(purchaseId)
+	const reqPurchaseItemsRemove = usePurchaseItemsRemove(purchaseId)
+	const isLoading = reqPurchaseCreate.isLoading || reqPurchaseUpdate.isLoading || reqPurchaseItemsCreate.isLoading || reqPurchaseItemsUpdate.isLoading || reqPurchaseItemsRemove.isLoading
 	
 	const handleFinish = (values: PurchaseCartInterface) => {
 		if (values?.items && values?.items?.length <= 0) {
@@ -44,30 +54,77 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 		}
 		
 		if (purchase) {
-			const purchaseData: Pick<PurchaseFormDataInterface, 'supplier_id' | 'date' | 'reference'> = {
+			const purchaseData: PurchaseUpdateFormDataInterface = {
 				date: formData.date,
 				reference: formData.reference,
 				supplier_id: formData.supplier_id
 			}
+			reqPurchaseUpdate.mutate(purchaseData, {
+				onSuccess: (res) => {
+					notificationInstance.success({
+						message: res.message,
+						description: `${successUpdate} pour les informations.`
+					})
+					onSuccess?.()
+				}
+			})
 			
-			const itemsDeleted = values.items?.filter((item) => item.deleted).map(item => item.id)
-			const itemsUpdated = values.items?.filter((item) => !item.deleted).map(item => {
-				return {
-					id: item.id,
-					product_id: Number(item?.product?.value),
-					unit_id: Number(item?.unit?.value),
-					quantity: Number(item?.quantity),
-					unit_price: Number(item?.unit_price),
+			if (values?.items && values?.items?.length > 0) {
+				const newItems: PurchaseItemFormDataInterface[] = values.items?.filter((item) => !item.id).map(item => {
+					return {
+						product_id: Number(item?.product?.value),
+						unit_id: Number(item?.unit?.value),
+						quantity: Number(item?.quantity),
+						unit_price: Number(item?.unit_price),
+					}
+				})
+				if (newItems && newItems?.length > 0) {
+					reqPurchaseItemsCreate.mutate({items: newItems}, {
+						onSuccess: (res) => {
+							notificationInstance.success({
+								message: res.message,
+								description: `${successCreate} pour les produits.`
+							})
+							onSuccess?.()
+						}
+					})
 				}
-			})
-			const itemsNew = values.items?.filter((item) => !item.id).map(item => {
-				return {
-					product_id: Number(item?.product?.value),
-					unit_id: Number(item?.unit?.value),
-					quantity: Number(item?.quantity),
-					unit_price: Number(item?.unit_price),
+				
+				const itemsUpdated: PurchaseItemFormDataInterface[] = values.items?.filter((item) => !item.deleted && item.id).map(item => {
+					return {
+						id: item.id,
+						product_id: Number(item?.product?.value),
+						unit_id: Number(item?.unit?.value),
+						quantity: Number(item?.quantity),
+						unit_price: Number(item?.unit_price),
+					}
+				})
+				if (itemsUpdated && itemsUpdated?.length > 0) {
+					reqPurchaseItemsUpdate.mutate({items: itemsUpdated}, {
+						onSuccess: (res) => {
+							notificationInstance.success({
+								message: res.message,
+								description: `${successUpdate} pour les produits.`
+							})
+							onSuccess?.()
+						}
+					})
 				}
-			})
+				
+				const itemsDeleted: number[] = values.items?.filter((item) => item.deleted).map(item => Number(item.id))
+				if (itemsDeleted && itemsDeleted?.length > 0) {
+					reqPurchaseItemsRemove.mutate({items: itemsDeleted}, {
+						onSuccess: (res) => {
+							notificationInstance.success({
+								message: res.message,
+								description: `${successDelete} pour les produits.`
+							})
+							onSuccess?.()
+						}
+					})
+				}
+			}
+			
 			return
 		}
 		
@@ -224,7 +281,7 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 					type="primary"
 					htmlType="submit"
 					className='w-1/2'
-					loading={reqPurchaseCreate.isLoading}
+					loading={isLoading}
 				>
 					Valider
 				</Button>

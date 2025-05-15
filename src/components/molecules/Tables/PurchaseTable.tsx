@@ -54,7 +54,7 @@ export default function PurchaseTable({purchases, loading = false, ...props}: {
 					key: "Nombre de produit",
 					title: "Nombre de produit",
 					render: (_, row) => {
-						return row.items_count
+						return `${row.items_count} produit(s)`
 					}
 				},
 				{

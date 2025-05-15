@@ -1,14 +1,16 @@
 import service from "../../providers/AxiosProvider.ts";
 
 const purchaseItemService = {
-	Create: () => {
-	
+	CreateItems: (purchaseId: number, data: PurchaseItemWriteFormData): Promise<ResponseApiInterface<PurchaseInterface>> => {
+		return service.post(`/tenant/purchases/${purchaseId}/items/add`, data)
 	},
-	Update: () => {
-	
+	UpdateItems: (purchaseId: number, data: PurchaseItemWriteFormData): Promise<ResponseApiInterface<PurchaseInterface>> => {
+		return service.put(`/tenant/purchases/${purchaseId}/items/update`, data)
 	},
-	Remove: () => {
-	
+	RemoveItems: (purchaseId: number, data: PurchaseItemRemoveFormData): Promise<ResponseApiInterface<PurchaseInterface>> => {
+		return service.delete(`/tenant/purchases/${purchaseId}/items/remove`, {
+			data
+		})
 	}
 }
 
@@ -21,7 +23,11 @@ const purchaseService = {
 	},
 	GetOne: (id: number): Promise<ResponseApiInterface<PurchaseInterface>> => {
 		return service.get(`/tenant/purchases/${id}`)
-	}
+	},
+	Update: (id: number, data: PurchaseUpdateFormDataInterface): Promise<ResponseApiInterface<PurchaseInterface>> => {
+		return service.put(`/tenant/purchases/${id}`, data)
+	},
+	...purchaseItemService
 }
 
 export default purchaseService

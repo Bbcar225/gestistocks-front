@@ -3,10 +3,11 @@ import {useEffect, useState} from "react";
 import {filterOptionSelect} from "../../../utils/formUtils.ts";
 import {useProductGetAllUnitEquivalence} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
 
-export default function SelectUnitEquivalence({productId, labelInValue = false, unitEquivalences, ...props}: {
+export default function SelectUnitEquivalence({productId, labelInValue = false, unitEquivalences, disabled, ...props}: {
 	productId?: number,
 	labelInValue?: boolean,
-	unitEquivalences?: UnitEquivalenceInterface[]
+	unitEquivalences?: UnitEquivalenceInterface[],
+	disabled?: boolean
 }) {
 	const [enabled, setEnable] = useState<boolean>(false);
 	const reqGetData = useProductGetAllUnitEquivalence({
@@ -52,7 +53,7 @@ export default function SelectUnitEquivalence({productId, labelInValue = false, 
 	
 	return <Select
 		loading={reqGetData.isLoading}
-		disabled={reqGetData.isLoading}
+		disabled={reqGetData.isLoading || disabled}
 		options={options}
 		showSearch
 		filterOption={filterOptionSelect}

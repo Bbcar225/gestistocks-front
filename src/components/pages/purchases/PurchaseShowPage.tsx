@@ -6,8 +6,7 @@ import {
 	Button,
 	Card,
 	Col,
-	Descriptions,
-	DescriptionsProps, Flex,
+	Flex,
 	Image,
 	Row,
 	Spin,
@@ -15,7 +14,6 @@ import {
 	Typography
 } from "antd";
 import Link from "antd/es/typography/Link";
-import SupplierFormModal from "../../organisms/Modals/SupplierFormModal.tsx";
 import {useSupplierStore} from "../../../store/useSupplierStore.ts";
 import dayjs from "dayjs";
 import {formatDate} from "../../../constants/dateConstant.ts";
@@ -26,7 +24,6 @@ import {FaEdit} from "react-icons/fa";
 import {useRoutesPurchase} from "../../../routes/purchaseRoutes.ts";
 import {formatPrice} from "../../../utils/priceUtils.ts";
 import {useRoutesProduct} from "../../../routes/productRoutes.ts";
-import {isMobile} from "react-device-detect";
 
 export default function PurchaseShowPage() {
 	const {setSidebar} = useAppStore()

@@ -12,6 +12,7 @@ import productRoutes from "./productRoutes.ts";
 import warehouseRoutes from "./warehouseRoutes.ts";
 import supplierRoutes from "./supplierRoutes.ts";
 import purchaseRoutes from "./purchaseRoutes.ts";
+import customerRoutes from "./customerRoutes.ts";
 
 const index: RouteObject[] = [
 	{
@@ -45,6 +46,7 @@ const index: RouteObject[] = [
 	...warehouseRoutes,
 	...supplierRoutes,
 	...purchaseRoutes,
+	...customerRoutes,
 ]
 
 export const useRoutesIndex = () => {

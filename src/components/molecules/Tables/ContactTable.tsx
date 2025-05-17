@@ -80,8 +80,8 @@ export default function ContactTable({contacts, ...props}: { contacts: ContactIn
 			}}
 			{...props}
 		/>
-		{supplier &&
-		<ContactFormModal
+		{
+			supplier && <ContactFormModal
 			openModal={isModalOpen}
 			onClose={() => {
 							setIsModalOpen(false)

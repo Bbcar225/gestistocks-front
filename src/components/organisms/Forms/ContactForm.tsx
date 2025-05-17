@@ -5,6 +5,9 @@ import {useSupplierCreateContact, useSupplierUpdateContact} from "../../../hooks
 import {useSupplierStore} from "../../../store/useSupplierStore.ts";
 import {useEffect} from "react";
 import {successCreate, successUpdate} from "../../../constants/textsConstant.ts";
+import {isMobile} from "react-device-detect";
+import {useCustomerStore} from "../../../store/useCustomerStore.ts";
+import {useCustomerCreateContact} from "../../../hooks/Api/tenant/CustomerHookAPI.ts";
 
 export function ContactForm({onSuccess, contact, ...props}: {
 	onSuccess?: (data?: { contact?: ContactInterface }) => void,
@@ -15,6 +18,8 @@ export function ContactForm({onSuccess, contact, ...props}: {
 	const {supplier} = useSupplierStore()
 	const reqSupplierCreateContact = useSupplierCreateContact(Number(supplier?.id))
 	const reqSupplierUpdateContact = useSupplierUpdateContact(Number(supplier?.id), Number(contact?.id))
+	const {customer} = useCustomerStore()
+	const reqCustomerCreateContact = useCustomerCreateContact(Number(customer?.id))
 	
 	const handleFinish = (values: ContactFormData) => {
 		const formData: ContactFormData = {
@@ -26,11 +31,17 @@ export function ContactForm({onSuccess, contact, ...props}: {
 			delete formData.position
 		}
 		
-		if (contact) {
-			return reqSupplierUpdateContact.mutate(formData)
+		if (supplier) {
+			if (contact) {
+				return reqSupplierUpdateContact.mutate(formData)
+			}
+			
+			return reqSupplierCreateContact.mutate(formData)
 		}
 		
-		return reqSupplierCreateContact.mutate(formData)
+		if (customer) {
+			return reqCustomerCreateContact.mutate(formData)
+		}
 	}
 	
 	useEffect(() => {
@@ -52,6 +63,21 @@ export function ContactForm({onSuccess, contact, ...props}: {
 			onSuccess?.({contact: reqSupplierUpdateContact.data?.data})
 		}
 	}, [form, notificationInstance, reqSupplierUpdateContact.data, reqSupplierUpdateContact.status]);
+	
+	useEffect(() => {
+		if (reqCustomerCreateContact.status === 'success') {
+			const res = reqCustomerCreateContact.data
+			
+			notificationInstance.success({
+				message: res.message,
+				description: successCreate
+			})
+			
+			form.resetFields()
+			
+			onSuccess?.({contact: res.data})
+		}
+	}, [form, notificationInstance, reqCustomerCreateContact.data, reqCustomerCreateContact.status]);
 	
 	useEffect(() => {
 		if (contact) {
@@ -77,8 +103,8 @@ export function ContactForm({onSuccess, contact, ...props}: {
 		{...props}
 	>
 		{contextHolder}
-		<Row gutter={[0, 0]}>
-			<Col span={24}>
+		<Row gutter={isMobile ? 0 : [12, 12]}>
+			<Col span={isMobile ? 24 : 12}>
 				<Form.Item<ContactFormData>
 					label="Nom complet"
 					name="name"
@@ -88,7 +114,7 @@ export function ContactForm({onSuccess, contact, ...props}: {
 				</Form.Item>
 			</Col>
 			
-			<Col span={24}>
+			<Col span={isMobile ? 24 : 12}>
 				<Form.Item<ContactFormData>
 					label="Numéro de téléphone"
 					name="phoneNumber"
@@ -98,7 +124,7 @@ export function ContactForm({onSuccess, contact, ...props}: {
 				</Form.Item>
 			</Col>
 			
-			<Col span={24}>
+			<Col span={isMobile ? 24 : 12}>
 				<Form.Item<ContactFormData>
 					label="Poste"
 					name="position"
@@ -109,7 +135,7 @@ export function ContactForm({onSuccess, contact, ...props}: {
 				</Form.Item>
 			</Col>
 			
-			<Col span={24}>
+			<Col span={isMobile ? 24 : 12}>
 				<Form.Item<ContactFormData>
 					label="WhatsApp"
 					name="is_whatsapp"

@@ -17,6 +17,8 @@ import {useRoutesWarehouse} from "../../routes/warehouseRoutes.ts";
 import {TbUserDollar} from "react-icons/tb";
 import {useRoutesSupplier} from "../../routes/supplierRoutes.ts";
 import {useRoutesPurchase} from "../../routes/purchaseRoutes.ts";
+import {FaUsersViewfinder} from "react-icons/fa6";
+import {useRoutesCustomer} from "../../routes/customerRoutes.ts";
 
 type MenuItem = {
 	key: string;
@@ -39,6 +41,7 @@ export function Menus({collapsed, setCollapsed}: {
 	const routesWarehouse = useRoutesWarehouse()
 	const routesSupplier = useRoutesSupplier()
 	const routesPurchase = useRoutesPurchase()
+	const routesCustomer = useRoutesCustomer()
 	
 	const location = useLocation();
 	const currentPath = location.pathname;
@@ -137,6 +140,16 @@ export function Menus({collapsed, setCollapsed}: {
 					},
 				},
 			],
+		},
+		{
+			key: "6",
+			icon: <FaUsersViewfinder/>,
+			label: "Client",
+			pathmatch: "/customers",
+			onClick: () => {
+				if (isMobile) setCollapsed(!collapsed);
+				routesCustomer.goToIndex();
+			},
 		},
 	];
 	

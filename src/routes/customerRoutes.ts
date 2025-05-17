@@ -17,6 +17,10 @@ const customerRoutes: RouteObject[] = [
 				path: 'create',
 				Component: lazy(() => import("../components/pages/customers/CustomerCreatePage.tsx"))
 			},
+			{
+				path: ':customer/show',
+				Component: lazy(() => import("../components/pages/customers/CustomerShowPage.tsx"))
+			},
 		],
 	},
 ]

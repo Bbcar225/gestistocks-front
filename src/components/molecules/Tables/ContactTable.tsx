@@ -9,11 +9,13 @@ import {useSupplierStore} from "../../../store/useSupplierStore.ts";
 import {notDefined} from "../../../constants/textsConstant.ts";
 import ContactFormModal from "../../organisms/Modals/ContactFormModal.tsx";
 import {IoLogoWhatsapp} from "react-icons/io";
+import {useCustomerStore} from "../../../store/useCustomerStore.ts";
 
 export default function ContactTable({contacts, ...props}: { contacts: ContactInterface[] }) {
 	const {setContact} = useContactStore()
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const {supplier} = useSupplierStore()
+	const {customer} = useCustomerStore()
 	
 	return <>
 		<Table
@@ -85,7 +87,7 @@ export default function ContactTable({contacts, ...props}: { contacts: ContactIn
 			{...props}
 		/>
 		{
-			supplier && <ContactFormModal
+			supplier || customer && <ContactFormModal
 			openModal={isModalOpen}
 			onClose={() => {
 							setIsModalOpen(false)

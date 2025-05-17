@@ -7,7 +7,7 @@ import {useCustomerStore} from "../../../store/useCustomerStore.ts";
 export default function ContactFormModal({openModal, onClose, onSuccess, ...props}: {
 	openModal: boolean,
 	onClose: () => void,
-	onSuccess?: () => void
+	onSuccess?: (data?: { contact?: ContactInterface }) => void
 }) {
 	const {contact} = useContactStore()
 	const {updateContactOfSupplier, supplier} = useSupplierStore()
@@ -30,7 +30,7 @@ export default function ContactFormModal({openModal, onClose, onSuccess, ...prop
 					}
 				}
 				
-				onSuccess?.()
+				onSuccess?.({contact: data?.contact})
 			}}
 		/>
 	</Modal>

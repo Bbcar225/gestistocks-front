@@ -7,7 +7,7 @@ import {useEffect} from "react";
 import {successCreate, successUpdate} from "../../../constants/textsConstant.ts";
 import {isMobile} from "react-device-detect";
 import {useCustomerStore} from "../../../store/useCustomerStore.ts";
-import {useCustomerCreateContact} from "../../../hooks/Api/tenant/CustomerHookAPI.ts";
+import {useCustomerCreateContact, useCustomerUpdateContact} from "../../../hooks/Api/tenant/CustomerHookAPI.ts";
 
 export function ContactForm({onSuccess, contact, ...props}: {
 	onSuccess?: (data?: { contact?: ContactInterface }) => void,
@@ -20,7 +20,8 @@ export function ContactForm({onSuccess, contact, ...props}: {
 	const reqSupplierUpdateContact = useSupplierUpdateContact(Number(supplier?.id), Number(contact?.id))
 	const {customer} = useCustomerStore()
 	const reqCustomerCreateContact = useCustomerCreateContact(Number(customer?.id))
-	const isLoading = reqSupplierCreateContact.isLoading || reqSupplierUpdateContact.isLoading || reqCustomerCreateContact.isLoading
+	const reqCustomerUpdateContact = useCustomerUpdateContact(Number(customer?.id), Number(contact?.id))
+	const isLoading = reqSupplierCreateContact.isLoading || reqSupplierUpdateContact.isLoading || reqCustomerCreateContact.isLoading || reqCustomerUpdateContact.isLoading
 	
 	const handleFinish = (values: ContactFormData) => {
 		const formData: ContactFormData = {
@@ -41,6 +42,10 @@ export function ContactForm({onSuccess, contact, ...props}: {
 		}
 		
 		if (customer) {
+			if (contact) {
+				return reqCustomerUpdateContact.mutate(formData)
+			}
+			
 			return reqCustomerCreateContact.mutate(formData)
 		}
 	}
@@ -79,6 +84,19 @@ export function ContactForm({onSuccess, contact, ...props}: {
 			onSuccess?.({contact: res.data})
 		}
 	}, [form, notificationInstance, reqCustomerCreateContact.data, reqCustomerCreateContact.status]);
+	
+	useEffect(() => {
+		if (reqCustomerUpdateContact.status === 'success') {
+			const res = reqCustomerUpdateContact.data
+			
+			notificationInstance.success({
+				message: res.message,
+				description: successUpdate
+			})
+			
+			onSuccess?.({contact: res.data})
+		}
+	}, [form, notificationInstance, reqCustomerUpdateContact.data, reqCustomerUpdateContact.status]);
 	
 	useEffect(() => {
 		if (contact) {

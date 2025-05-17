@@ -26,8 +26,8 @@ export default function CustomerShowPage() {
 	const queryClient = useQueryClient()
 	
 	useEffect(() => {
-		setSidebar({field: 'title', value: 'Détails clients'})
-	}, [setSidebar]);
+		setSidebar({field: 'title', value: `Détails clients ${customer ? `: ${customer?.name}` : ''}`})
+	}, [customer, setSidebar]);
 	
 	useEffect(() => {
 		if (reqCustomerGetOne.isSuccess) {
@@ -82,7 +82,9 @@ export default function CustomerShowPage() {
 				onClose={() => {
 					setOpenModal(false)
 				}}
-				onSuccess={() => queryClient.invalidateQueries(customerQueriesClients.useCustomerGetOne)}
+				onSuccess={() => {
+					queryClient.invalidateQueries(customerQueriesClients.useCustomerGetOne).then()
+				}}
 			/>
 		</Row>
 	</Spin>

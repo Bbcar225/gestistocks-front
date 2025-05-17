@@ -48,7 +48,7 @@ export function Menus({collapsed, setCollapsed}: {
 	
 	const items: MenuItem[] = [
 		{
-			key: "1",
+			key: "Tableau de bord",
 			icon: <AiFillDashboard/>,
 			label: "Tableau de bord",
 			pathmatch: "/dashboard",
@@ -58,12 +58,32 @@ export function Menus({collapsed, setCollapsed}: {
 			},
 		},
 		{
-			key: "2",
+			key: "Client",
+			icon: <FaUsersViewfinder/>,
+			label: "Client",
+			pathmatch: "/customers",
+			onClick: () => {
+				if (isMobile) setCollapsed(!collapsed);
+				routesCustomer.goToIndex();
+			},
+		},
+		{
+			key: "Fournisseurs",
+			icon: <TbUserDollar/>,
+			label: "Fournisseurs",
+			pathmatch: "/suppliers",
+			onClick: () => {
+				if (isMobile) setCollapsed(!collapsed);
+				routesSupplier.goToIndex();
+			},
+		},
+		{
+			key: "Catalogue",
 			label: "Catalogue",
 			icon: <GrCatalog/>,
 			children: [
 				{
-					key: "21",
+					key: "Unités",
 					label: "Unités",
 					icon: <MdAcUnit/>,
 					pathmatch: "/units",
@@ -73,7 +93,7 @@ export function Menus({collapsed, setCollapsed}: {
 					},
 				},
 				{
-					key: "22",
+					key: "Catégories",
 					label: "Catégories",
 					icon: <BiSolidCategory/>,
 					pathmatch: "/categories",
@@ -83,7 +103,7 @@ export function Menus({collapsed, setCollapsed}: {
 					},
 				},
 				{
-					key: "23",
+					key: "Galeries",
 					label: "Galeries",
 					icon: <GrGallery/>,
 					pathmatch: "/galleries",
@@ -93,7 +113,7 @@ export function Menus({collapsed, setCollapsed}: {
 					},
 				},
 				{
-					key: "24",
+					key: "Produits",
 					label: "Produits",
 					icon: <RiProductHuntLine/>,
 					pathmatch: "/products",
@@ -105,22 +125,12 @@ export function Menus({collapsed, setCollapsed}: {
 			],
 		},
 		{
-			key: "4",
-			icon: <TbUserDollar/>,
-			label: "Fournisseurs",
-			pathmatch: "/suppliers",
-			onClick: () => {
-				if (isMobile) setCollapsed(!collapsed);
-				routesSupplier.goToIndex();
-			},
-		},
-		{
-			key: "5",
+			key: "Stocks",
 			label: "Stocks",
 			icon: <MdCalculate/>,
 			children: [
 				{
-					key: "51",
+					key: "Dépôts",
 					label: "Dépôts",
 					icon: <FaWarehouse/>,
 					pathmatch: "/warehouses",
@@ -130,7 +140,7 @@ export function Menus({collapsed, setCollapsed}: {
 					},
 				},
 				{
-					key: "52",
+					key: "Achats",
 					label: "Achats",
 					icon: <BiSolidPurchaseTag/>,
 					pathmatch: "/purchases",
@@ -140,16 +150,6 @@ export function Menus({collapsed, setCollapsed}: {
 					},
 				},
 			],
-		},
-		{
-			key: "6",
-			icon: <FaUsersViewfinder/>,
-			label: "Client",
-			pathmatch: "/customers",
-			onClick: () => {
-				if (isMobile) setCollapsed(!collapsed);
-				routesCustomer.goToIndex();
-			},
 		},
 	];
 	

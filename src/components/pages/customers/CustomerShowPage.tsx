@@ -8,6 +8,7 @@ import {isMobile} from "react-device-detect";
 import dayjs from "dayjs";
 import {formatDate} from "../../../constants/dateConstant.ts";
 import {useRoutesCustomer} from "../../../routes/customerRoutes.ts";
+import ContactTable from "../../molecules/Tables/ContactTable.tsx";
 
 export default function CustomerShowPage() {
 	const {setSidebar} = useAppStore()
@@ -30,7 +31,7 @@ export default function CustomerShowPage() {
 		}
 	}, [reqCustomerGetOne.data, reqCustomerGetOne.isSuccess]);
 	
-	return <Row>
+	return <Row gutter={[12, 12]}>
 		<Col span={24}>
 			<Card
 				title={<>
@@ -49,41 +50,47 @@ export default function CustomerShowPage() {
 				{customer && <CustomerDescriptions customer={customer}/>}
 			</Card>
 		</Col>
+		
+		<Col span={24}>
+			<Card
+				title='Contacts du client'
+			>
+				{customer && <ContactTable contacts={customer.contacts || []}/>}
+			</Card>
+		</Col>
 	</Row>
 }
 
 export const CustomerDescriptions = ({customer}: { customer: CustomerInterface }) => {
 	const items: DescriptionsProps['items'] = [
 		{
-			key: '1',
+			label: 'ID',
+			children: <p>{customer.id}</p>,
+		},
+		{
 			label: 'Nom complet',
 			children: <p>{customer.name}</p>,
 		},
 		{
-			key: '2',
 			label: 'Pays',
 			children: <p>{customer.country}</p>,
 		},
 		{
-			key: '3',
 			label: 'Ville',
 			children: <p>{customer.city}</p>,
 		},
 		{
-			key: '4',
 			label: 'Adresse',
 			children: <p>{customer.address}</p>,
 		},
 		{
-			key: '5',
 			label: 'Date',
 			children: <p>{dayjs(customer.created_at).format(formatDate)}</p>,
 		},
 	];
 	
 	return <Descriptions
-		items={items}
+		items={items.map((item, index) => ({...item, key: index}))}
 		column={isMobile ? 1 : 3}
 	/>;
 }
-

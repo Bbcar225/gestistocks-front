@@ -10,12 +10,15 @@ import {notDefined} from "../../../constants/textsConstant.ts";
 import ContactFormModal from "../../organisms/Modals/ContactFormModal.tsx";
 import {IoLogoWhatsapp} from "react-icons/io";
 import {useCustomerStore} from "../../../store/useCustomerStore.ts";
+import {useQueryClient} from "react-query";
+import {customerQueriesClients} from "../../../hooks/Api/tenant/CustomerHookAPI.ts";
 
 export default function ContactTable({contacts, ...props}: { contacts: ContactInterface[] }) {
 	const {setContact} = useContactStore()
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const {supplier} = useSupplierStore()
 	const {customer} = useCustomerStore()
+	const queryClient = useQueryClient()
 	
 	return <>
 		<Table
@@ -92,6 +95,11 @@ export default function ContactTable({contacts, ...props}: { contacts: ContactIn
 			onClose={() => {
 							setIsModalOpen(false)
 							setContact(undefined)
+						}}
+			onSuccess={() => {
+							if (customer) {
+								queryClient.invalidateQueries(customerQueriesClients.useCustomerGetOne).then()
+							}
 						}}
 		/>}
 	</>

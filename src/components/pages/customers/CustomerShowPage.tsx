@@ -73,7 +73,7 @@ export default function CustomerShowPage() {
 						</Button>
 					</>}
 				>
-					{customer && <ContactTable contacts={customer.contacts || []}/>}
+					{customer && <ContactTable contacts={customer?.contacts || []}/>}
 				</Card>
 			</Col>
 			

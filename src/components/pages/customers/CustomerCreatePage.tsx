@@ -38,7 +38,7 @@ export default function CustomerCreatePage() {
 			/>,
 		},
 		{
-			title: 'Détails',
+			title: 'Résumé',
 			content: <Row>
 				<Col span={24}>
 					{customer && <CustomerDescriptions customer={customer}/>}

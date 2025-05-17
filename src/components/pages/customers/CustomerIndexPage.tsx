@@ -13,13 +13,14 @@ import {useRoutesCustomer} from "../../../routes/customerRoutes.ts";
 export default function CustomerIndexPage() {
 	const {setSidebar} = useAppStore()
 	const [customers, setCustomers] = useState<CustomerInterface[]>([])
-	const {pagination, queryParams, setFieldPagination, setFieldQueryParams} = useCustomerStore()
+	const {pagination, queryParams, setFieldPagination, setFieldQueryParams, setCustomer} = useCustomerStore()
 	const reqCustomerGetAll = useCustomerGetAll({queryParams})
 	const routesCustomer = useRoutesCustomer()
 	
 	useEffect(() => {
 		setSidebar({field: 'title', value: 'Clients'})
-	}, [setSidebar]);
+		setCustomer(undefined)
+	}, [setCustomer, setSidebar]);
 	
 	useEffect(() => {
 		if (reqCustomerGetAll.isSuccess) {

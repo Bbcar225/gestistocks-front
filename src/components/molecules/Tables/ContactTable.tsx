@@ -8,6 +8,7 @@ import useContactStore from "../../../store/useContactStore.ts";
 import {useSupplierStore} from "../../../store/useSupplierStore.ts";
 import {notDefined} from "../../../constants/textsConstant.ts";
 import ContactFormModal from "../../organisms/Modals/ContactFormModal.tsx";
+import {IoLogoWhatsapp} from "react-icons/io";
 
 export default function ContactTable({contacts, ...props}: { contacts: ContactInterface[] }) {
 	const {setContact} = useContactStore()
@@ -38,7 +39,10 @@ export default function ContactTable({contacts, ...props}: { contacts: ContactIn
 						return <Link
 							href={`tel:${row.phoneNumber}`}
 						>
-							{row.phoneNumber}
+							<Space size="small">
+								{row.is_whatsapp ? <IoLogoWhatsapp color='green'/> : null}
+								{row.phoneNumber}
+							</Space>
 						</Link>
 					}
 				},

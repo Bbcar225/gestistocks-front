@@ -20,6 +20,7 @@ export function ContactForm({onSuccess, contact, ...props}: {
 	const reqSupplierUpdateContact = useSupplierUpdateContact(Number(supplier?.id), Number(contact?.id))
 	const {customer} = useCustomerStore()
 	const reqCustomerCreateContact = useCustomerCreateContact(Number(customer?.id))
+	const isLoading = reqSupplierCreateContact.isLoading || reqSupplierUpdateContact.isLoading || reqCustomerCreateContact.isLoading
 	
 	const handleFinish = (values: ContactFormData) => {
 		const formData: ContactFormData = {
@@ -149,7 +150,7 @@ export function ContactForm({onSuccess, contact, ...props}: {
 					type="primary"
 					htmlType="submit"
 					className='w-1/2'
-					loading={reqSupplierCreateContact.isLoading || reqSupplierUpdateContact.isLoading}
+					loading={isLoading}
 				>
 					Valider
 				</Button>

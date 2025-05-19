@@ -3,12 +3,16 @@ import ReactDOM from "react-dom/client";
 import {RouterProvider} from "react-router-dom";
 import {ReactQueryClientProvider} from "./providers/ReactQueryClientProvider.tsx";
 import SuspensePage from "./components/templates/SuspensePage.tsx";
-import {ConfigProvider} from "antd";
+import {ConfigProvider, notification} from "antd";
 import frFR from "antd/locale/fr_FR";
 import theme from "./theme.ts";
 import 'antd/dist/reset.css';
 import './index.css';
 import router from "./providers/ReactRouterProvider.tsx";
+
+notification.config({
+  maxCount: 1
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>

@@ -48,7 +48,7 @@ export default function CustomerShowPage() {
 							icon={<FaEdit/>}
 							onClick={() => {
 								if (customer) {
-									return routesCustomer.goToEdit({id: customer.id})
+									return routesCustomer.goToUpdate({id: customer.id})
 								}
 							}}
 						/>

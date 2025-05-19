@@ -21,6 +21,10 @@ const customerRoutes: RouteObject[] = [
 				path: ':customer/show',
 				Component: lazy(() => import("../components/pages/customers/CustomerShowPage.tsx"))
 			},
+			{
+				path: ':customer/update',
+				Component: lazy(() => import("../components/pages/customers/CustomerUpdatePage.tsx"))
+			},
 		],
 	},
 ]
@@ -39,13 +43,13 @@ export const useRoutesCustomer = () => {
 			setSidebar({field: 'title', value: 'Nouveau client'})
 			return navigate(`/${user?.userable.slug}/customers/create`)
 		},
-		goToEdit: ({customer, id}: { customer?: CustomerInterface, id?: number }) => {
+		goToUpdate: ({customer, id}: { customer?: CustomerInterface, id?: number }) => {
 			if (!id && customer) {
 				id = customer.id
 			}
 			
-			setSidebar({field: 'title', value: 'Édition de client'})
-			return navigate(`/${user?.userable.slug}/customers/${id}/edit`)
+			setSidebar({field: 'title', value: 'Mise à jour de client'})
+			return navigate(`/${user?.userable.slug}/customers/${id}/update`)
 		},
 		goToShow: ({customer, id}: { customer?: CustomerInterface, id?: number }) => {
 			if (!id && customer) {

@@ -72,14 +72,18 @@ export default function SupplierForm({onSuccess, ...props}: { onSuccess?: () => 
 		}
 	}, [form, supplier]);
 	
-	useEffect(() => {
-		form.setFieldValue('city', undefined);
-	}, [form, selectedCountry]);
-	
 	return <Form
 		form={form}
 		layout="vertical"
 		onFinish={handleFinish}
+		onValuesChange={(changedValues, values) => {
+			if (changedValues?.country) {
+				form.setFieldsValue({
+					...values,
+					city: undefined
+				})
+			}
+		}}
 		{...props}
 	>
 		<Row gutter={[12, 12]}>

@@ -22,7 +22,7 @@ const purchaseRoutes: RouteObject[] = [
 				Component: lazy(() => import("../components/pages/purchases/PurchaseCreatePage.tsx"))
 			},
 			{
-				path: ':purchase/edit',
+				path: ':purchase/update',
 				Component: lazy(() => import("../components/pages/purchases/PurchaseUpdatePage.tsx"))
 			},
 		],
@@ -57,7 +57,7 @@ export const useRoutesPurchase = () => {
 			}
 			
 			setSidebar({field: 'title', value: "Édition d'achat"})
-			return navigate(`/${user?.userable.slug}/purchases/${id}/edit`)
+			return navigate(`/${user?.userable.slug}/purchases/${id}/update`)
 		},
 	}
 }

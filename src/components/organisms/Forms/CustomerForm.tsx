@@ -9,7 +9,7 @@ import {useCustomerCreate, useCustomerUpdate} from "../../../hooks/Api/tenant/Cu
 import {useCustomerStore} from "../../../store/useCustomerStore.ts";
 
 export default function CustomerForm({onSuccess, ...props}: {
-	onSuccess?: (data?: { customer?: CustomerInterface }) => void;
+	onSuccess?: (data?: { customer?: CustomerInterface, message?: string }) => void;
 }) {
 	const [form] = Form.useForm();
 	const reqCustomerCreate = useCustomerCreate()
@@ -44,7 +44,7 @@ export default function CustomerForm({onSuccess, ...props}: {
 			
 			form.resetFields()
 			
-			onSuccess?.({customer: res.data})
+			onSuccess?.({customer: res.data, message: res.message})
 		}
 	}, [notificationInstance, form, reqCustomerCreate.data, reqCustomerCreate.isSuccess]);
 	
@@ -57,9 +57,7 @@ export default function CustomerForm({onSuccess, ...props}: {
 				description: successUpdate
 			})
 			
-			form.resetFields()
-			
-			onSuccess?.()
+			onSuccess?.({customer: res.data, message: res.message})
 		}
 	}, [notificationInstance, form, reqCustomerUpdate.data, reqCustomerUpdate.isSuccess]);
 	
@@ -76,14 +74,18 @@ export default function CustomerForm({onSuccess, ...props}: {
 		}
 	}, [form, customer]);
 	
-	useEffect(() => {
-		form.setFieldValue('city', undefined);
-	}, [form, selectedCountry]);
-	
 	return <Form
 		form={form}
 		layout="vertical"
 		onFinish={handleFinish}
+		onValuesChange={(changedValues, values) => {
+			if (changedValues?.country) {
+				form.setFieldsValue({
+					...values,
+					city: undefined
+				})
+			}
+		}}
 		{...props}
 	>
 		<Row gutter={[12, 12]}>

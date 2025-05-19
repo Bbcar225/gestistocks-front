@@ -10,8 +10,8 @@ interface CustomerInterface {
 }
 
 interface CustomerFormData {
-	name: string
-	country: string
-	city: string
+	name?: string
+	country?: string | string[]
+	city?: string | string[]
 	address?: string
 }

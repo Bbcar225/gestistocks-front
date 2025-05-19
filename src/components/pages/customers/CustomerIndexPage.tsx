@@ -100,7 +100,7 @@ export default function CustomerIndexPage() {
 							/>
 							<Button
 								icon={<FaEdit/>}
-								onClick={() => routesCustomer.goToEdit({id: row.id})}
+								onClick={() => routesCustomer.goToUpdate({id: row.id})}
 							/>
 						</Space>
 					},

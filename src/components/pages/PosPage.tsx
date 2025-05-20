@@ -53,7 +53,13 @@ export default function PosPage() {
 				</Col>
 				
 				<Col span={24}>
-					<Card>
+					<Card
+						styles={{
+							body: {
+								padding: '10px'
+							}
+						}}
+					>
 						<ProductsCard/>
 					</Card>
 				</Col>

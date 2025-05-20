@@ -1,9 +1,11 @@
 import {useProductGetAll} from "../../hooks/Api/tenant/ProductHookAPI.ts";
 import {useEffect, useState} from "react";
-import {Button, Card, Col, Flex, Form, Image, InputNumber, Modal, Row} from "antd";
+import {Button, Card, Col, Flex, Form, Image, InputNumber, Modal, Row, Space, Tag, Typography} from "antd";
 import Meta from "antd/es/card/Meta";
 import {isMobile} from "react-device-detect";
 import SelectUnitEquivalence from "./Selects/SelectUnitEquivalence.tsx";
+import {FaCartPlus} from "react-icons/fa";
+import {formatPrice} from "../../utils/priceUtils.ts";
 
 export default function ProductsCard() {
 	const reqProductGetAll = useProductGetAll()
@@ -17,9 +19,9 @@ export default function ProductsCard() {
 			const products = data?.data || []
 			setProducts(products)
 		}
-	}, [reqProductGetAll.status]);
+	}, [reqProductGetAll.data, reqProductGetAll.status]);
 	
-	return <Row gutter={isMobile ? 12 : 24}>
+	return <Row gutter={isMobile ? 8 : 24}>
 		{products.map((product, index) => {
 			return <Col span={isMobile ? 12 : 6} key={index}>
 				<Card
@@ -27,24 +29,47 @@ export default function ProductsCard() {
 					cover={<Image
 						alt={product.name}
 						src={product.gallery.url}
-						className="object-cover w-full !h-[175px] rounded-t-md"
+						className="object-cover !w-full !h-[175px] p-2 rounded-t-md"
 						preview={false}
 					/>}
 					className='!my-2'
 					styles={{
 						body: {
-							padding: '15px'
+							padding: '5px'
 						}
 					}}
 					onClick={() => {
 						setProduct(product)
 					}}
+					actions={[
+						<Button
+							icon={<FaCartPlus/>}
+							variant='solid'
+							type='primary'
+							size='small'
+							className='w-5/6'
+						>
+							Ajouter au panier
+						</Button>
+					]}
 				>
-					<Flex justify='center'>
-						<Meta
-							title={product.name}
-						/>
-					</Flex>
+					<Meta
+						className='text-center'
+						title={product.name}
+						description={<Space>
+							<Typography.Title
+								level={5}
+							>
+								{formatPrice(product.stock?.price || 0)} /
+							</Typography.Title>
+							
+							<sub>
+								<Tag color="green" className='font-bold'>
+									{product.unit.name}
+								</Tag>
+							</sub>
+						</Space>}
+					/>
 				</Card>
 			</Col>
 		})}
@@ -68,8 +93,6 @@ const ProductModal = ({product, onClose, ...props}: { product?: ProductInterface
 
 const ProductForm = ({product, ...props}: { product: ProductInterface }) => {
 	const [form] = Form.useForm();
-	
-	console.log(`/Users/boubacarly/Sites/localhost/perso/gestistock2/front/src/components/molecules/Products.tsx:72`, `product =>`, product)
 	
 	const handleFinish = (values: PurchaseItemCartItemInterface) => {
 		console.log(`/Users/boubacarly/Sites/localhost/perso/gestistock2/front/src/components/molecules/Products.tsx:71`, `values =>`, values)

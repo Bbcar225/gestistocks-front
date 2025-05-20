@@ -56,7 +56,7 @@ export const useRoutesPurchase = () => {
 				id = row.id
 			}
 			
-			setSidebar({field: 'title', value: "Édition d'achat"})
+			setSidebar({field: 'title', value: "Mise à jour d'achat"})
 			return navigate(`/${user?.userable.slug}/purchases/${id}/update`)
 		},
 	}

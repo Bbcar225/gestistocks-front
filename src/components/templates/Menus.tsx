@@ -17,7 +17,7 @@ import {useRoutesWarehouse} from "../../routes/warehouseRoutes.ts";
 import {TbUserDollar} from "react-icons/tb";
 import {useRoutesSupplier} from "../../routes/supplierRoutes.ts";
 import {useRoutesPurchase} from "../../routes/purchaseRoutes.ts";
-import {FaUsersViewfinder} from "react-icons/fa6";
+import {FaComputer, FaUsersViewfinder} from "react-icons/fa6";
 import {useRoutesCustomer} from "../../routes/customerRoutes.ts";
 
 type MenuItem = {
@@ -34,7 +34,7 @@ export function Menus({collapsed, setCollapsed}: {
 	setCollapsed: (collapsed: boolean) => void
 }) {
 	const {goToUnitIndex} = useRoutesUnit()
-	const {goToDashboard} = useRoutesIndex()
+	const {goToDashboard, goToPos} = useRoutesIndex()
 	const {goToCategoryIndex} = useRoutesCategory()
 	const {goToGalleryIndex} = useRoutesGallery()
 	const {goToProductIndex} = useRoutesProduct()
@@ -55,6 +55,16 @@ export function Menus({collapsed, setCollapsed}: {
 			onClick: () => {
 				if (isMobile) setCollapsed(!collapsed);
 				goToDashboard();
+			},
+		},
+		{
+			key: "POS",
+			icon: <FaComputer />,
+			label: "POS",
+			pathmatch: "/pos",
+			onClick: () => {
+				if (isMobile) setCollapsed(!collapsed);
+				goToPos()
 			},
 		},
 		{
@@ -171,7 +181,7 @@ export function Menus({collapsed, setCollapsed}: {
 		}
 		
 		return {
-			selectedKey: selected ?? "1",
+			selectedKey: selected ?? "Tableau de bord",
 			openKey: open,
 		}
 	}, [currentPath]);

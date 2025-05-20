@@ -14,8 +14,8 @@ export default function PurchaseCreatePage() {
 	const [purchase, setPurchase] = useState<PurchaseInterface | undefined>(undefined)
 	
 	useEffect(() => {
-		setSidebar({field: 'title', value: `Édition d'achat`})
-	}, [setSidebar]);
+		setSidebar({field: 'title', value: `Mise à jour de l'achat ${purchase ? ` : #${purchase.id}` : ''}`})
+	}, [purchase, setSidebar]);
 	
 	useEffect(() => {
 		if (reqPurchaseGetOne.status === 'success') {

@@ -3,7 +3,6 @@ import {useAppStore} from "../../../store/useAppStore.ts";
 import {Button, Col, Flex, Modal, Row, Space, Table} from "antd";
 import {tablePagination} from "../../../constants/tableConstant.ts";
 import {IoIosAddCircle} from "react-icons/io";
-import {useUnitStore} from "../../../store/useUnitStore.ts";
 import dayjs from 'dayjs';
 import {formatDate} from "../../../constants/dateConstant.ts";
 import {FaEdit} from "react-icons/fa";
@@ -12,7 +11,7 @@ import {useWarehouseGetAll, warehouseQueriesClients} from "../../../hooks/Api/te
 import {useWarehouseStore} from "../../../store/useWarehouseStore.ts";
 import WarehouseForm from "../../organisms/Forms/WarehouseForm.tsx";
 
-export default function UnitIndexPage() {
+export default function WarehouseIndexPage() {
 	const {setSidebar} = useAppStore()
 	const [warehouses, setWarehouses] = useState<WarehouseInterface[]>([])
 	const {pagination, queryParams, setFieldPagination, setFieldQueryParams, setWarehouse} = useWarehouseStore()
@@ -103,7 +102,7 @@ export default function UnitIndexPage() {
 			/>
 		</Col>
 		
-		<ModalCreateUnit
+		<ModalCreateWarehouse
 			open={isModalOpen}
 			close={() => {
 				setIsModalOpen(false);
@@ -113,12 +112,12 @@ export default function UnitIndexPage() {
 	</Row>
 }
 
-const ModalCreateUnit = ({open, close}: { open: boolean, close: () => void }) => {
-	const {unit} = useUnitStore()
+const ModalCreateWarehouse = ({open, close}: { open: boolean, close: () => void }) => {
+	const {warehouse} = useWarehouseStore()
 	const queryClient = useQueryClient()
 	
 	return <Modal
-		title={unit ? "Mise à jour" : "Nouveau dépôt"}
+		title={warehouse ? "Mise à jour" : "Nouveau dépôt"}
 		open={open}
 		onCancel={close}
 		footer={null}

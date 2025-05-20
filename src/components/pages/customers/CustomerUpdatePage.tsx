@@ -80,7 +80,7 @@ export default function CustomerCreatePage() {
 	};
 	
 	useEffect(() => {
-		setSidebar({field: 'title', value: `Mise à jour de client ${customer ? ` : ${customer.name}` : ''}`})
+		setSidebar({field: 'title', value: `Mise à jour du client ${customer ? ` : ${customer.name}` : ''}`})
 	}, [customer, setSidebar]);
 	
 	useEffect(() => {

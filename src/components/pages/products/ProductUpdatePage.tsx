@@ -116,7 +116,7 @@ export default function ProductUpdatePage() {
 	};
 	
 	useEffect(() => {
-		setSidebar({field: 'title', value: `Édition du produit : ${product?.name}`});
+		setSidebar({field: 'title', value: `Mise à jour du produit : ${product?.name} - ${product?.sku}`});
 	}, [product, setSidebar]);
 	
 	useEffect(() => {

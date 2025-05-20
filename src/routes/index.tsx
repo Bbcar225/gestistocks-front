@@ -36,6 +36,16 @@ const index: RouteObject[] = [
 		],
 	},
 	{
+		path: "/:tenant_slug/pos",
+		Component: AuthLayout,
+		children: [
+			{
+				index: true,
+				Component: lazy(() => import("../components/pages/PosPage.tsx"))
+			},
+		],
+	},
+	{
 		path: "*",
 		element: <NotFoundPage/>,
 	},
@@ -54,18 +64,18 @@ export const useRoutesIndex = () => {
 	const {setSidebar} = useAppStore()
 	const {user} = useUserStore()
 	
-	const goToDashboard = () => {
-		setSidebar({field: 'title', value: 'Tableau de bord'})
-		navigate(`/${user?.userable.slug}/dashboard`)
-	}
-	
-	const goToLogin = () => {
-		navigate(`/`)
-	}
-	
 	return {
-		goToDashboard,
-		goToLogin
+		goToDashboard: () => {
+			setSidebar({field: 'title', value: 'Tableau de bord'})
+			navigate(`/${user?.userable.slug}/dashboard`)
+		},
+		goToLogin: () => {
+			navigate(`/`)
+		},
+		goToPos: () => {
+			setSidebar({field: 'title', value: 'Système POS'})
+			navigate(`/${user?.userable.slug}/pos`)
+		}
 	}
 }
 

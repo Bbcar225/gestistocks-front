@@ -22,7 +22,7 @@ const productRoutes: RouteObject[] = [
 				Component: lazy(() => import("../components/pages/products/ProductCreatePage.tsx"))
 			},
 			{
-				path: ':product/edit',
+				path: ':product/update',
 				Component: lazy(() => import("../components/pages/products/ProductUpdatePage.tsx"))
 			},
 		],
@@ -52,8 +52,8 @@ export const useRoutesProduct = () => {
 				params.id = params.product?.id
 			}
 			
-			setSidebar({field: 'title', value: 'Édition de produit'})
-			return navigate(`/${user?.userable.slug}/products/${params.id}/edit`)
+			setSidebar({field: 'title', value: 'Mise à jour de produit'})
+			return navigate(`/${user?.userable.slug}/products/${params.id}/update`)
 		}
 	}
 }

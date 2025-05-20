@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {useFormDataGetCountries} from "../../../hooks/Api/app/FormDataHookAPI.ts";
 import {filterOptionSelect} from "../../../utils/formUtils.ts";
 
-export default function SelectCategory({...props}) {
+export default function SelectCountry({...props}) {
 	const reqGetData = useFormDataGetCountries()
 	const [options, setOptions] = useState<BaseOptionType[]>([]);
 	

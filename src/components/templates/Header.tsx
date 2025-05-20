@@ -21,7 +21,7 @@ export default function HeaderLayout({collapsed, setCollapsed}: {
 			height: '50px',
 			position: 'sticky',
 			top: 0,
-			zIndex: 10000
+			zIndex: 500
 		}}
 		className='shadow-lg'
 	>

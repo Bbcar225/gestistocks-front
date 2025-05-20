@@ -5,7 +5,7 @@ import Meta from "antd/es/card/Meta";
 import {isMobile} from "react-device-detect";
 import SelectUnitEquivalence from "./Selects/SelectUnitEquivalence.tsx";
 
-export default function Products() {
+export default function ProductsCard() {
 	const reqProductGetAll = useProductGetAll()
 	const [products, setProducts] = useState<ProductInterface[]>([])
 	const [product, setProduct] = useState<ProductInterface | undefined>(undefined)

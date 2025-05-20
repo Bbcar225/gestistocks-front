@@ -38,6 +38,7 @@ export default function SelectCategory({...props}) {
 		options={options}
 		showSearch
 		filterOption={filterOptionSelect}
+		placeholder='Catégories'
 		{...props}
 	/>
 }

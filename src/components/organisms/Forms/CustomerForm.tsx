@@ -7,6 +7,7 @@ import {useWatch} from "antd/es/form/Form";
 import SelectCountry from "../../molecules/Selects/SelectCountry.tsx";
 import {useCustomerCreate, useCustomerUpdate} from "../../../hooks/Api/tenant/CustomerHookAPI.ts";
 import {useCustomerStore} from "../../../store/useCustomerStore.ts";
+import {isMobile} from "react-device-detect";
 
 export default function CustomerForm({onSuccess, ...props}: {
 	onSuccess?: (data?: { customer?: CustomerInterface, message?: string }) => void;
@@ -89,7 +90,7 @@ export default function CustomerForm({onSuccess, ...props}: {
 		{...props}
 	>
 		<Row gutter={[12, 12]}>
-			<Col span={12}>
+			<Col span={isMobile ? 24 : 12}>
 				<Form.Item<CustomerFormData>
 					label="Nom complet"
 					name="name"
@@ -99,7 +100,7 @@ export default function CustomerForm({onSuccess, ...props}: {
 				</Form.Item>
 			</Col>
 			
-			<Col span={12}>
+			<Col span={isMobile ? 24 : 12}>
 				<Form.Item<CustomerFormData>
 					label="Pays"
 					name="country"
@@ -111,7 +112,7 @@ export default function CustomerForm({onSuccess, ...props}: {
 				</Form.Item>
 			</Col>
 			
-			<Col span={12}>
+			<Col span={isMobile ? 24 : 12}>
 				<Form.Item<CustomerFormData>
 					label="Ville"
 					name="city"
@@ -123,7 +124,7 @@ export default function CustomerForm({onSuccess, ...props}: {
 				</Form.Item>
 			</Col>
 			
-			<Col span={12}>
+			<Col span={isMobile ? 24 : 12}>
 				<Form.Item<CustomerFormData>
 					label="Adresse"
 					name="address"

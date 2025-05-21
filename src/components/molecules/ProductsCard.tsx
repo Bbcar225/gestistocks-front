@@ -1,81 +1,139 @@
 import {useProductGetAll} from "../../hooks/Api/tenant/ProductHookAPI.ts";
 import {useEffect, useState} from "react";
-import {Button, Card, Col, Flex, Form, Image, InputNumber, Modal, Row, Space, Tag, Typography} from "antd";
+import {
+	Button,
+	Card,
+	Col,
+	Flex,
+	Form,
+	Image,
+	InputNumber,
+	Modal,
+	Pagination,
+	PaginationProps,
+	Row,
+	Space, Spin,
+	Tag,
+	Typography
+} from "antd";
 import Meta from "antd/es/card/Meta";
 import {isMobile} from "react-device-detect";
 import SelectUnitEquivalence from "./Selects/SelectUnitEquivalence.tsx";
 import {FaCartPlus} from "react-icons/fa";
 import {formatPrice} from "../../utils/priceUtils.ts";
+import {useProductStore} from "../../store/useProductStore.ts";
+import {tablePagination} from "../../constants/tableConstant.ts";
 
 export default function ProductsCard() {
-	const reqProductGetAll = useProductGetAll()
+	const {setFieldQueryParams, queryParams, setFieldPagination, pagination} = useProductStore()
+	const reqProductGetAll = useProductGetAll({
+		queryParams
+	})
 	const [products, setProducts] = useState<ProductInterface[]>([])
 	const [product, setProduct] = useState<ProductInterface | undefined>(undefined)
+	
+	const itemRender: PaginationProps['itemRender'] = (_, type, originalElement) => {
+		if (type === 'prev') {
+			return <a>Précédent</a>;
+		}
+		if (type === 'next') {
+			return <a>Suivant</a>;
+		}
+		return originalElement;
+	};
 	
 	useEffect(() => {
 		if (reqProductGetAll.status === 'success') {
 			const res = reqProductGetAll.data
 			const data = res.data
+			setFieldPagination({
+				field: 'total',
+				value: data.meta.total || 0
+			})
 			const products = data?.data || []
 			setProducts(products)
 		}
 	}, [reqProductGetAll.data, reqProductGetAll.status]);
 	
-	return <Row gutter={isMobile ? 8 : 24}>
-		{products.map((product, index) => {
-			return <Col span={isMobile ? 12 : 6} key={index}>
-				<Card
-					hoverable
-					cover={<Image
-						alt={product.name}
-						src={product.gallery.url}
-						className="object-cover !w-full !h-[175px] p-2 rounded-t-md"
-						preview={false}
-					/>}
-					className='!my-2'
-					styles={{
-						body: {
-							padding: '5px'
-						}
-					}}
-					onClick={() => {
-						setProduct(product)
-					}}
-					actions={[
-						<Button
-							icon={<FaCartPlus/>}
-							variant='solid'
-							type='primary'
-							size='small'
-							className='w-5/6'
-						>
-							Ajouter au panier
-						</Button>
-					]}
-				>
-					<Meta
-						className='text-center'
-						title={product.name}
-						description={<Space>
-							<Typography.Title
-								level={5}
+	return <Spin spinning={reqProductGetAll.isLoading}>
+		<Row gutter={isMobile ? 8 : 24}>
+			{products.map((product, index) => {
+				return <Col span={isMobile ? 12 : 6} key={index}>
+					<Card
+						hoverable
+						cover={<Image
+							alt={product.name}
+							src={product.gallery.url}
+							className="object-cover !w-full !h-[175px] p-2 rounded-t-md"
+							preview={false}
+						/>}
+						className='!my-2'
+						styles={{
+							body: {
+								padding: '5px'
+							}
+						}}
+						onClick={() => {
+							setProduct(product)
+						}}
+						actions={[
+							<Button
+								icon={<FaCartPlus/>}
+								variant='solid'
+								type='primary'
+								size='small'
+								className='w-5/6'
 							>
-								{formatPrice(product.stock?.price || 0)} /
-							</Typography.Title>
-							
-							<sub>
-								<Tag color="green" className='font-bold'>
-									{product.unit.name}
-								</Tag>
-							</sub>
-						</Space>}
-					/>
-				</Card>
-			</Col>
-		})}
-		
-		{!!product && <ProductModal product={product} onClose={() => setProduct(undefined)}/>}
-	</Row>
+								Ajouter au panier
+							</Button>
+						]}
+					>
+						<Meta
+							className='text-center'
+							title={product.name}
+							description={<Space>
+								<Typography.Title
+									level={5}
+								>
+									{formatPrice(product.stock?.price || 0)} /
+								</Typography.Title>
+								
+								<sub>
+									<Tag color="green" className='font-bold'>
+										{product.unit.name}
+									</Tag>
+								</sub>
+							</Space>}
+						/>
+					</Card>
+				</Col>
+			})}
+			
+			<Flex justify='center' className='!mt-5 !w-full'>
+				<Pagination
+					total={pagination.total}
+					itemRender={itemRender}
+					current={queryParams.page}
+					pageSize={queryParams.per_page}
+					pageSizeOptions={tablePagination.pageSizeOptions}
+					showSizeChanger={tablePagination.showSizeChanger}
+					onChange={(page, pageSize) => {
+						setFieldQueryParams({
+							field: 'page',
+							value: page
+						})
+						
+						setFieldQueryParams({
+							field: 'per_page',
+							value: pageSize
+						})
+					}}
+				/>
+			</Flex>
+			
+			{!!product && <ProductModal product={product} onClose={() => setProduct(undefined)}/>}
+		</Row>
+	</Spin>
 }
 
 const ProductModal = ({product, onClose, ...props}: { product?: ProductInterface, onClose?: () => void }) => {

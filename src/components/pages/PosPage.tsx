@@ -1,4 +1,4 @@
-import {Button, Card, Col, DatePicker, Drawer, Flex, FloatButton, Form, Row} from "antd";
+import {Button, Card, Col, DatePicker, Drawer, FloatButton, Form, Row} from "antd";
 import {isMobile} from "react-device-detect";
 import {useEffect, useState} from "react";
 import {useAppStore} from "../../store/useAppStore.ts";
@@ -9,6 +9,7 @@ import SearchInput from "../atoms/SearchInput.tsx";
 import SelectCategory from "../molecules/Selects/SelectCategory.tsx";
 import {FaShoppingCart} from "react-icons/fa";
 import {BsCartCheckFill, BsCartXFill} from "react-icons/bs";
+import {useProductStore} from "../../store/useProductStore.ts";
 
 export default function PosPage() {
 	const {setSidebar} = useAppStore()
@@ -127,14 +128,33 @@ const ResumeCart = () => {
 };
 
 const FilterProductsCart = () => {
+	const {setFieldQueryParams, queryParams} = useProductStore()
+	
 	return <Card>
-		<Flex justify='space-around' className='!w-full' gap='small'>
-			<SearchInput/>
+		<Row gutter={[12, 12]} className='!w-full'>
+			<Col span={isMobile ? 24 : 12}>
+				<SearchInput
+					defaultValue={queryParams.search}
+					handleChange={(value) => setFieldQueryParams({
+						field: 'search',
+						value,
+					})}
+				/>
+			</Col>
 			
-			<SelectCategory
-				className='w-full'
-				allowClear={true}
-			/>
-		</Flex>
+			<Col span={isMobile ? 24 : 12}>
+				<SelectCategory
+					className='w-full'
+					allowClear={true}
+					onChange={(value: string | number | undefined) => {
+						setFieldQueryParams({
+							field: 'category_id',
+							value
+						});
+					}}
+					defaultValue={queryParams.category_id}
+				/>
+			</Col>
+		</Row>
 	</Card>
 }

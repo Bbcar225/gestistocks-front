@@ -42,14 +42,10 @@ export default function SelectUnitEquivalence({productId, labelInValue = false, 
 			})
 			setEnable(false)
 			setOptions(options)
-		}
-	}, [unitEquivalences]);
-	
-	useEffect(() => {
-		if (productId) {
+		} else {
 			setEnable(true)
 		}
-	}, [productId]);
+	}, [unitEquivalences]);
 	
 	return <Select
 		loading={reqGetData.isLoading}

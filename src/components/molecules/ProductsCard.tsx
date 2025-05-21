@@ -90,7 +90,7 @@ export default function ProductsCard() {
 					>
 						<Meta
 							className='text-center'
-							title={product.name}
+							title={`${product.name} - ${product.sku}`}
 							description={<Space>
 								<Typography.Title
 									level={5}
@@ -131,14 +131,40 @@ export default function ProductsCard() {
 				/>
 			</Flex>
 			
-			{!!product && <ProductModal product={product} onClose={() => setProduct(undefined)}/>}
+			<ProductModal product={product} onClose={() => setProduct(undefined)}/>
 		</Row>
 	</Spin>
 }
 
 const ProductModal = ({product, onClose, ...props}: { product?: ProductInterface, onClose?: () => void }) => {
+	useEffect(() => {
+		if (product) {
+			const unitEquivalences = product.unit_equivalences
+		
+		unitEquivalences.push({
+			created_at: "",
+			id: 0,
+			model_id: 0,
+			model_type: "App\\Models\\Product",
+			tenant_id: 0,
+			unit: {
+				id: product.unit_id,
+				name: product.unit.name,
+				created_at: product.unit.created_at,
+				updated_at: product.unit.updated_at,
+				sort_name: product.unit.sort_name
+			},
+			unit_id: 0,
+			updated_at: "",
+			value: 0
+		})
+		
+		product.unit_equivalences = unitEquivalences
+		}
+	}, [product]);
+	
 	return <Modal
-		title={`Achat du produit: ${product?.name}`}
+		title={`${product?.name} - ${product?.sku}`}
 		closable={{'aria-label': 'Custom Close Button'}}
 		open={!!product}
 		onCancel={onClose}
@@ -163,7 +189,7 @@ const ProductForm = ({product, ...props}: { product: ProductInterface }) => {
 				value: product.unit.id
 			}
 		})
-	}, [product]);
+	}, [form, product]);
 	
 	return <Form
 		form={form}

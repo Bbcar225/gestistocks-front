@@ -31,6 +31,7 @@ import dayjs from "dayjs";
 import {SaleFormData, SaleInterface} from "../../interfaces/models/SaleInterface";
 import {useSaleCreate} from "../../hooks/Api/tenant/SaleHookAPI.ts";
 import {successCreate} from "../../constants/textsConstant.ts";
+import {useLocation} from "react-router-dom";
 
 export default function PosPage() {
 	const {setSidebar} = useAppStore()
@@ -41,6 +42,8 @@ export default function PosPage() {
 	const reqSaleCreate = useSaleCreate()
 	const [notificationInstance, contextHolder] = notification.useNotification(config);
 	const [sale, setSale] = useState<SaleInterface | undefined>(undefined)
+	const location = useLocation()
+	console.log(`/Users/boubacarly/Sites/localhost/perso/gestistock2/front/src/components/pages/PosPage.tsx:44`, `sale =>`, sale)
 	
 	const handleFinish = (values: CartInterface) => {
 		const formData: SaleFormData = {
@@ -95,15 +98,20 @@ export default function PosPage() {
 			...data,
 			contact: undefined
 		})
-	}, [customer, form]);
+	}, [customer]);
+	
+	useEffect(() => {
+		form.setFieldsValue({
+			...data,
+			date: data?.date ? data?.date : dayjs()
+		})
+	}, [location.pathname]);
 	
 	useEffect(() => {
 		const dataForm = form.getFieldsValue()
-		
 		form.setFieldsValue({
 			...dataForm,
-			...data,
-			date: data?.date ? data?.date : dayjs()
+			items: data?.items || []
 		})
 	}, [data, form]);
 	

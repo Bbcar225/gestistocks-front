@@ -4,6 +4,7 @@ interface SaleInterface {
 	contact_id: number
 	reference: string
 	total_price: number
+	items_count: number
 	date: string
 	created_at: string
 	updated_at: string

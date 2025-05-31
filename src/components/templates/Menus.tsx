@@ -19,6 +19,8 @@ import {useRoutesSupplier} from "../../routes/supplierRoutes.ts";
 import {useRoutesPurchase} from "../../routes/purchaseRoutes.ts";
 import {FaComputer, FaUsersViewfinder} from "react-icons/fa6";
 import {useRoutesCustomer} from "../../routes/customerRoutes.ts";
+import {TiShoppingCart} from "react-icons/ti";
+import {useRoutesSale} from "../../routes/saleRoutes.ts";
 
 type MenuItem = {
 	key: string;
@@ -42,6 +44,7 @@ export function Menus({collapsed, setCollapsed}: {
 	const routesSupplier = useRoutesSupplier()
 	const routesPurchase = useRoutesPurchase()
 	const routesCustomer = useRoutesCustomer()
+	const routesSale = useRoutesSale()
 	
 	const location = useLocation();
 	const currentPath = location.pathname;
@@ -59,12 +62,22 @@ export function Menus({collapsed, setCollapsed}: {
 		},
 		{
 			key: "POS",
-			icon: <FaComputer />,
+			icon: <FaComputer/>,
 			label: "POS",
 			pathmatch: "/pos",
 			onClick: () => {
 				if (isMobile) setCollapsed(!collapsed);
 				goToPos()
+			},
+		},
+		{
+			key: "Ventes",
+			icon: <TiShoppingCart/>,
+			label: "Ventes",
+			pathmatch: "/sales",
+			onClick: () => {
+				if (isMobile) setCollapsed(!collapsed);
+				routesSale.goToIndex()
 			},
 		},
 		{

@@ -8,8 +8,8 @@ import {
 	FloatButton,
 	Form,
 	FormInstance,
-	notification,
-	Row, Space,
+	notification, Result,
+	Row, Space, Spin,
 	Tag
 } from "antd";
 import {isMobile} from "react-device-detect";
@@ -25,19 +25,47 @@ import {BsCartCheckFill, BsCartXFill} from "react-icons/bs";
 import {useProductStore} from "../../store/useProductStore.ts";
 import useCartStore from "../../store/useCartStore.ts";
 import {formatPrice} from "../../utils/priceUtils.ts";
-import dayjs from "dayjs";
 import {config} from "../../constants/notifcationConstant.ts";
 import React from "react";
+import dayjs from "dayjs";
+import {SaleFormData, SaleInterface} from "../../interfaces/models/SaleInterface";
+import {useSaleCreate} from "../../hooks/Api/tenant/SaleHookAPI.ts";
+import {successCreate} from "../../constants/textsConstant.ts";
 
 export default function PosPage() {
 	const {setSidebar} = useAppStore()
 	const [form] = Form.useForm<CartInterface>();
-	const {data, setField} = useCartStore()
+	const {data, setField, clearCart} = useCartStore()
 	const formData = Form.useWatch([], form)
 	const customer = Form.useWatch('customer', form)
+	const reqSaleCreate = useSaleCreate()
+	const [notificationInstance, contextHolder] = notification.useNotification(config);
+	const [sale, setSale] = useState<SaleInterface | undefined>(undefined)
 	
 	const handleFinish = (values: CartInterface) => {
-		console.log(`/Users/boubacarly/Sites/localhost/perso/gestistock2/front/src/components/pages/PosPage.tsx:26`, `values =>`, values)
+		const formData: SaleFormData = {
+			date: dayjs(values.date).format('YYYY-MM-DD'),
+			customer_id: Number(values.customer?.value),
+			contact_id: Number(values.contact?.value),
+			items: values.items?.map((item) => {
+				return {
+					product_id: item.product.id,
+					quantity: item.quantity,
+					unit_price: item.unit_price
+				}
+			}) || []
+		}
+		
+		return reqSaleCreate.mutate(formData, {
+			onSuccess: ({message, data}) => {
+				notificationInstance.success({
+					message,
+					description: successCreate
+				})
+				clearCart()
+				setSale(data)
+			}
+		})
 	}
 	
 	useEffect(() => {
@@ -71,93 +99,98 @@ export default function PosPage() {
 	
 	useEffect(() => {
 		const dataForm = form.getFieldsValue()
+		
 		form.setFieldsValue({
 			...dataForm,
-			items: data?.items || []
+			...data,
+			date: data?.date ? data?.date : dayjs()
 		})
 	}, [data, form]);
 	
-	return <Form
-		form={form}
-		layout='vertical'
-		initialValues={{
-			...data
-		}}
-		onFinish={handleFinish}
-	>
-		<Row gutter={[12, 12]}>
-			<Col span={isMobile ? 24 : 8}>
-				<Card>
-					<Form.Item
-						label="Date"
-						name='date'
-						rules={[{required: true}]}
-					>
-						<DatePicker className='w-full' allowClear={false}/>
-					</Form.Item>
-					
-					<Form.Item
-						label="Client"
-						rules={[{required: true}]}
-						name='customer'
-					>
-						<SelectScrollInfiniteCustomer allowClear={false}/>
-					</Form.Item>
-					
-					<Form.Item
-						label="Contact"
-						rules={[{required: true}]}
-						name='contact'
-					>
-						<SelectContact
-							customerId={Number(data?.customer?.value)}
-							enabled={!!data?.customer}
-							disabled={!data?.customer}
-							labelInValue={true}
-						/>
-					</Form.Item>
-				</Card>
-			</Col>
-			
-			<Col span={isMobile ? 24 : 16}>
-				<Row gutter={[12, 12]}>
-					<Col span={24}>
-						<FilterProductsCart/>
-					</Col>
-					
-					<Col span={24}>
-						<Card
-							styles={{
-								body: {
-									padding: '10px'
-								}
-							}}
+	return <>
+		{contextHolder}
+		<Form
+			form={form}
+			layout='vertical'
+			initialValues={{
+				...data,
+			}}
+			onFinish={handleFinish}
+		>
+			<Row gutter={[12, 12]}>
+				<Col span={isMobile ? 24 : 8}>
+					<Card>
+						<Form.Item
+							label="Date"
+							name='date'
+							rules={[{required: true}]}
 						>
-							<ProductsCard/>
-						</Card>
-					</Col>
-				</Row>
-			</Col>
-			
-			<Form.Item
-				noStyle
-				name="items"
-				rules={[
-					{
-						required: true,
-						type: 'array',
-						min: 1,
-						message: 'Au moins un produit est obligatoire.',
-					},
-				]}
-			/>
-			
-			<ResumeCart form={form}/>
-		</Row>
-	</Form>
+							<DatePicker className='w-full' allowClear={false}/>
+						</Form.Item>
+						
+						<Form.Item
+							label="Client"
+							rules={[{required: true}]}
+							name='customer'
+						>
+							<SelectScrollInfiniteCustomer allowClear={false}/>
+						</Form.Item>
+						
+						<Form.Item
+							label="Contact"
+							rules={[{required: true}]}
+							name='contact'
+						>
+							<SelectContact
+								customerId={Number(data?.customer?.value)}
+								enabled={!!data?.customer}
+								disabled={!data?.customer}
+								labelInValue={true}
+							/>
+						</Form.Item>
+					</Card>
+				</Col>
+				
+				<Col span={isMobile ? 24 : 16}>
+					<Row gutter={[12, 12]}>
+						<Col span={24}>
+							<FilterProductsCart/>
+						</Col>
+						
+						<Col span={24}>
+							<Card
+								styles={{
+									body: {
+										padding: '10px'
+									}
+								}}
+							>
+								<ProductsCard/>
+							</Card>
+						</Col>
+					</Row>
+				</Col>
+				
+				<Form.Item
+					noStyle
+					name="items"
+					rules={[
+						{
+							required: true,
+							type: 'array',
+							min: 1,
+							message: 'Au moins un produit est obligatoire.',
+						},
+					]}
+				/>
+				
+				<ResumeCart form={form} loading={reqSaleCreate.isLoading}/>
+			</Row>
+		</Form>
+	</>
 }
 
-const ResumeCart = ({form}: { form: FormInstance }) => {
+const ResumeCart = ({form, loading}: { form: FormInstance, loading: boolean }) => {
 	const [open, setOpen] = useState(false);
 	const {data, intoCart, clearCart} = useCartStore()
 	const items = data?.items || []
@@ -214,21 +247,19 @@ const ResumeCart = ({form}: { form: FormInstance }) => {
 								type='primary'
 								className='w-full'
 								icon={<BsCartCheckFill/>}
-								onClick={() => form.validateFields().then(() => {
-									form.submit()
-									// console.log(value)
-								}).catch((error) => {
+								onClick={() => form.validateFields().then(() => form.submit()).catch((error) => {
 									const firstErrors = error.errorFields
 										.map((e: { errors: never[]; }) => e.errors[0])
 										.filter(Boolean);
 									
-									notificationInstance.error({
+									return notificationInstance.error({
 										message: 'Erreur de validation',
 										description: <ul>
 											{firstErrors.map((message: string, index: number) => <li key={index}>- {message}</li>)}
 										</ul>
 									})
 								})}
+								loading={loading}
 							>
 								Valider
 							</Button>
@@ -241,37 +272,46 @@ const ResumeCart = ({form}: { form: FormInstance }) => {
 								variant='outlined'
 								color='danger'
 								onClick={() => clearCart()}
+								disabled={loading}
 							>
-								Vider le panier
+								Réinitialiser
 							</Button>
 						</Col>
 					</Row>
 				}
 			>
-				<Space direction="vertical" size="small">
-					{items?.map((item: CartItemInterface, index: number) => {
-						const isNotFirst = index !== 0
-						
-						return (
-							<React.Fragment key={index}>
-								{isNotFirst && <Divider/>}
-								<ProductForm
-									product={item.product}
-									initialValues={{
-										quantity: item.quantity,
-										unit_price: item.unit_price || 0,
-										product: item.product
-									}}
-									inToCart={intoCart({
-										product: item.product,
-										unit_price: item.unit_price,
-										quantity: item.quantity
-									})}
-								/>
-							</React.Fragment>
-						)
-					})}
-				</Space>
+				<Spin spinning={loading}>
+					<Space direction="vertical" size="small">
+						{items.length > 0 ?
+							items?.map((item: CartItemInterface, index: number) => {
+								const isNotFirst = index !== 0
+								
+								return (
+									<React.Fragment key={index}>
+										{isNotFirst && <Divider/>}
+										<ProductForm
+											product={item.product}
+											initialValues={{
+												quantity: item.quantity,
+												unit_price: item.unit_price || 0,
+												product: item.product
+											}}
+											inToCart={intoCart({
+												product: item.product,
+												unit_price: item.unit_price,
+												quantity: item.quantity
+											})}
+										/>
+									</React.Fragment>
+								)
+							}) :
+							<Result
+								status="404"
+								title="Aucun produit ajouté"
+							/>
+						}
+					</Space>
+				</Spin>
 			</Drawer>
 		</>
 	);

@@ -14,13 +14,6 @@ interface CartStoreInterface {
 	intoCart: (item: Partial<CartItemInterface>) => boolean,
 }
 
-const initialData: CartInterface = {
-	items: [],
-	contact: undefined,
-	customer: undefined,
-	date: dayjs() as unknown as Date
-};
-
 const useCartStore = create<CartStoreInterface>((set, get) => {
 	return {
 		data: {
@@ -100,10 +93,16 @@ const useCartStore = create<CartStoreInterface>((set, get) => {
 		},
 		
 		clearCart: () => {
-			return set(() => {
+			return set((state) => {
 				return {
-					data: initialData
-				};
+					...state,
+					data: {
+						items: [],
+						contact: undefined,
+						customer: undefined,
+						date: dayjs() as unknown as Date
+					}
+				}
 			});
 		},
 		

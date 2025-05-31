@@ -24,6 +24,7 @@ import {tablePagination} from "../../constants/tableConstant.ts";
 import Link from "antd/es/typography/Link";
 import {useRoutesProduct} from "../../routes/productRoutes.ts";
 import useCartStore from "../../store/useCartStore.ts";
+import {BsCartX, BsFillCartCheckFill} from "react-icons/bs";
 
 export default function ProductsCard({...props}) {
 	const {setFieldQueryParams, queryParams, setFieldPagination, pagination} = useProductStore()
@@ -123,12 +124,12 @@ export default function ProductsCard({...props}) {
 				/>
 			</Flex>
 			
-			<ProductModal product={product} onClose={() => setProduct(undefined)}/>
+			{product && <ProductModal product={product} onClose={() => setProduct(undefined)}/>}
 		</Row>
 	</Spin>
 }
 
-export const ProductModal = ({product, onClose, ...props}: { product?: ProductInterface, onClose?: () => void }) => {
+export const ProductModal = ({product, onClose, ...props}: { product: ProductInterface, onClose?: () => void }) => {
 	return <Modal
 		closable={{'aria-label': 'Custom Close Button'}}
 		open={!!product}
@@ -136,34 +137,39 @@ export const ProductModal = ({product, onClose, ...props}: { product?: ProductIn
 		footer={null}
 		{...props}
 	>
-		{product && <ProductForm product={product} onClose={onClose}/>}
+		<ProductForm
+			product={product}
+			onClose={onClose}
+			initialValues={{
+				quantity: 1,
+				unit_price: product?.stock?.price || 0,
+				product: product
+			}}/>
 	</Modal>
 };
 
-export const ProductForm = ({product, onClose, ...props}: { product: ProductInterface, onClose?: () => void }) => {
+export const ProductForm = ({product, onClose, initialValues, inToCart, ...props}: {
+	product: ProductInterface,
+	onClose?: () => void,
+	initialValues?: CartItemInterface,
+	inToCart?: boolean
+}) => {
 	const [form] = Form.useForm<CartItemInterface>();
-	const {setField, data} = useCartStore()
+	const {addItem, removeItem, updateItem} = useCartStore()
 	const quantity = Form.useWatch('quantity', form)
 	const routesProduct = useRoutesProduct()
 	
 	const handleFinish = (values: CartItemInterface) => {
-		const items = data?.items || []
-		items.push(values)
-		setField({
-			field: 'items',
-			value: items
-		})
+		addItem(values)
 		form.resetFields()
 		onClose?.()
 	}
 	
 	useEffect(() => {
-		form.setFieldsValue({
-			quantity: 1,
-			unit_price: product?.stock?.price || 0,
-			product: product
-		})
-	}, [form, product]);
+		if (initialValues) {
+			form.setFieldsValue(initialValues)
+		}
+	}, [form, initialValues]);
 	
 	return <Form
 		form={form}
@@ -199,6 +205,7 @@ export const ProductForm = ({product, onClose, ...props}: { product: ProductInte
 							variant='underlined'
 							min={1}
 							formatter={(value) => formatPrice(Number(value), '')}
+							disabled={inToCart}
 						/>
 					</Form.Item>
 					
@@ -243,14 +250,42 @@ export const ProductForm = ({product, onClose, ...props}: { product: ProductInte
 					
 					<Form.Item noStyle name='product' rules={[{required: true}]}/>
 					
-					<Button
-						type="primary"
-						className='!w-full !text-center'
-						icon={<FaCartPlus/>}
-						htmlType='submit'
-					>
-						Ajouter au panier
-					</Button>
+					{inToCart ?
+						<Flex justify='space-between'>
+							<div>
+								<Button
+									size='large'
+									type="primary"
+									className='!w-full !text-center'
+									icon={<BsFillCartCheckFill className='mx-5 text-[23px]'/>}
+									onClick={() => form.validateFields().then((value) => updateItem(value))}
+								/>
+							</div>
+							
+							<div>
+								<Button
+									size='large'
+									type="primary"
+									className='!w-full !text-center'
+									icon={<BsCartX className='mx-5 text-[23px]'/>}
+									variant='filled'
+									color='danger'
+									onClick={() => {
+										if (initialValues) {
+											removeItem(initialValues)
+										}
+									}}
+								/>
+							</div>
+						</Flex> :
+						<Button
+							type="primary"
+							className='!w-full !text-center'
+							icon={<FaCartPlus/>}
+							htmlType='submit'
+						>
+							Ajouter au panier
+						</Button>}
 				</Space>
 			</Col>
 		</Row>

@@ -1,4 +1,5 @@
 import {create} from "zustand";
+import dayjs from "dayjs";
 
 interface CartStoreInterface {
 	data?: CartInterface,
@@ -6,26 +7,115 @@ interface CartStoreInterface {
 		field: keyof CartInterface,
 		value?: unknown
 	}) => void,
+	addItem: (item: CartItemInterface) => void,
+	updateItem: (item: CartItemInterface) => void,
+	removeItem: (item: Partial<CartItemInterface>) => void,
+	clearCart: () => void,
+	intoCart: (item: Partial<CartItemInterface>) => boolean,
 }
 
-const useCartStore = create<CartStoreInterface>((set) => {
+const initialData: CartInterface = {
+	items: [],
+	contact: undefined,
+	customer: undefined,
+	date: dayjs() as unknown as Date
+};
+
+const useCartStore = create<CartStoreInterface>((set, get) => {
 	return {
 		data: {
-			items: []
+			items: [],
+			date: dayjs() as unknown as Date
 		},
 		
 		setField: ({field, value}) => {
-			return set((state) => {
-				return {
-					...state,
-					data: {
-						...state.data,
-						[field]: value
-					}
+			return set((state) => ({
+				...state,
+				data: {
+					...state.data,
+					[field]: value
 				}
-			})
+			}));
 		},
-	}
-})
+		
+		addItem: (item) => {
+			return set(() => {
+				const items = get().data?.items || [];
+				
+				const itemIndex = items.findIndex((it) =>
+					it.unit_price === item.unit_price &&
+					it.product.id === item.product.id
+				);
+				
+				if (itemIndex > -1) {
+					items[itemIndex].quantity += item.quantity;
+				} else {
+					items.push(item);
+				}
+				
+				return {
+					data: {
+						...get().data,
+						items
+					}
+				};
+			});
+		},
+		
+		updateItem: (item) => {
+			return set(() => {
+				const items = get().data?.items || [];
+				
+				const itemIndex = items.findIndex((it) =>
+					it.unit_price === item.unit_price &&
+					it.product.id === item.product.id
+				);
+				
+				if (itemIndex > -1) {
+					items[itemIndex] = item;
+				}
+				
+				return {
+					data: {
+						...get().data,
+						items
+					}
+				};
+			});
+		},
+		
+		removeItem: (item) => {
+			return set(() => {
+				const items = (get().data?.items || []).filter(it =>
+					!(it.product.id === item?.product?.id && it.unit_price === item?.unit_price)
+				);
+				
+				return {
+					data: {
+						...get().data,
+						items
+					}
+				};
+			});
+		},
+		
+		clearCart: () => {
+			return set(() => {
+				return {
+					data: initialData
+				};
+			});
+		},
+		
+		intoCart: (item) => {
+			const items = get().data?.items || [];
+			return items.some((it) =>
+				it.product.id === item?.product?.id &&
+				it.unit_price === item?.unit_price &&
+				it.quantity === item?.quantity
+			);
+		}
+	};
+});
 
-export default useCartStore
+export default useCartStore;

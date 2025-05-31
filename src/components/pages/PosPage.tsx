@@ -2,14 +2,14 @@ import {
 	Button,
 	Card,
 	Col,
-	DatePicker,
+	DatePicker, Divider,
 	Drawer,
 	Flex,
 	FloatButton,
 	Form,
 	FormInstance,
 	notification,
-	Row,
+	Row, Space,
 	Tag
 } from "antd";
 import {isMobile} from "react-device-detect";
@@ -27,6 +27,7 @@ import useCartStore from "../../store/useCartStore.ts";
 import {formatPrice} from "../../utils/priceUtils.ts";
 import dayjs from "dayjs";
 import {config} from "../../constants/notifcationConstant.ts";
+import React from "react";
 
 export default function PosPage() {
 	const {setSidebar} = useAppStore()
@@ -80,8 +81,7 @@ export default function PosPage() {
 		form={form}
 		layout='vertical'
 		initialValues={{
-			...data,
-			date: dayjs()
+			...data
 		}}
 		onFinish={handleFinish}
 	>
@@ -139,7 +139,18 @@ export default function PosPage() {
 				</Row>
 			</Col>
 			
-			<Form.Item noStyle name='items' rules={[{required: true, type: 'array', min: 1}]}/>
+			<Form.Item
+				noStyle
+				name="items"
+				rules={[
+					{
+						required: true,
+						type: 'array',
+						min: 1,
+						message: 'Au moins un produit est obligatoire.',
+					},
+				]}
+			/>
 			
 			<ResumeCart form={form}/>
 		</Row>
@@ -148,7 +159,7 @@ export default function PosPage() {
 
 const ResumeCart = ({form}: { form: FormInstance }) => {
 	const [open, setOpen] = useState(false);
-	const {data} = useCartStore()
+	const {data, intoCart, clearCart} = useCartStore()
 	const items = data?.items || []
 	const [notificationInstance, contextHolder] = notification.useNotification(config);
 	
@@ -182,11 +193,12 @@ const ResumeCart = ({form}: { form: FormInstance }) => {
 			/>
 			<Drawer
 				title={<Flex justify='space-between'>
-					<div>Panier</div>
+					<div>Résumé</div>
 					
 					<div>
 						Total : <Tag
 						color='green'
+						className='!font-bold !text-[17px] !p-1'
 					>
 						{formatPrice(Number(getTotalPrice()))}
 					</Tag>
@@ -202,7 +214,21 @@ const ResumeCart = ({form}: { form: FormInstance }) => {
 								type='primary'
 								className='w-full'
 								icon={<BsCartCheckFill/>}
-								onClick={() => form.submit()}
+								onClick={() => form.validateFields().then(() => {
+									form.submit()
+									// console.log(value)
+								}).catch((error) => {
+									const firstErrors = error.errorFields
+										.map((e: { errors: never[]; }) => e.errors[0])
+										.filter(Boolean);
+									
+									notificationInstance.error({
+										message: 'Erreur de validation',
+										description: <ul>
+											{firstErrors.map((message: string, index: number) => <li key={index}>- {message}</li>)}
+										</ul>
+									})
+								})}
 							>
 								Valider
 							</Button>
@@ -214,6 +240,7 @@ const ResumeCart = ({form}: { form: FormInstance }) => {
 								icon={<BsCartXFill/>}
 								variant='outlined'
 								color='danger'
+								onClick={() => clearCart()}
 							>
 								Vider le panier
 							</Button>
@@ -221,9 +248,30 @@ const ResumeCart = ({form}: { form: FormInstance }) => {
 					</Row>
 				}
 			>
-				{items?.map((item: CartItemInterface, index: number) => {
-					return <ProductForm product={item.product} key={index}/>
-				})}
+				<Space direction="vertical" size="small">
+					{items?.map((item: CartItemInterface, index: number) => {
+						const isNotFirst = index !== 0
+						
+						return (
+							<React.Fragment key={index}>
+								{isNotFirst && <Divider/>}
+								<ProductForm
+									product={item.product}
+									initialValues={{
+										quantity: item.quantity,
+										unit_price: item.unit_price || 0,
+										product: item.product
+									}}
+									inToCart={intoCart({
+										product: item.product,
+										unit_price: item.unit_price,
+										quantity: item.quantity
+									})}
+								/>
+							</React.Fragment>
+						)
+					})}
+				</Space>
 			</Drawer>
 		</>
 	);

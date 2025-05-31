@@ -1,22 +1,15 @@
 import {Select} from "antd";
 import {useEffect, useState} from "react";
 import {useCategoryGetAll} from "../../../hooks/Api/tenant/CategoryHookAPI.ts";
-import {useCategoryStore} from "../../../store/useCategoryStore.ts";
 import {filterOptionSelect} from "../../../utils/formUtils.ts";
 
 export default function SelectCategory({...props}) {
-	const reqGetData = useCategoryGetAll()
+	const reqGetData = useCategoryGetAll({
+		queryParams: {
+			per_page: 5000000
+		}
+	})
 	const [options, setOptions] = useState<BaseOptionType[]>([]);
-	const {setFieldQueryParams, resetQueryParams} = useCategoryStore()
-	
-	useEffect(() => {
-		setFieldQueryParams({field: 'per_page', value: 5000000});
-		
-		return () => {
-			resetQueryParams()
-		};
-	}, [resetQueryParams, setFieldQueryParams]);
-	
 	
 	useEffect(() => {
 		if (reqGetData.isSuccess) {

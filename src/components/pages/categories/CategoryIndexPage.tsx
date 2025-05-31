@@ -14,10 +14,11 @@ import {useCategoryStore} from "../../../store/useCategoryStore.ts";
 export default function CategoryIndexPage() {
 	const {setSidebar} = useAppStore()
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const reqCategoryGetAll = useCategoryGetAll()
+	const {pagination, queryParams, setFieldPagination, setFieldQueryParams, setCategory} = useCategoryStore()
+	const reqCategoryGetAll = useCategoryGetAll({
+		queryParams
+	})
 	const [categories, setCategories] = useState<CategoryInterface[]>([])
-	const {setCategory} = useCategoryStore()
-	const {pagination, queryParams, setFieldPagination, setFieldQueryParams} = useCategoryStore()
 	
 	useEffect(() => {
 		setSidebar({field: 'title', value: 'Catégories'})

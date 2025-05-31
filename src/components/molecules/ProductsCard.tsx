@@ -6,8 +6,7 @@ import {
 	Col,
 	Flex,
 	Form,
-	Image,
-	InputNumber,
+	Image, InputNumber,
 	Modal,
 	Pagination,
 	PaginationProps,
@@ -18,13 +17,15 @@ import {
 } from "antd";
 import Meta from "antd/es/card/Meta";
 import {isMobile} from "react-device-detect";
-import SelectUnitEquivalence from "./Selects/SelectUnitEquivalence.tsx";
-import {FaCartPlus} from "react-icons/fa";
+import {FaCartPlus, FaMinus, FaPlus} from "react-icons/fa";
 import {formatPrice} from "../../utils/priceUtils.ts";
 import {useProductStore} from "../../store/useProductStore.ts";
 import {tablePagination} from "../../constants/tableConstant.ts";
+import Link from "antd/es/typography/Link";
+import {useRoutesProduct} from "../../routes/productRoutes.ts";
+import useCartStore from "../../store/useCartStore.ts";
 
-export default function ProductsCard() {
+export default function ProductsCard({...props}) {
 	const {setFieldQueryParams, queryParams, setFieldPagination, pagination} = useProductStore()
 	const reqProductGetAll = useProductGetAll({
 		queryParams
@@ -39,6 +40,7 @@ export default function ProductsCard() {
 		if (type === 'next') {
 			return <a>Suivant</a>;
 		}
+		
 		return originalElement;
 	};
 	
@@ -55,7 +57,7 @@ export default function ProductsCard() {
 		}
 	}, [reqProductGetAll.data, reqProductGetAll.status]);
 	
-	return <Spin spinning={reqProductGetAll.isLoading}>
+	return <Spin spinning={reqProductGetAll.isLoading} {...props}>
 		<Row gutter={isMobile ? 8 : 24}>
 			{products.map((product, index) => {
 				return <Col span={isMobile ? 12 : 6} key={index}>
@@ -82,7 +84,6 @@ export default function ProductsCard() {
 								variant='solid'
 								type='primary'
 								size='small'
-								className='w-5/6'
 							>
 								Ajouter au panier
 							</Button>
@@ -91,19 +92,10 @@ export default function ProductsCard() {
 						<Meta
 							className='text-center'
 							title={`${product.name} - ${product.sku}`}
-							description={<Space>
-								<Typography.Title
-									level={5}
-								>
-									{formatPrice(product.stock?.price || 0)} /
-								</Typography.Title>
-								
-								<sub>
-									<Tag color="green" className='font-bold'>
-										{product.unit.name}
-									</Tag>
-								</sub>
-							</Space>}
+							description={<Price
+								price={product.stock?.price}
+								unit={product.unit.name}
+							/>}
 						/>
 					</Card>
 				</Col>
@@ -136,111 +128,147 @@ export default function ProductsCard() {
 	</Spin>
 }
 
-const ProductModal = ({product, onClose, ...props}: { product?: ProductInterface, onClose?: () => void }) => {
-	useEffect(() => {
-		if (product) {
-			const unitEquivalences = product.unit_equivalences
-		
-		unitEquivalences.push({
-			created_at: "",
-			id: 0,
-			model_id: 0,
-			model_type: "App\\Models\\Product",
-			tenant_id: 0,
-			unit: {
-				id: product.unit_id,
-				name: product.unit.name,
-				created_at: product.unit.created_at,
-				updated_at: product.unit.updated_at,
-				sort_name: product.unit.sort_name
-			},
-			unit_id: 0,
-			updated_at: "",
-			value: 0
-		})
-		
-		product.unit_equivalences = unitEquivalences
-		}
-	}, [product]);
-	
+export const ProductModal = ({product, onClose, ...props}: { product?: ProductInterface, onClose?: () => void }) => {
 	return <Modal
-		title={`${product?.name} - ${product?.sku}`}
 		closable={{'aria-label': 'Custom Close Button'}}
 		open={!!product}
 		onCancel={onClose}
 		footer={null}
 		{...props}
 	>
-		{product && <ProductForm product={product}/>}
+		{product && <ProductForm product={product} onClose={onClose}/>}
 	</Modal>
 };
 
-const ProductForm = ({product, ...props}: { product: ProductInterface }) => {
-	const [form] = Form.useForm();
+export const ProductForm = ({product, onClose, ...props}: { product: ProductInterface, onClose?: () => void }) => {
+	const [form] = Form.useForm<CartItemInterface>();
+	const {setField, data} = useCartStore()
+	const quantity = Form.useWatch('quantity', form)
+	const routesProduct = useRoutesProduct()
 	
-	const handleFinish = (values: PurchaseItemCartItemInterface) => {
-		console.log(`/Users/boubacarly/Sites/localhost/perso/gestistock2/front/src/components/molecules/Products.tsx:71`, `values =>`, values)
+	const handleFinish = (values: CartItemInterface) => {
+		const items = data?.items || []
+		items.push(values)
+		setField({
+			field: 'items',
+			value: items
+		})
+		form.resetFields()
+		onClose?.()
 	}
 	
 	useEffect(() => {
 		form.setFieldsValue({
-			unit: {
-				label: product.unit.name,
-				value: product.unit.id
-			}
+			quantity: 1,
+			unit_price: product?.stock?.price || 0,
+			product: product
 		})
 	}, [form, product]);
 	
 	return <Form
 		form={form}
 		onFinish={handleFinish}
-		layout='vertical'
 		{...props}
 	>
 		<Row gutter={[12, 0]}>
-			<Col span={24}>
-				<Form.Item
-					label="Unité"
-					name="unit"
-					rules={[{required: true}]}
-				>
-					<SelectUnitEquivalence
-						labelInValue={true}
-						productId={product.id}
-						unitEquivalences={product.unit_equivalences}
-					/>
-				</Form.Item>
+			<Col span={isMobile ? 24 : 9} className='text-center'>
+				<Image
+					alt={product.name}
+					src={product.gallery.url}
+					className='!w-[190px] !h-[220px] !object-cover'
+				/>
 			</Col>
 			
-			<Col span={24}>
-				<Form.Item
-					label="Quantité"
-					name="quantity"
-					rules={[{required: true}]}
-				>
-					<InputNumber min={0.00001} className='!w-full'/>
-				</Form.Item>
+			<Col span={isMobile ? 24 : 15}>
+				<Space direction='vertical' className='!w-full !h-full' size='small'>
+					<Link onClick={() => routesProduct.goToProductShow(product)}>
+						<Typography.Title
+							level={4}
+						>
+							{`${product.name} - ${product.sku}`}
+						</Typography.Title>
+					</Link>
+					
+					<Form.Item
+						name="unit_price"
+						rules={[{required: true}]}
+					>
+						<InputNumber
+							className='!w-full !text-center !font-bold'
+							suffix={`Fr / ${product?.unit.name}`}
+							variant='underlined'
+							min={1}
+							formatter={(value) => formatPrice(Number(value), '')}
+						/>
+					</Form.Item>
+					
+					<Space className='!w-full !text-center'>
+						<Form.Item>
+							<Button
+								icon={<FaMinus/>}
+								onClick={() => {
+									form?.setFieldsValue({
+										...form.getFieldsValue(),
+										quantity: Number(form.getFieldValue("quantity") - 1)
+									})
+								}}
+								disabled={Number(quantity) <= 1}
+								variant='solid'
+								color='danger'
+							/>
+						</Form.Item>
+						<Form.Item
+							name='quantity'
+							rules={[{required: true}]}
+						>
+							<InputNumber
+								variant='underlined'
+								className='!w-full !text-center !font-bold'
+								suffix={product?.unit.name}
+								min={0.1}
+							/>
+						</Form.Item>
+						<Form.Item>
+							<Button
+								icon={<FaPlus/>}
+								onClick={() => form?.setFieldsValue({
+									...form.getFieldsValue(),
+									quantity: Number(quantity + 1)
+								})}
+								variant='solid'
+								color='green'
+							/>
+						</Form.Item>
+					</Space>
+					
+					<Form.Item noStyle name='product' rules={[{required: true}]}/>
+					
+					<Button
+						type="primary"
+						className='!w-full !text-center'
+						icon={<FaCartPlus/>}
+						htmlType='submit'
+					>
+						Ajouter au panier
+					</Button>
+				</Space>
 			</Col>
-			
-			<Col span={24}>
-				<Form.Item
-					label="Prix unitaire"
-					name="unit_price"
-					rules={[{required: true}]}
-				>
-					<InputNumber min={1} className='!w-full'/>
-				</Form.Item>
-			</Col>
-			
-			<Flex justify='center' className='!w-full'>
-				<Button
-					type="primary"
-					htmlType="submit"
-					className='w-1/2'
-				>
-					Valider
-				</Button>
-			</Flex>
 		</Row>
 	</Form>
+}
+
+const Price = ({price, unit}: { price: number, unit: string }) => {
+	return <Space className='mb-2'>
+		<Typography.Text
+			strong
+		>
+			{formatPrice(price || 0)} /
+		</Typography.Text>
+		
+		<sub>
+			<Tag color="green" className='font-bold'>
+				{unit}
+			</Tag>
+		</sub>
+	</Space>
 }

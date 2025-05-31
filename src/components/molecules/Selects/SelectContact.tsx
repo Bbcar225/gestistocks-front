@@ -26,7 +26,7 @@ export default function SelectContact({customerId, enabled, disabled, labelInVal
 				}
 			}))
 		}
-	}, [reqGetData.status]);
+	}, [reqGetData.data, reqGetData.status]);
 	
 	return <Select
 		loading={reqGetData.isLoading}

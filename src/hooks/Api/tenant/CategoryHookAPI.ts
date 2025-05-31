@@ -1,6 +1,5 @@
 import {useMutation, useQuery} from "react-query";
 import categoryService from "../../../services/tenant/categoryService.ts";
-import {useCategoryStore} from "../../../store/useCategoryStore.ts";
 
 export const categoryQueriesClients = {
 	useCategoryGetAll: 'useCategoryGetAll',
@@ -8,11 +7,9 @@ export const categoryQueriesClients = {
 }
 
 export const useCategoryGetAll = (params?: HookApiInterface) => {
-	const {queryParams} = useCategoryStore()
-	
 	return useQuery(
-		[categoryQueriesClients.useCategoryGetAll, queryParams],
-		() => categoryService.getAll(queryParams),
+		[categoryQueriesClients.useCategoryGetAll, params?.queryParams],
+		() => categoryService.getAll(params?.queryParams),
 		{enabled: params?.enabled}
 	)
 }

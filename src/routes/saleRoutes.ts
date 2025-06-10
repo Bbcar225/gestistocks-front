@@ -3,6 +3,7 @@ import AuthLayout from "../components/templates/AuthLayout.tsx";
 import {lazy} from "react";
 import {useAppStore} from "../store/useAppStore.ts";
 import {useUserStore} from "../store/useUserStore.ts";
+import {SaleInterface} from "../interfaces/models/SaleInterface";
 
 const saleRoutes: RouteObject[] = [
 	{
@@ -14,7 +15,7 @@ const saleRoutes: RouteObject[] = [
 				Component: lazy(() => import("../components/pages/sales/SaleIndexPage.tsx"))
 			},
 			{
-				path: ':purchase/show',
+				path: ':sale/show',
 				Component: lazy(() => import("../components/pages/sales/SaleShowPage.tsx"))
 			},
 		],
@@ -31,7 +32,7 @@ export const useRoutesSale = () => {
 			setSidebar({field: 'title', value: 'Ventes'})
 			return navigate(`/${user?.userable.slug}/sales`)
 		},
-		goToShow: ({row, id}: { row?: PurchaseInterface, id?: number }) => {
+		goToShow: ({row, id}: { row?: SaleInterface, id?: number }) => {
 			if (!id && row) {
 				id = row.id
 			}
@@ -39,6 +40,14 @@ export const useRoutesSale = () => {
 			setSidebar({field: 'title', value: 'Détails vente'})
 			return navigate(`/${user?.userable.slug}/sales/${id}/show`)
 		},
+		goToUpdate: ({row, id}: { row?: SaleInterface, id?: number }) => {
+			if (!id && row) {
+				id = row.id
+			}
+			
+			setSidebar({field: 'title', value: "Mise à jour de vente"})
+			return navigate(`/${user?.userable.slug}/sales/${id}/update`)
+		}
 	}
 }
 

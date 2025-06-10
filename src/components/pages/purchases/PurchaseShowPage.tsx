@@ -46,7 +46,7 @@ export default function PurchaseShowPage() {
 			const purchase = res.data
 			setPurchase(purchase)
 		}
-	}, [reqPurchaseGetOne.status]);
+	}, [reqPurchaseGetOne.data, reqPurchaseGetOne.status]);
 	
 	return <Spin spinning={reqPurchaseGetOne.isLoading}>
 		<Row gutter={[12, 12]}>

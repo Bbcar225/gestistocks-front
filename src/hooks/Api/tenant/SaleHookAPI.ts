@@ -2,7 +2,8 @@ import {useMutation, useQuery} from "react-query";
 import saleService from "../../../services/tenant/saleService.ts";
 
 export const saleQueriesClients = {
-	useSaleGetAll: 'useSaleGetAll'
+	useSaleGetAll: 'useSaleGetAll',
+	useSaleGetOne: 'useSaleGetOne'
 }
 
 export const useSaleCreate = () => {
@@ -13,6 +14,16 @@ export const useSaleGetAll = (params?: HookApiInterface) => {
 	return useQuery(
 		[saleQueriesClients.useSaleGetAll, params?.queryParams],
 		() => saleService.GetAll(params?.queryParams),
+		{
+			enabled: params?.enabled
+		}
+	)
+}
+
+export const useSaleGetOne = (params?: HookApiInterface) => {
+	return useQuery(
+		[saleQueriesClients.useSaleGetOne, params?.id],
+		() => saleService.GetOne(Number(params?.id)),
 		{
 			enabled: params?.enabled
 		}

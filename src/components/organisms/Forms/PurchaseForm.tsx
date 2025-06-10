@@ -355,7 +355,7 @@ const PurchaseItemRow = ({name, remove, form, isMobile, purchase, ...props}: {
 				>
 					<SelectUnitEquivalence
 						labelInValue={true}
-						unitEquivalences={productFormBd?.unit_equivalences || []}
+						unitEquivalences={Number(productFormBd?.unit_equivalences?.length) > 0 ? productFormBd?.unit_equivalences : []}
 						disabled={deleted}
 					/>
 				</Form.Item>

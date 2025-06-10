@@ -7,10 +7,12 @@ import {tablePagination} from "../../../constants/tableConstant.ts";
 import {SaleInterface} from "../../../interfaces/models/SaleInterface";
 import useSaleStore from "../../../store/useSaleStore.ts";
 import {useRoutesCustomer} from "../../../routes/customerRoutes.ts";
+import {useRoutesSale} from "../../../routes/saleRoutes.ts";
 
 export default function SaleTable({sales, loading = false, ...props}: { sales: SaleInterface[], loading?: boolean }) {
 	const {setFieldQueryParams, pagination, queryParams} = useSaleStore()
 	const routesCustomer = useRoutesCustomer()
+	const routesSale = useRoutesSale()
 	
 	return <Table
 		columns={[
@@ -68,9 +70,7 @@ export default function SaleTable({sales, loading = false, ...props}: { sales: S
 						<Button
 							icon={<FaEye/>}
 							type="primary"
-							onClick={() => {
-								console.log(row)
-							}}
+							onClick={() => routesSale.goToShow({id: row.id})}
 						/>
 						<Button
 							icon={<FaEdit/>}

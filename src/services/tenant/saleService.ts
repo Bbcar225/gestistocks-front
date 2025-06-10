@@ -7,6 +7,9 @@ const saleService = {
 	},
 	GetAll: (params?: RequestApiInterface): Promise<ResponseApiInterface<ResponsePaginateInterface<SaleInterface[]>>> => {
 		return service.get(`/tenant/sales`, {params})
+	},
+	GetOne: (id: number): Promise<ResponseApiInterface<SaleInterface>> => {
+		return service.get(`/tenant/sales/${id}`)
 	}
 }
 

@@ -89,12 +89,12 @@ export default function ContactTable({contacts, ...props}: { contacts: ContactIn
 			}}
 			{...props}
 		/>
-		{
-			supplier || customer && <ContactFormModal
+		{(supplier || customer) &&
+		<ContactFormModal
 			openModal={isModalOpen}
 			onClose={() => {
-							setIsModalOpen(false)
-							setContact(undefined)
+							setIsModalOpen(false);
+							setContact(undefined);
 						}}
 			onSuccess={() => {
 							if (customer) {

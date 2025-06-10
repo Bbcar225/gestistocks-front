@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 
 interface CartStoreInterface {
 	data?: CartInterface,
-	setField: ({field, value}: {
+	setFieldData: ({field, value}: {
 		field: keyof CartInterface,
 		value?: unknown
 	}) => void,
@@ -12,6 +12,7 @@ interface CartStoreInterface {
 	removeItem: (item: Partial<CartItemInterface>) => void,
 	clearCart: () => void,
 	intoCart: (item: Partial<CartItemInterface>) => boolean,
+	setData: (data?: CartInterface) => void,
 }
 
 const useCartStore = create<CartStoreInterface>((set, get) => {
@@ -21,7 +22,7 @@ const useCartStore = create<CartStoreInterface>((set, get) => {
 			date: dayjs() as unknown as Date
 		},
 		
-		setField: ({field, value}) => {
+		setFieldData: ({field, value}) => {
 			return set((state) => ({
 				...state,
 				data: {
@@ -113,6 +114,15 @@ const useCartStore = create<CartStoreInterface>((set, get) => {
 				it.unit_price === item?.unit_price &&
 				it.quantity === item?.quantity
 			);
+		},
+		
+		setData: (data) => {
+			return set((state) => {
+				return {
+					...state,
+					data
+				}
+			})
 		}
 	};
 });

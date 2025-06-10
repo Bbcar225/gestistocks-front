@@ -23,10 +23,11 @@ import {formatPrice} from "../../../utils/priceUtils.ts";
 import {useRoutesProduct} from "../../../routes/productRoutes.ts";
 import {useSaleGetOne} from "../../../hooks/Api/tenant/SaleHookAPI.ts";
 import {SaleInterface, SaleItemInterface} from "../../../interfaces/models/SaleInterface";
-import {useRoutesSale} from "../../../routes/saleRoutes.ts";
 import {useRoutesCustomer} from "../../../routes/customerRoutes.ts";
 import {BiSolidContact} from "react-icons/bi";
 import {FaMoneyBillTrendUp} from "react-icons/fa6";
+import useCartStore from "../../../store/useCartStore.ts";
+import {useRoutesIndex} from "../../../routes";
 
 export default function SaleShowPage() {
 	const {setSidebar} = useAppStore()
@@ -35,7 +36,8 @@ export default function SaleShowPage() {
 		id: saleId
 	})
 	const [sale, setSale] = useState<SaleInterface | undefined>(undefined)
-	const routesSale = useRoutesSale()
+	const {setData} = useCartStore()
+	const routesIndex = useRoutesIndex()
 	
 	useEffect(() => {
 		if (sale) {
@@ -61,9 +63,26 @@ export default function SaleShowPage() {
 							type='link'
 							icon={<FaEdit/>}
 							onClick={() => {
-								routesSale.goToUpdate({
-									id: sale?.id
+								setData({
+									date: dayjs(sale?.date) as unknown as Date,
+									customer: {
+										label: String(sale?.customer.name),
+										value: Number(sale?.customer.id)
+									},
+									contact: {
+										label: String(sale?.contact.name),
+										value: Number(sale?.contact.id)
+									},
+									items: sale?.items.map((item) => {
+										return {
+											product: item.product,
+											quantity: item.quantity,
+											unit_price: item.origin_price
+										}
+									})
 								})
+								
+								return routesIndex.goToPos()
 							}}
 						/>
 					</>}

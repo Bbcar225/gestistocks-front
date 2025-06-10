@@ -36,7 +36,7 @@ import {useLocation} from "react-router-dom";
 export default function PosPage() {
 	const {setSidebar} = useAppStore()
 	const [form] = Form.useForm<CartInterface>();
-	const {data, setField, clearCart} = useCartStore()
+	const {data, setFieldData, clearCart} = useCartStore()
 	const formData = Form.useWatch([], form)
 	const customer = Form.useWatch('customer', form)
 	const reqSaleCreate = useSaleCreate()
@@ -76,21 +76,21 @@ export default function PosPage() {
 	}, [setSidebar]);
 	
 	useEffect(() => {
-		setField({
+		setFieldData({
 			field: 'date',
 			value: formData?.date
 		})
 		
-		setField({
+		setFieldData({
 			field: 'customer',
 			value: formData?.customer
 		})
 		
-		setField({
+		setFieldData({
 			field: 'contact',
 			value: formData?.contact
 		})
-	}, [formData, setField]);
+	}, [formData, setFieldData]);
 	
 	useEffect(() => {
 		const data = form.getFieldsValue()

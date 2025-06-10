@@ -2,7 +2,7 @@ import {Button, Space, Table, Typography} from "antd";
 import {formatPrice} from "../../../utils/priceUtils.ts";
 import dayjs from "dayjs";
 import {formatDate} from "../../../constants/dateConstant.ts";
-import {FaEdit, FaEye} from "react-icons/fa";
+import {FaEye} from "react-icons/fa";
 import {tablePagination} from "../../../constants/tableConstant.ts";
 import {SaleInterface} from "../../../interfaces/models/SaleInterface";
 import useSaleStore from "../../../store/useSaleStore.ts";
@@ -71,12 +71,6 @@ export default function SaleTable({sales, loading = false, ...props}: { sales: S
 							icon={<FaEye/>}
 							type="primary"
 							onClick={() => routesSale.goToShow({id: row.id})}
-						/>
-						<Button
-							icon={<FaEdit/>}
-							type="default"
-							onClick={() => {
-							}}
 						/>
 					</Space>
 				}

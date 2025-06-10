@@ -24,7 +24,8 @@ interface SaleItemInterface {
 	created_at: string
 	updated_at: string
 	product: ProductInterface
-	stock: StockInterface
+	stock: StockInterface,
+	unit: UnitInterface
 }
 
 interface SaleFormData {

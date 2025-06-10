@@ -22,7 +22,7 @@ import {FaEdit} from "react-icons/fa";
 import {formatPrice} from "../../../utils/priceUtils.ts";
 import {useRoutesProduct} from "../../../routes/productRoutes.ts";
 import {useSaleGetOne} from "../../../hooks/Api/tenant/SaleHookAPI.ts";
-import {SaleInterface} from "../../../interfaces/models/SaleInterface";
+import {SaleInterface, SaleItemInterface} from "../../../interfaces/models/SaleInterface";
 import {useRoutesSale} from "../../../routes/saleRoutes.ts";
 import {useRoutesCustomer} from "../../../routes/customerRoutes.ts";
 import {BiSolidContact} from "react-icons/bi";
@@ -76,9 +76,9 @@ export default function SaleShowPage() {
 				<Card
 					title="Liste des produits"
 				>
-					{/*<PurchaseItems*/}
-					{/*	items={sale?.items || []}*/}
-					{/*/>*/}
+					<SaleItems
+						items={sale?.items || []}
+					/>
 				</Card>
 			</Col>
 		</Row>
@@ -142,7 +142,7 @@ const SaleDescriptions = ({sale}: { sale: SaleInterface }) => {
 	</Flex>
 }
 
-const PurchaseItems = ({items, ...props}: { items: PurchaseItem[] }) => {
+const SaleItems = ({items, ...props}: { items: SaleItemInterface[] }) => {
 	const routesProduct = useRoutesProduct()
 	
 	return <Table
@@ -171,6 +171,13 @@ const PurchaseItems = ({items, ...props}: { items: PurchaseItem[] }) => {
 				>
 					{`${row.product.name} - ${row.product.sku}`}
 				</Link>
+			},
+			{
+				key: "origin_price",
+				title: "Prix d'origine",
+				render: (_, row) => {
+					return formatPrice(row.origin_price || 0)
+				}
 			},
 			{
 				key: "quantity",

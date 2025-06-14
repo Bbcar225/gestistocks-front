@@ -38,5 +38,7 @@ interface SaleFormData {
 export interface SaleItemFormData {
 	product_id: number
 	quantity: number
-	unit_price: number
+	unit_price: number,
+	id?: number,
+	destroy?: boolean
 }

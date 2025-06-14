@@ -8,5 +8,7 @@ interface CartInterface {
 interface CartItemInterface {
 	product: ProductInterface,
 	quantity: number,
-	unit_price: number
+	unit_price: number,
+	id?: number,
+	destroy?: boolean
 }

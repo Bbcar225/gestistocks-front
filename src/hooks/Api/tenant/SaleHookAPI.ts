@@ -1,5 +1,6 @@
 import {useMutation, useQuery} from "react-query";
 import saleService from "../../../services/tenant/saleService.ts";
+import {SaleFormData} from "../../../interfaces/models/SaleInterface";
 
 export const saleQueriesClients = {
 	useSaleGetAll: 'useSaleGetAll',
@@ -28,4 +29,8 @@ export const useSaleGetOne = (params?: HookApiInterface) => {
 			enabled: params?.enabled
 		}
 	)
+}
+
+export const useSaleUpdate = (id: number) => {
+	return useMutation((formData: SaleFormData) => saleService.Update(id, formData))
 }

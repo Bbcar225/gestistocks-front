@@ -28,22 +28,22 @@ import {formatPrice} from "../../utils/priceUtils.ts";
 import {config} from "../../constants/notifcationConstant.ts";
 import React from "react";
 import dayjs from "dayjs";
-import {SaleFormData, SaleInterface} from "../../interfaces/models/SaleInterface";
-import {useSaleCreate} from "../../hooks/Api/tenant/SaleHookAPI.ts";
+import {SaleFormData} from "../../interfaces/models/SaleInterface";
+import {useSaleCreate, useSaleUpdate} from "../../hooks/Api/tenant/SaleHookAPI.ts";
 import {successCreate} from "../../constants/textsConstant.ts";
 import {useLocation} from "react-router-dom";
+import {useRoutesSale} from "../../routes/saleRoutes.ts";
 
 export default function PosPage() {
 	const {setSidebar} = useAppStore()
 	const [form] = Form.useForm<CartInterface>();
-	const {data, setFieldData, clearCart} = useCartStore()
+	const {data, setFieldData, clearCart, setSale, sale} = useCartStore()
 	const formData = Form.useWatch([], form)
-	const customer = Form.useWatch('customer', form)
 	const reqSaleCreate = useSaleCreate()
 	const [notificationInstance, contextHolder] = notification.useNotification(config);
-	const [sale, setSale] = useState<SaleInterface | undefined>(undefined)
 	const location = useLocation()
-	console.log(`/Users/boubacarly/Sites/localhost/perso/gestistock2/front/src/components/pages/PosPage.tsx:44`, `sale =>`, sale)
+	const reqSaleUpdate = useSaleUpdate(Number(sale?.id))
+	const routesSale = useRoutesSale()
 	
 	const handleFinish = (values: CartInterface) => {
 		const formData: SaleFormData = {
@@ -54,9 +54,24 @@ export default function PosPage() {
 				return {
 					product_id: item.product.id,
 					quantity: item.quantity,
-					unit_price: item.unit_price
+					unit_price: item.unit_price,
+					id: item?.id,
+					destroy: item?.destroy
 				}
 			}) || []
+		}
+		
+		if (sale) {
+			return reqSaleUpdate.mutate(formData, {
+				onSuccess: ({message, data}) => {
+					notificationInstance.success({
+						message,
+						description: successCreate
+					})
+					clearCart()
+					return routesSale.goToShow({id: data.id})
+				}
+			})
 		}
 		
 		return reqSaleCreate.mutate(formData, {
@@ -91,14 +106,6 @@ export default function PosPage() {
 			value: formData?.contact
 		})
 	}, [formData, setFieldData]);
-	
-	useEffect(() => {
-		const data = form.getFieldsValue()
-		form.setFieldsValue({
-			...data,
-			contact: undefined
-		})
-	}, [customer]);
 	
 	useEffect(() => {
 		form.setFieldsValue({
@@ -141,7 +148,16 @@ export default function PosPage() {
 							rules={[{required: true}]}
 							name='customer'
 						>
-							<SelectScrollInfiniteCustomer allowClear={false}/>
+							<SelectScrollInfiniteCustomer
+								allowClear={false}
+								onChange={() => {
+									const data = form.getFieldsValue()
+									form.setFieldsValue({
+										...data,
+										contact: undefined
+									})
+								}}
+							/>
 						</Form.Item>
 						
 						<Form.Item
@@ -200,7 +216,7 @@ export default function PosPage() {
 
 const ResumeCart = ({form, loading}: { form: FormInstance, loading: boolean }) => {
 	const [open, setOpen] = useState(false);
-	const {data, intoCart, clearCart} = useCartStore()
+	const {data, intoCart, clearCart, totalPrice, countItems} = useCartStore()
 	const items = data?.items || []
 	const [notificationInstance, contextHolder] = notification.useNotification(config);
 	
@@ -212,22 +228,12 @@ const ResumeCart = ({form, loading}: { form: FormInstance, loading: boolean }) =
 		setOpen(false);
 	};
 	
-	const getTotalPrice = () => {
-		return items?.reduce((sum: number, item: CartItemInterface) => {
-			return sum + (item.unit_price * item.quantity);
-		}, 0)
-	}
-	
-	const getCountItem = () => {
-		return items?.length || 0
-	}
-	
 	return (
 		<>
 			{contextHolder}
 			<FloatButton
 				icon={<FaShoppingCart className='!w-[25px] !h-[25px] !ml-[-3px]'/>}
-				badge={{count: getCountItem(), color: '#FD7E14', showZero: true}}
+				badge={{count: countItems(), color: '#FD7E14', showZero: true}}
 				type='primary'
 				className='!w-[55px] !h-[55px]'
 				onClick={showDrawer}
@@ -241,7 +247,7 @@ const ResumeCart = ({form, loading}: { form: FormInstance, loading: boolean }) =
 						color='green'
 						className='!font-bold !text-[17px] !p-1'
 					>
-						{formatPrice(Number(getTotalPrice()))}
+						{formatPrice(totalPrice())}
 					</Tag>
 					</div>
 				</Flex>}
@@ -291,7 +297,7 @@ const ResumeCart = ({form, loading}: { form: FormInstance, loading: boolean }) =
 				<Spin spinning={loading}>
 					<Space direction="vertical" size="small">
 						{items.length > 0 ?
-							items?.map((item: CartItemInterface, index: number) => {
+							items.filter(item => !item.destroy).map((item: CartItemInterface, index: number) => {
 								const isNotFirst = index !== 0
 								
 								return (
@@ -302,7 +308,8 @@ const ResumeCart = ({form, loading}: { form: FormInstance, loading: boolean }) =
 											initialValues={{
 												quantity: item.quantity,
 												unit_price: item.unit_price || 0,
-												product: item.product
+												product: item.product,
+												id: item?.id,
 											}}
 											inToCart={intoCart({
 												product: item.product,

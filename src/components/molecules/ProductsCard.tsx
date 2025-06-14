@@ -155,7 +155,7 @@ export const ProductForm = ({product, onClose, initialValues, inToCart, ...props
 	inToCart?: boolean
 }) => {
 	const [form] = Form.useForm<CartItemInterface>();
-	const {addItem, removeItem, updateItem} = useCartStore()
+	const {addItem, removeItem, updateItem, sale} = useCartStore()
 	const quantity = Form.useWatch('quantity', form)
 	const routesProduct = useRoutesProduct()
 	
@@ -163,6 +163,33 @@ export const ProductForm = ({product, onClose, initialValues, inToCart, ...props
 		addItem(values)
 		form.resetFields()
 		onClose?.()
+	}
+	
+	const handleAddQuantity = () => {
+		form?.setFieldsValue({
+			...form.getFieldsValue(),
+			quantity: Number(form.getFieldValue("quantity") - 1)
+		})
+	}
+	
+	const handleRemoveQuantity = () => form?.setFieldsValue({
+		...form.getFieldsValue(),
+		quantity: Number(quantity + 1)
+	})
+	
+	const handleUpdate = () => form.validateFields().then((value) => updateItem(value))
+	
+	const handleRemove = () => {
+		if (initialValues) {
+			if (sale) {
+				updateItem({
+					...form.getFieldsValue(),
+					destroy: true
+				})
+			} else {
+				removeItem(initialValues)
+			}
+		}
 	}
 	
 	useEffect(() => {
@@ -213,12 +240,7 @@ export const ProductForm = ({product, onClose, initialValues, inToCart, ...props
 						<Form.Item>
 							<Button
 								icon={<FaMinus/>}
-								onClick={() => {
-									form?.setFieldsValue({
-										...form.getFieldsValue(),
-										quantity: Number(form.getFieldValue("quantity") - 1)
-									})
-								}}
+								onClick={handleAddQuantity}
 								disabled={Number(quantity) <= 1}
 								variant='solid'
 								color='danger'
@@ -238,10 +260,7 @@ export const ProductForm = ({product, onClose, initialValues, inToCart, ...props
 						<Form.Item>
 							<Button
 								icon={<FaPlus/>}
-								onClick={() => form?.setFieldsValue({
-									...form.getFieldsValue(),
-									quantity: Number(quantity + 1)
-								})}
+								onClick={handleRemoveQuantity}
 								variant='solid'
 								color='green'
 							/>
@@ -249,6 +268,8 @@ export const ProductForm = ({product, onClose, initialValues, inToCart, ...props
 					</Space>
 					
 					<Form.Item noStyle name='product' rules={[{required: true}]}/>
+					<Form.Item noStyle name='id'/>
+					<Form.Item noStyle name='destroy' rules={[{type: 'boolean'}]}/>
 					
 					{inToCart ?
 						<Flex justify='space-between'>
@@ -258,7 +279,7 @@ export const ProductForm = ({product, onClose, initialValues, inToCart, ...props
 									type="primary"
 									className='!w-full !text-center'
 									icon={<BsFillCartCheckFill className='mx-5 text-[23px]'/>}
-									onClick={() => form.validateFields().then((value) => updateItem(value))}
+									onClick={handleUpdate}
 								/>
 							</div>
 							
@@ -270,11 +291,7 @@ export const ProductForm = ({product, onClose, initialValues, inToCart, ...props
 									icon={<BsCartX className='mx-5 text-[23px]'/>}
 									variant='filled'
 									color='danger'
-									onClick={() => {
-										if (initialValues) {
-											removeItem(initialValues)
-										}
-									}}
+									onClick={handleRemove}
 								/>
 							</div>
 						</Flex> :

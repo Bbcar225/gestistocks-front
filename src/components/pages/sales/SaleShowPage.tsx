@@ -1,6 +1,6 @@
 import {useParams} from "react-router-dom";
 import {useAppStore} from "../../../store/useAppStore.ts";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {
 	Button,
 	Card,
@@ -35,9 +35,31 @@ export default function SaleShowPage() {
 	const reqPurchaseGetOne = useSaleGetOne({
 		id: saleId
 	})
-	const [sale, setSale] = useState<SaleInterface | undefined>(undefined)
-	const {setData} = useCartStore()
+	const {setData, setSale, sale} = useCartStore()
 	const routesIndex = useRoutesIndex()
+	
+	const handleEdit = () => {
+		setData({
+			date: dayjs(sale?.date) as unknown as Date,
+			customer: {
+				label: String(sale?.customer.name),
+				value: Number(sale?.customer.id)
+			},
+			contact: {
+				label: String(sale?.contact.name),
+				value: Number(sale?.contact.id)
+			},
+			items: sale?.items.map((item) => {
+				return {
+					product: item.product,
+					quantity: item.quantity,
+					unit_price: item.unit_price,
+					id: item.id
+				}
+			})
+		})
+		return routesIndex.goToPos()
+	}
 	
 	useEffect(() => {
 		if (sale) {
@@ -62,28 +84,7 @@ export default function SaleShowPage() {
 						<Button
 							type='link'
 							icon={<FaEdit/>}
-							onClick={() => {
-								setData({
-									date: dayjs(sale?.date) as unknown as Date,
-									customer: {
-										label: String(sale?.customer.name),
-										value: Number(sale?.customer.id)
-									},
-									contact: {
-										label: String(sale?.contact.name),
-										value: Number(sale?.contact.id)
-									},
-									items: sale?.items.map((item) => {
-										return {
-											product: item.product,
-											quantity: item.quantity,
-											unit_price: item.origin_price
-										}
-									})
-								})
-								
-								return routesIndex.goToPos()
-							}}
+							onClick={handleEdit}
 						/>
 					</>}
 				>
@@ -192,13 +193,6 @@ const SaleItems = ({items, ...props}: { items: SaleItemInterface[] }) => {
 				</Link>
 			},
 			{
-				key: "origin_price",
-				title: "Prix d'origine",
-				render: (_, row) => {
-					return formatPrice(row.origin_price || 0)
-				}
-			},
-			{
 				key: "quantity",
 				title: "Quantité",
 				render: (_, row) => {
@@ -217,6 +211,13 @@ const SaleItems = ({items, ...props}: { items: SaleItemInterface[] }) => {
 				title: "Prix total",
 				render: (_, row) => {
 					return formatPrice(row.total_price || 0)
+				}
+			},
+			{
+				key: "origin_price",
+				title: "Prix d'origine",
+				render: (_, row) => {
+					return formatPrice(row.origin_price || 0)
 				}
 			},
 		]}

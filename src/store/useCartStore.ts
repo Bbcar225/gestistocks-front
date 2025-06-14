@@ -1,8 +1,11 @@
 import {create} from "zustand";
 import dayjs from "dayjs";
+import {SaleInterface} from "../interfaces/models/SaleInterface";
 
 interface CartStoreInterface {
 	data?: CartInterface,
+	sale?: SaleInterface,
+	
 	setFieldData: ({field, value}: {
 		field: keyof CartInterface,
 		value?: unknown
@@ -13,6 +16,9 @@ interface CartStoreInterface {
 	clearCart: () => void,
 	intoCart: (item: Partial<CartItemInterface>) => boolean,
 	setData: (data?: CartInterface) => void,
+	setSale: (sale: SaleInterface) => void,
+	totalPrice: () => number,
+	countItems: () => number
 }
 
 const useCartStore = create<CartStoreInterface>((set, get) => {
@@ -123,6 +129,29 @@ const useCartStore = create<CartStoreInterface>((set, get) => {
 					data
 				}
 			})
+		},
+		
+		setSale: (sale) => {
+			return set((state) => {
+				return {
+					...state,
+					sale
+				}
+			})
+		},
+		
+		totalPrice: () => {
+			const items = get().data?.items || [];
+			
+			return items.filter(item => !item.destroy).reduce((sum: number, item) => {
+				return sum + (item.unit_price * item.quantity);
+			}, 0)
+		},
+		
+		countItems: () => {
+			const items = get().data?.items || [];
+			
+			return items.filter(item => !item.destroy).length || 0
 		}
 	};
 });

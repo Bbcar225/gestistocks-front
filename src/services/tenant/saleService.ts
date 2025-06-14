@@ -10,7 +10,10 @@ const saleService = {
 	},
 	GetOne: (id: number): Promise<ResponseApiInterface<SaleInterface>> => {
 		return service.get(`/tenant/sales/${id}`)
-	}
+	},
+	Update: (id: number, data: SaleFormData): Promise<ResponseApiInterface<SaleInterface>> => {
+		return service.put(`/tenant/sales/${id}`, data)
+	},
 }
 
 export default saleService

@@ -21,14 +21,14 @@ import ProductsCard, {ProductForm} from "../molecules/ProductsCard.tsx";
 import SearchInput from "../atoms/SearchInput.tsx";
 import SelectCategory from "../molecules/Selects/SelectCategory.tsx";
 import {FaShoppingCart} from "react-icons/fa";
-import {BsCartCheckFill, BsCartXFill} from "react-icons/bs";
+import {BsCartCheckFill, BsCartXFill, BsEye} from "react-icons/bs";
 import {useProductStore} from "../../store/useProductStore.ts";
 import useCartStore from "../../store/useCartStore.ts";
 import {formatPrice} from "../../utils/priceUtils.ts";
 import {config} from "../../constants/notifcationConstant.ts";
 import React from "react";
 import dayjs from "dayjs";
-import {SaleFormData} from "../../interfaces/models/SaleInterface";
+import {SaleFormData, SaleInterface} from "../../interfaces/models/SaleInterface";
 import {useSaleCreate, useSaleUpdate} from "../../hooks/Api/tenant/SaleHookAPI.ts";
 import {successCreate} from "../../constants/textsConstant.ts";
 import {useLocation} from "react-router-dom";
@@ -37,13 +37,14 @@ import {useRoutesSale} from "../../routes/saleRoutes.ts";
 export default function PosPage() {
 	const {setSidebar} = useAppStore()
 	const [form] = Form.useForm<CartInterface>();
-	const {data, setFieldData, clearCart, setSale, sale} = useCartStore()
+	const {data, clearCart, sale, setSale, setData} = useCartStore()
 	const formData = Form.useWatch([], form)
 	const reqSaleCreate = useSaleCreate()
 	const [notificationInstance, contextHolder] = notification.useNotification(config);
 	const location = useLocation()
 	const reqSaleUpdate = useSaleUpdate(Number(sale?.id))
 	const routesSale = useRoutesSale()
+	const [newSale, setNewSale] = useState<SaleInterface | undefined>(undefined)
 	
 	const handleFinish = (values: CartInterface) => {
 		const formData: SaleFormData = {
@@ -69,6 +70,7 @@ export default function PosPage() {
 						description: successCreate
 					})
 					clearCart()
+					setSale(undefined)
 					return routesSale.goToShow({id: data.id})
 				}
 			})
@@ -80,8 +82,8 @@ export default function PosPage() {
 					message,
 					description: successCreate
 				})
-				clearCart()
-				setSale(data)
+				clearCart(form)
+				setNewSale(data)
 			}
 		})
 	}
@@ -91,27 +93,16 @@ export default function PosPage() {
 	}, [setSidebar]);
 	
 	useEffect(() => {
-		setFieldData({
-			field: 'date',
-			value: formData?.date
-		})
-		
-		setFieldData({
-			field: 'customer',
-			value: formData?.customer
-		})
-		
-		setFieldData({
-			field: 'contact',
-			value: formData?.contact
-		})
-	}, [formData, setFieldData]);
+		setData({...data, ...formData})
+	}, [formData, setData]);
 	
 	useEffect(() => {
-		form.setFieldsValue({
-			...data,
-			date: data?.date ? data?.date : dayjs()
-		})
+		if (location.pathname) {
+			form.setFieldsValue({
+				...data,
+				date: data?.date ? data?.date : dayjs()
+			})
+		}
 	}, [location.pathname]);
 	
 	useEffect(() => {
@@ -208,17 +199,28 @@ export default function PosPage() {
 					]}
 				/>
 				
-				<ResumeCart form={form} loading={reqSaleCreate.isLoading}/>
+				<ResumeCart
+					form={form}
+					loading={reqSaleCreate.isLoading}
+					sale={newSale}
+					setSale={() => setNewSale(undefined)}
+				/>
 			</Row>
 		</Form>
 	</>
 }
 
-const ResumeCart = ({form, loading}: { form: FormInstance, loading: boolean }) => {
+const ResumeCart = ({form, loading, sale, setSale}: {
+	form: FormInstance,
+	loading: boolean,
+	sale?: SaleInterface,
+	setSale?: (sale?: SaleInterface) => void
+}) => {
 	const [open, setOpen] = useState(false);
-	const {data, intoCart, clearCart, totalPrice, countItems} = useCartStore()
+	const {data, intoCart, totalPrice, countItems, clearCart} = useCartStore()
 	const items = data?.items || []
 	const [notificationInstance, contextHolder] = notification.useNotification(config);
+	const routesSale = useRoutesSale()
 	
 	const showDrawer = () => {
 		setOpen(true);
@@ -227,6 +229,29 @@ const ResumeCart = ({form, loading}: { form: FormInstance, loading: boolean }) =
 	const onClose = () => {
 		setOpen(false);
 	};
+	
+	const handleValidate = () => form.validateFields().then(() => form.submit()).catch((error) => {
+		const firstErrors = error.errorFields
+			.map((e: { errors: never[]; }) => e.errors[0])
+			.filter(Boolean);
+		
+		return notificationInstance.error({
+			message: 'Erreur de validation',
+			description: <ul>
+				{firstErrors.map((message: string, index: number) => <li key={index}>- {message}</li>)}
+			</ul>
+		})
+	})
+	
+	const handleReset = () => {
+		clearCart(form)
+	}
+	
+	const resetSale = () => {
+		handleReset()
+		setSale?.()
+		setOpen(false)
+	}
 	
 	return (
 		<>
@@ -254,45 +279,63 @@ const ResumeCart = ({form, loading}: { form: FormInstance, loading: boolean }) =
 				closable={{'aria-label': 'Close Button'}}
 				onClose={onClose}
 				open={open}
-				footer={
-					<Row gutter={[12, 12]}>
-						<Col span={12}>
-							<Button
-								type='primary'
-								className='w-full'
-								icon={<BsCartCheckFill/>}
-								onClick={() => form.validateFields().then(() => form.submit()).catch((error) => {
-									const firstErrors = error.errorFields
-										.map((e: { errors: never[]; }) => e.errors[0])
-										.filter(Boolean);
-									
-									return notificationInstance.error({
-										message: 'Erreur de validation',
-										description: <ul>
-											{firstErrors.map((message: string, index: number) => <li key={index}>- {message}</li>)}
-										</ul>
-									})
-								})}
-								loading={loading}
-							>
-								Valider
-							</Button>
-						</Col>
-						
-						<Col span={12}>
-							<Button
-								className='w-full'
-								icon={<BsCartXFill/>}
-								variant='outlined'
-								color='danger'
-								onClick={() => clearCart()}
-								disabled={loading}
-							>
-								Réinitialiser
-							</Button>
-						</Col>
-					</Row>
-				}
+				footer={<>
+					{!sale && <Row gutter={[12, 12]}>
+			<Col span={12}>
+			  <Button
+				  type='primary'
+				  className='w-full'
+				  icon={<BsCartCheckFill/>}
+				  onClick={handleValidate}
+				  loading={loading}
+			  >
+				Valider
+			  </Button>
+			</Col>
+
+			<Col span={12}>
+			  <Button
+				  className='w-full'
+				  icon={<BsCartXFill/>}
+				  variant='outlined'
+				  color='danger'
+				  onClick={handleReset}
+				  disabled={loading}
+			  >
+				Réinitialiser
+			  </Button>
+			</Col>
+		  </Row>}
+					
+					{sale && <Flex gap='small' wrap={false} className='!w-full !overflow-x-scroll !pb-4'>
+			<Button
+				type='primary'
+				icon={<BsEye/>}
+				onClick={resetSale}
+				variant='solid'
+				color='green'
+			>
+			  Nouvelle vente
+			</Button>
+
+			<Button
+				type='primary'
+				icon={<BsCartCheckFill/>}
+			>
+			  Reçu
+			</Button>
+
+			<Button
+				type='primary'
+				icon={<BsEye/>}
+				onClick={() => routesSale.goToShow({id: sale.id})}
+				variant='filled'
+				color='primary'
+			>
+			  Voir la vente
+			</Button>
+		  </Flex>}
+				</>}
 			>
 				<Spin spinning={loading}>
 					<Space direction="vertical" size="small">
@@ -320,10 +363,15 @@ const ResumeCart = ({form, loading}: { form: FormInstance, loading: boolean }) =
 									</React.Fragment>
 								)
 							}) :
-							<Result
-								status="404"
-								title="Aucun produit ajouté"
-							/>
+							sale ? <Result
+									status="success"
+									title="Vente validée avec succès."
+									subTitle={`Vente #${sale.reference}`}
+								/> :
+								<Result
+									status="404"
+									title="Aucun produit ajouté"
+								/>
 						}
 					</Space>
 				</Spin>

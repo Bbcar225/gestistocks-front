@@ -1,6 +1,6 @@
 import {useParams} from "react-router-dom";
 import {useAppStore} from "../../../store/useAppStore.ts";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {
 	Button,
 	Card,
@@ -33,32 +33,18 @@ export default function SaleShowPage() {
 	const {setSidebar} = useAppStore()
 	const {sale: saleId} = useParams()
 	const reqPurchaseGetOne = useSaleGetOne({
-		id: saleId
+		id: saleId,
 	})
-	const {setData, setSale, sale} = useCartStore()
+	const [sale, setSale] = useState<SaleInterface | undefined>(undefined)
+	const {setDataBySale, setSale: setSaleStore} = useCartStore()
 	const routesIndex = useRoutesIndex()
 	
 	const handleEdit = () => {
-		setData({
-			date: dayjs(sale?.date) as unknown as Date,
-			customer: {
-				label: String(sale?.customer.name),
-				value: Number(sale?.customer.id)
-			},
-			contact: {
-				label: String(sale?.contact.name),
-				value: Number(sale?.contact.id)
-			},
-			items: sale?.items.map((item) => {
-				return {
-					product: item.product,
-					quantity: item.quantity,
-					unit_price: item.unit_price,
-					id: item.id
-				}
-			})
-		})
-		return routesIndex.goToPos()
+		if (sale) {
+			setSaleStore(sale)
+			setDataBySale(sale)
+			return routesIndex.goToPos()
+		}
 	}
 	
 	useEffect(() => {

@@ -1,6 +1,7 @@
 import {create} from "zustand";
 import dayjs from "dayjs";
 import {SaleInterface} from "../interfaces/models/SaleInterface";
+import {FormInstance} from "antd";
 
 interface CartStoreInterface {
 	data?: CartInterface,
@@ -13,12 +14,13 @@ interface CartStoreInterface {
 	addItem: (item: CartItemInterface) => void,
 	updateItem: (item: CartItemInterface) => void,
 	removeItem: (item: Partial<CartItemInterface>) => void,
-	clearCart: () => void,
+	clearCart: (form?: FormInstance) => void,
 	intoCart: (item: Partial<CartItemInterface>) => boolean,
 	setData: (data?: CartInterface) => void,
-	setSale: (sale: SaleInterface) => void,
+	setSale: (sale?: SaleInterface) => void,
 	totalPrice: () => number,
-	countItems: () => number
+	countItems: () => number,
+	setDataBySale: (sale: SaleInterface) => void,
 }
 
 const useCartStore = create<CartStoreInterface>((set, get) => {
@@ -42,7 +44,7 @@ const useCartStore = create<CartStoreInterface>((set, get) => {
 			return set(() => {
 				const items = get().data?.items || [];
 				
-				const itemIndex = items.findIndex((it) =>
+				const itemIndex = items.filter(item => !item?.destroy).findIndex((it) =>
 					it.unit_price === item.unit_price &&
 					it.product.id === item.product.id
 				);
@@ -99,11 +101,19 @@ const useCartStore = create<CartStoreInterface>((set, get) => {
 			});
 		},
 		
-		clearCart: () => {
+		clearCart: (form) => {
 			return set((state) => {
+				form?.setFieldsValue({
+					items: [],
+					date: dayjs(),
+					customer: undefined,
+					contact: undefined,
+				})
+				
 				return {
 					...state,
 					data: {
+						...state.data,
 						items: [],
 						contact: undefined,
 						customer: undefined,
@@ -152,6 +162,33 @@ const useCartStore = create<CartStoreInterface>((set, get) => {
 			const items = get().data?.items || [];
 			
 			return items.filter(item => !item.destroy).length || 0
+		},
+		
+		setDataBySale: (sale) => {
+			return set((state) => {
+				return {
+					...state,
+					data: {
+						date: dayjs(sale?.date) as unknown as Date,
+						customer: {
+							label: String(sale?.customer.name),
+							value: Number(sale?.customer.id)
+						},
+						contact: {
+							label: String(sale?.contact.name),
+							value: Number(sale?.contact.id)
+						},
+						items: sale?.items.map((item) => {
+							return {
+								product: item.product,
+								quantity: item.quantity,
+								unit_price: item.unit_price,
+								id: item.id
+							}
+						})
+					}
+				}
+			})
 		}
 	};
 });

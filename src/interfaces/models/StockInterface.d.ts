@@ -3,7 +3,9 @@ interface StockInterface {
 	product_id: number
 	active: boolean
 	price: number
-	quantity: number
+	quantity: number,
+	low_quantity_threshold: number,
+	low_quantity: boolean
 	created_at: string
 	updated_at: string,
 	warehouse: WarehouseInterface

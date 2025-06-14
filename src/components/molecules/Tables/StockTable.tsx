@@ -25,6 +25,13 @@ export default function StockTable({data, unit, ...props}: {
 				}
 			},
 			{
+				key: 'Quantité faible',
+				title: 'Quantité faible',
+				render: (_, row) => {
+					return `${row.low_quantity_threshold} ${unit?.name || ""}`
+				}
+			},
+			{
 				key: 'Quantité',
 				title: 'Quantité',
 				render: (_, row) => {

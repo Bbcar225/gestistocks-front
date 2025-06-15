@@ -65,7 +65,7 @@ export default function SelectInfiniteScroll({
 			{...props}
 		>
 			{options.map((item, key) => {
-				return <Select.Option key={key} value={item.value} disabled={item.disabled}>
+				return <Select.Option key={key} value={item?.value} disabled={item?.disabled}>
 					{item.label}
 				</Select.Option>;
 			})}

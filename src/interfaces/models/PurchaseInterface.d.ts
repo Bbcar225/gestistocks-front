@@ -16,10 +16,11 @@ interface PurchaseFormDataInterface {
 	supplier_id: number
 	reference?: string
 	items: PurchaseItemFormDataInterface[]
-	date: string
+	date: string,
+	contact_id: number
 }
 
-type PurchaseUpdateFormDataInterface = Pick<PurchaseFormDataInterface, 'supplier_id' | 'date' | 'reference'>;
+type PurchaseUpdateFormDataInterface = Pick<PurchaseFormDataInterface, 'supplier_id' | 'date' | 'reference' | 'contact_id'>;
 
 interface PurchaseItemFormDataInterface {
 	product_id: number

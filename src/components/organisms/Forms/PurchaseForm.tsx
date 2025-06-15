@@ -60,7 +60,8 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 			const purchaseData: PurchaseUpdateFormDataInterface = {
 				date: formData.date,
 				reference: formData.reference,
-				supplier_id: formData.supplier_id
+				supplier_id: formData.supplier_id,
+				contact_id: formData.contact_id
 			}
 			reqPurchaseUpdate.mutate(purchaseData, {
 				onSuccess: (res) => {
@@ -165,7 +166,7 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 					return {
 						id: item.id,
 						product: {
-							label: item.product.name,
+							label: `${item.product.name} - ${item.product.sku}`,
 							value: item.product.id
 						},
 						quantity: item.quantity,
@@ -330,27 +331,48 @@ const PurchaseItemRow = ({name, remove, form, isMobile, purchase, ...props}: {
 }) => {
 	const product = useWatch(['items', name, 'product'], form);
 	const deleted = useWatch(['items', name, 'deleted'], form);
+	const id = useWatch(['items', name, 'id'], form);
+	
 	const reqProductGetOne = useProductGetOne({
 		id: product?.value,
 		enabled: !!product
 	})
+	
 	const [productFormBd, setProductFormBd] = useState<ProductInterface | undefined>(undefined)
 	
 	useEffect(() => {
 		if (reqProductGetOne.status === 'success') {
-			const res = reqProductGetOne.data
-			const product = res.data
-			product.unit_equivalences.push({
-				unit: {
-					id: product.unit.id,
-					name: product.unit.name,
+			const res = reqProductGetOne.data;
+			const product = res.data;
+			const unit = product.unit;
+			
+			const alreadyExists = product.unit_equivalences.some(
+				(eq: UnitEquivalenceInterface) => eq.unit?.id === unit.id
+			);
+			
+			if (!alreadyExists) {
+				product.unit_equivalences.push({
+					unit,
+				} as unknown as UnitEquivalenceInterface);
+			}
+			
+			setProductFormBd(product);
+			
+			if (!id) {
+				const currentForm = form.getFieldsValue();
+				
+				const items = currentForm.items ? [...currentForm.items] : [];
+				
+				items[name].unit = {
+					label: unit.name,
+					value: unit.id,
 				}
-			} as unknown as UnitEquivalenceInterface)
-			setProductFormBd(product)
-			form.setFieldValue(['items', name, 'unit'], {
-				label: product.unit.name,
-				value: product.unit.id,
-			});
+				
+				form.setFieldsValue({
+					...currentForm,
+					items,
+				});
+			}
 		}
 	}, [reqProductGetOne.status, reqProductGetOne.data]);
 	
@@ -363,7 +385,24 @@ const PurchaseItemRow = ({name, remove, form, isMobile, purchase, ...props}: {
 					rules={[{required: true}]}
 					label="Produit"
 				>
-					<SelectScrollInfiniteProduct allowClear={false} disabled={deleted}/>
+					<SelectScrollInfiniteProduct
+						allowClear={false}
+						disabled={deleted}
+						onChange={() => {
+							if (id) {
+								const currentForm = form.getFieldsValue();
+								
+								const items = currentForm.items ? [...currentForm.items] : [];
+								
+								items[name].unit = undefined
+								
+								form.setFieldsValue({
+									...currentForm,
+									items,
+								});
+							}
+						}}
+					/>
 				</Form.Item>
 			</Col>
 			
@@ -383,10 +422,11 @@ const PurchaseItemRow = ({name, remove, form, isMobile, purchase, ...props}: {
 					{...props}
 					name={[name, 'unit']}
 					label="Unité"
+					rules={[{required: true}]}
 				>
 					<SelectUnitEquivalence
 						labelInValue={true}
-						unitEquivalences={Number(productFormBd?.unit_equivalences?.length) > 0 ? productFormBd?.unit_equivalences : []}
+						unitEquivalences={productFormBd?.unit_equivalences || []}
 						disabled={deleted}
 					/>
 				</Form.Item>

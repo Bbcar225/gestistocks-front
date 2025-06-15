@@ -32,7 +32,7 @@ export default function SelectUnitEquivalence({productId, labelInValue = false, 
 	}, [reqGetData.data, reqGetData.isSuccess]);
 	
 	useEffect(() => {
-		if (unitEquivalences && unitEquivalences?.length > 0) {
+		if (unitEquivalences) {
 			const options: BaseOptionType[] = unitEquivalences.map((item, index) => {
 				return {
 					key: index,

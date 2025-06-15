@@ -7,12 +7,12 @@ import {FaEdit} from "react-icons/fa";
 import {isMobile} from "react-device-detect";
 import dayjs from "dayjs";
 import {formatDate} from "../../../constants/dateConstant.ts";
-import {useRoutesCustomer} from "../../../routes/customerRoutes.ts";
 import ContactTable from "../../molecules/Tables/ContactTable.tsx";
 import {RiUserAddFill} from "react-icons/ri";
 import ContactFormModal from "../../organisms/Modals/ContactFormModal.tsx";
 import {useCustomerStore} from "../../../store/useCustomerStore.ts";
 import {useQueryClient} from "react-query";
+import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
 
 export default function CustomerShowPage() {
 	const {setSidebar} = useAppStore()

@@ -32,7 +32,7 @@ import {SaleFormData, SaleInterface} from "../../interfaces/models/SaleInterface
 import {useSaleCreate, useSaleUpdate} from "../../hooks/Api/tenant/SaleHookAPI.ts";
 import {successCreate} from "../../constants/textsConstant.ts";
 import {useLocation} from "react-router-dom";
-import {useRoutesSale} from "../../routes/saleRoutes.ts";
+import useRoutesSale from "../../hooks/routes/SaleRoutesHook.ts";
 
 export default function PosPage() {
 	const {setSidebar} = useAppStore()

@@ -13,7 +13,7 @@ import {notDefined} from "../../../constants/textsConstant.ts";
 import unitEquivalenceStore from "../../../store/useUnitEquivalenceStore.ts";
 import UnitEquivalenceFormModal from "../../organisms/Modals/UnitEquivalenceFormModal.tsx";
 import {FaEdit} from "react-icons/fa";
-import {useRoutesProduct} from "../../../routes/productRoutes.ts";
+import useRoutesProduct from "../../../hooks/routes/ProductRoutesHook.ts";
 
 export default function ProductIndexPage() {
 	const {setSidebar} = useAppStore()

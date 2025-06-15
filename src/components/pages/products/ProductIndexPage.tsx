@@ -2,10 +2,10 @@ import {useEffect, useState} from "react";
 import {useAppStore} from "../../../store/useAppStore.ts";
 import {Button, Col, Flex, Row} from "antd";
 import {useProductGetAll} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
-import {useRoutesProduct} from "../../../routes/productRoutes.ts";
 import {IoIosAddCircle} from "react-icons/io";
 import {useProductStore} from "../../../store/useProductStore.ts";
 import ProductTable from "../../molecules/Tables/ProductTable.tsx";
+import useRoutesProduct from "../../../hooks/routes/ProductRoutesHook.ts";
 
 export default function ProductIndexPage() {
 	const {setSidebar} = useAppStore()

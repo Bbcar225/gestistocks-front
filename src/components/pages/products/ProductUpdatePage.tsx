@@ -4,12 +4,12 @@ import {Button, Card, Col, Flex, Row, Spin, Steps} from "antd";
 import {ProductForm} from "../../organisms/Forms/ProductForm.tsx";
 import UnitEquivalenceForm from "../../organisms/Forms/UnitEquivalenceForm.tsx";
 import StockForm from "../../organisms/Forms/StockForm.tsx";
-import {useRoutesProduct} from "../../../routes/productRoutes.ts";
 import useGalleryStore from "../../../store/useGalleryStore.ts";
 import {useProductGetOne} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
 import {useParams} from "react-router-dom";
 import {useProductStore} from "../../../store/useProductStore.ts";
 import {GrLinkNext} from "react-icons/gr";
+import useRoutesProduct from "../../../hooks/routes/ProductRoutesHook.ts";
 
 export default function ProductUpdatePage() {
 	const {product: productId} = useParams()

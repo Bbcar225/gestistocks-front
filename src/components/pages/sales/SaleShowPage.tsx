@@ -20,14 +20,14 @@ import {TbUserDollar} from "react-icons/tb";
 import {BsCalendar2DateFill} from "react-icons/bs";
 import {FaEdit} from "react-icons/fa";
 import {formatPrice} from "../../../utils/priceUtils.ts";
-import {useRoutesProduct} from "../../../routes/productRoutes.ts";
 import {useSaleGetOne} from "../../../hooks/Api/tenant/SaleHookAPI.ts";
 import {SaleInterface, SaleItemInterface} from "../../../interfaces/models/SaleInterface";
-import {useRoutesCustomer} from "../../../routes/customerRoutes.ts";
 import {BiSolidContact} from "react-icons/bi";
 import {FaMoneyBillTrendUp} from "react-icons/fa6";
 import useCartStore from "../../../store/useCartStore.ts";
-import {useRoutesIndex} from "../../../routes";
+import useRoutesIndex from "../../../hooks/routes/IndexRoutesHook.ts";
+import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
+import useRoutesProduct from "../../../hooks/routes/ProductRoutesHook.ts";
 
 export default function SaleShowPage() {
 	const {setSidebar} = useAppStore()

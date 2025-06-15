@@ -7,8 +7,8 @@ import {formatPrice} from "../../../utils/priceUtils.ts";
 import dayjs from "dayjs";
 import {formatDate} from "../../../constants/dateConstant.ts";
 import {FaEdit, FaEye} from "react-icons/fa";
-import {useRoutesPurchase} from "../../../routes/purchaseRoutes.ts";
 import {usePurchaseStore} from "../../../store/usePurchaseStore.ts";
+import useRoutesPurchase from "../../../hooks/routes/PurchaseRoutesHook.ts";
 
 export default function PurchaseTable({purchases, loading = false, ...props}: {
 	purchases: PurchaseInterface[],

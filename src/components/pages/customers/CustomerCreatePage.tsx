@@ -7,7 +7,7 @@ import {useCustomerStore} from "../../../store/useCustomerStore.ts";
 import {useSupplierStore} from "../../../store/useSupplierStore.ts";
 import {CustomerDescriptions} from "./CustomerShowPage.tsx";
 import {FaArrowRight} from "react-icons/fa";
-import {useRoutesCustomer} from "../../../routes/customerRoutes.ts";
+import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
 
 export default function CustomerCreatePage() {
 	const {setSidebar} = useAppStore()

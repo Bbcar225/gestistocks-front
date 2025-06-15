@@ -1,8 +1,6 @@
-import {RouteObject, useNavigate} from "react-router-dom";
+import {RouteObject} from "react-router-dom";
 import AuthLayout from "../components/templates/AuthLayout.tsx";
 import {lazy} from "react";
-import {useAppStore} from "../store/useAppStore.ts";
-import {useUserStore} from "../store/useUserStore.ts";
 
 const unitRoutes: RouteObject[] = [
 	{
@@ -20,26 +18,5 @@ const unitRoutes: RouteObject[] = [
 		],
 	},
 ]
-
-export const useRoutesUnit = () => {
-	const navigate = useNavigate();
-	const {setSidebar} = useAppStore()
-	const {user} = useUserStore()
-	
-	const goToUnitIndex = () => {
-		setSidebar({field: 'title', value: 'Unités'})
-		return navigate(`/${user?.userable.slug}/units`)
-	}
-	
-	const goToCreateUnit = () => {
-		setSidebar({field: 'title', value: 'Nouvelle unité'})
-		return navigate(`/${user?.userable.slug}/units/create`)
-	}
-	
-	return {
-		goToUnitIndex,
-		goToCreateUnit
-	}
-}
 
 export default unitRoutes

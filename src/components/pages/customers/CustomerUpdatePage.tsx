@@ -7,11 +7,11 @@ import {useCustomerStore} from "../../../store/useCustomerStore.ts";
 import {useSupplierStore} from "../../../store/useSupplierStore.ts";
 import {CustomerDescriptions} from "./CustomerShowPage.tsx";
 import {FaArrowRight} from "react-icons/fa";
-import {useRoutesCustomer} from "../../../routes/customerRoutes.ts";
 import {useParams} from "react-router-dom";
 import {useCustomerGetOne} from "../../../hooks/Api/tenant/CustomerHookAPI.ts";
 import useAlertNotification from "../../../hooks/Api/app/useNotification.ts";
 import {successUpdate} from "../../../constants/textsConstant.ts";
+import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
 
 export default function CustomerCreatePage() {
 	const {setSidebar} = useAppStore()

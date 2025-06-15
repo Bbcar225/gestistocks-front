@@ -3,8 +3,8 @@ import {formatPrice} from "../../../utils/priceUtils.ts";
 import {FaEdit, FaEye} from "react-icons/fa";
 import {tablePagination} from "../../../constants/tableConstant.ts";
 import {ColumnType} from "antd/es/table/interface";
-import {useRoutesProduct} from "../../../routes/productRoutes.ts";
 import {useProductStore} from "../../../store/useProductStore.ts";
+import useRoutesProduct from "../../../hooks/routes/ProductRoutesHook.ts";
 
 export default function ProductTable({loading, products, columns, ...props}: {
 	loading?: boolean,

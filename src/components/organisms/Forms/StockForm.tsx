@@ -17,7 +17,6 @@ export default function StockForm({onSuccess, product, ...props}: StockFormProps
 	const [notificationInstance, contextHolder] = notification.useNotification(config);
 	const reqProductCreateStock = useProductCreateStock(Number(product?.id))
 	const productSelected = Form.useWatch('product', form);
-	const purchasePrice = Form.useWatch('purchase_price', form)
 	
 	const handleFinish = (values: StockFormDataInterface) => {
 		if (values?.product) {

@@ -22,9 +22,9 @@ import {formatPrice} from "../../utils/priceUtils.ts";
 import {useProductStore} from "../../store/useProductStore.ts";
 import {tablePagination} from "../../constants/tableConstant.ts";
 import Link from "antd/es/typography/Link";
-import {useRoutesProduct} from "../../routes/productRoutes.ts";
 import useCartStore from "../../store/useCartStore.ts";
 import {BsCartX, BsFillCartCheckFill} from "react-icons/bs";
+import useRoutesProduct from "../../hooks/routes/ProductRoutesHook.ts";
 
 export default function ProductsCard({...props}) {
 	const {setFieldQueryParams, queryParams, setFieldPagination, pagination} = useProductStore()

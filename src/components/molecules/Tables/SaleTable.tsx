@@ -6,8 +6,8 @@ import {FaEye} from "react-icons/fa";
 import {tablePagination} from "../../../constants/tableConstant.ts";
 import {SaleInterface} from "../../../interfaces/models/SaleInterface";
 import useSaleStore from "../../../store/useSaleStore.ts";
-import {useRoutesCustomer} from "../../../routes/customerRoutes.ts";
-import {useRoutesSale} from "../../../routes/saleRoutes.ts";
+import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
+import useRoutesSale from "../../../hooks/routes/SaleRoutesHook.ts";
 
 export default function SaleTable({sales, loading = false, ...props}: { sales: SaleInterface[], loading?: boolean }) {
 	const {setFieldQueryParams, pagination, queryParams} = useSaleStore()

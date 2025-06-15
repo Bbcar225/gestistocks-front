@@ -4,7 +4,7 @@ import {Card, Col, Row, Steps} from "antd";
 import PurchaseForm from "../../organisms/Forms/PurchaseForm.tsx";
 import StockForm from "../../organisms/Forms/StockForm.tsx";
 import {usePurchaseGetOne} from "../../../hooks/Api/tenant/PurchaseHookAPI.ts";
-import {useRoutesPurchase} from "../../../routes/purchaseRoutes.ts";
+import useRoutesPurchase from "../../../hooks/routes/PurchaseRoutesHook.ts";
 
 export default function PurchaseCreatePage() {
 	const {setSidebar} = useAppStore()

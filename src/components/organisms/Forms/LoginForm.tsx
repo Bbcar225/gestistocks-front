@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {useAuthTenantService} from "../../../hooks/Api/tenant/AuthHookAPI.ts";
 import {useEffect} from "react";
 import {useTokenStore, useUserStore} from "../../../store/useUserStore.ts";
-import {useRoutesIndex} from "../../../routes";
+import useRoutesIndex from "../../../hooks/routes/IndexRoutesHook.ts";
 
 export default function LoginForm() {
 	const [form] = Form.useForm<LoginFormDataInterface>();

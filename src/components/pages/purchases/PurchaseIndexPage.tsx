@@ -4,8 +4,8 @@ import {Button, Col, Flex, Row} from "antd";
 import {IoIosAddCircle} from "react-icons/io";
 import {usePurchaseGetAll} from "../../../hooks/Api/tenant/PurchaseHookAPI.ts";
 import PurchaseTable from "../../molecules/Tables/PurchaseTable.tsx";
-import {useRoutesPurchase} from "../../../routes/purchaseRoutes.ts";
 import {usePurchaseStore} from "../../../store/usePurchaseStore.ts";
+import useRoutesPurchase from "../../../hooks/routes/PurchaseRoutesHook.ts";
 
 export default function PurchaseIndexPage() {
 	const {setSidebar} = useAppStore()

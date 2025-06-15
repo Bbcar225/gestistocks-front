@@ -2,11 +2,11 @@ import {useEffect, useState} from "react";
 import {useAppStore} from "../../../store/useAppStore.ts";
 import {Button, Col, Flex, Row} from "antd";
 import {IoIosAddCircle} from "react-icons/io";
-import {useRoutesIndex} from "../../../routes";
 import useSaleStore from "../../../store/useSaleStore.ts";
 import {useSaleGetAll} from "../../../hooks/Api/tenant/SaleHookAPI.ts";
 import {SaleInterface} from "../../../interfaces/models/SaleInterface";
 import SaleTable from "../../molecules/Tables/SaleTable.tsx";
+import useRoutesIndex from "../../../hooks/routes/IndexRoutesHook.ts";
 
 export default function SaleIndexPage() {
 	const {setSidebar} = useAppStore()

@@ -21,9 +21,9 @@ import {MdNumbers} from "react-icons/md";
 import {TbUserDollar} from "react-icons/tb";
 import {BsCalendar2DateFill} from "react-icons/bs";
 import {FaEdit} from "react-icons/fa";
-import {useRoutesPurchase} from "../../../routes/purchaseRoutes.ts";
 import {formatPrice} from "../../../utils/priceUtils.ts";
-import {useRoutesProduct} from "../../../routes/productRoutes.ts";
+import useRoutesPurchase from "../../../hooks/routes/PurchaseRoutesHook.ts";
+import useRoutesProduct from "../../../hooks/routes/ProductRoutesHook.ts";
 
 export default function PurchaseShowPage() {
 	const {setSidebar} = useAppStore()

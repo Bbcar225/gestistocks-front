@@ -1,8 +1,6 @@
-import {RouteObject, useNavigate} from "react-router-dom";
+import {RouteObject} from "react-router-dom";
 import AuthLayout from "../components/templates/AuthLayout.tsx";
 import {lazy} from "react";
-import {useAppStore} from "../store/useAppStore.ts";
-import {useUserStore} from "../store/useUserStore.ts";
 
 const galleryRoutes: RouteObject[] = [
 	{
@@ -16,18 +14,5 @@ const galleryRoutes: RouteObject[] = [
 		],
 	},
 ]
-
-export const useRoutesGallery = () => {
-	const navigate = useNavigate();
-	const {setSidebar} = useAppStore()
-	const {user} = useUserStore()
-	
-	return {
-		goToGalleryIndex: () => {
-			setSidebar({field: 'title', value: 'Galléries'})
-			return navigate(`/${user?.userable.slug}/galleries`)
-		}
-	}
-}
 
 export default galleryRoutes

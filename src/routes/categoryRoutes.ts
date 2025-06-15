@@ -1,8 +1,6 @@
-import {RouteObject, useNavigate} from "react-router-dom";
+import {RouteObject} from "react-router-dom";
 import AuthLayout from "../components/templates/AuthLayout.tsx";
 import {lazy} from "react";
-import {useAppStore} from "../store/useAppStore.ts";
-import {useUserStore} from "../store/useUserStore.ts";
 
 const categoryRoutes: RouteObject[] = [
 	{
@@ -16,18 +14,5 @@ const categoryRoutes: RouteObject[] = [
 		],
 	},
 ]
-
-export const useRoutesCategory = () => {
-	const navigate = useNavigate();
-	const {setSidebar} = useAppStore()
-	const {user} = useUserStore()
-	
-	return {
-		goToCategoryIndex: () => {
-			setSidebar({field: 'title', value: 'Catégories'})
-			return navigate(`/${user?.userable.slug}/categories`)
-		}
-	}
-}
 
 export default categoryRoutes

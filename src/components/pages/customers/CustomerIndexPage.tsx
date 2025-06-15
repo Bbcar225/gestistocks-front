@@ -8,7 +8,7 @@ import {formatDate} from "../../../constants/dateConstant.ts";
 import {FaEdit, FaEye} from "react-icons/fa";
 import {useCustomerStore} from "../../../store/useCustomerStore.ts";
 import {useCustomerGetAll} from "../../../hooks/Api/tenant/CustomerHookAPI.ts";
-import {useRoutesCustomer} from "../../../routes/customerRoutes.ts";
+import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
 
 export default function CustomerIndexPage() {
 	const {setSidebar} = useAppStore()

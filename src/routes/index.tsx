@@ -1,11 +1,9 @@
-import {RouteObject, useNavigate} from "react-router-dom";
+import {RouteObject} from "react-router-dom";
 import {lazy} from "react";
 import {GuestLayout} from "../components/templates/GuestLayout.tsx";
 import NotFoundPage from "../components/pages/NotFoundPage.tsx";
 import AuthLayout from "../components/templates/AuthLayout.tsx";
 import unitRoutes from "./unitRoutes.ts";
-import {useAppStore} from "../store/useAppStore.ts";
-import {useUserStore} from "../store/useUserStore.ts";
 import categoryRoutes from "./categoryRoutes.ts";
 import galleryRoutes from "./galleryRoutes.ts";
 import productRoutes from "./productRoutes.ts";
@@ -60,25 +58,5 @@ const index: RouteObject[] = [
 	...customerRoutes,
 	...saleRoutes,
 ]
-
-export const useRoutesIndex = () => {
-	const navigate = useNavigate();
-	const {setSidebar} = useAppStore()
-	const {user} = useUserStore()
-	
-	return {
-		goToDashboard: () => {
-			setSidebar({field: 'title', value: 'Tableau de bord'})
-			navigate(`/${user?.userable.slug}/dashboard`)
-		},
-		goToLogin: () => {
-			navigate(`/`)
-		},
-		goToPos: () => {
-			setSidebar({field: 'title', value: 'Système POS'})
-			navigate(`/${user?.userable.slug}/pos`)
-		}
-	}
-}
 
 export default index;

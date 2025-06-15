@@ -6,7 +6,7 @@ import {useSupplierStore} from "../../../store/useSupplierStore.ts";
 import {formatPrice} from "../../../utils/priceUtils.ts";
 import dayjs from "dayjs";
 import {formatDate} from "../../../constants/dateConstant.ts";
-import {FaEdit, FaEye} from "react-icons/fa";
+import {FaEye} from "react-icons/fa";
 import {usePurchaseStore} from "../../../store/usePurchaseStore.ts";
 import useRoutesPurchase from "../../../hooks/routes/PurchaseRoutesHook.ts";
 
@@ -80,11 +80,6 @@ export default function PurchaseTable({purchases, loading = false, ...props}: {
 								icon={<FaEye/>}
 								type="primary"
 								onClick={() => reqRoutesPurchase.goToShow({id: row.id})}
-							/>
-							<Button
-								icon={<FaEdit/>}
-								type="default"
-								onClick={() => reqRoutesPurchase.goToUpdate({id: row.id})}
 							/>
 						</Space>
 					}

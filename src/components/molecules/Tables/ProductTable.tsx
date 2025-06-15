@@ -1,6 +1,6 @@
 import {Button, Image, Space, Table, Tag} from "antd";
 import {formatPrice} from "../../../utils/priceUtils.ts";
-import {FaEdit, FaEye} from "react-icons/fa";
+import {FaEye} from "react-icons/fa";
 import {tablePagination} from "../../../constants/tableConstant.ts";
 import {ColumnType} from "antd/es/table/interface";
 import {useProductStore} from "../../../store/useProductStore.ts";
@@ -12,7 +12,7 @@ export default function ProductTable({loading, products, columns, ...props}: {
 	columns?: ColumnType<ProductInterface>[]
 }) {
 	const routesProduct = useRoutesProduct()
-	const {pagination, queryParams, setFieldQueryParams, setProduct} = useProductStore()
+	const {pagination, queryParams, setFieldQueryParams} = useProductStore()
 	
 	if (!columns || columns.length <= 0) {
 		columns = [
@@ -68,14 +68,6 @@ export default function ProductTable({loading, products, columns, ...props}: {
 							type="primary"
 							icon={<FaEye/>}
 							onClick={() => routesProduct.goToProductShow(row)}
-						/>
-						<Button
-							type="default"
-							icon={<FaEdit/>}
-							onClick={() => {
-								setProduct(row)
-								routesProduct.goToEdit({id: row.id})
-							}}
 						/>
 					</Space>
 				}

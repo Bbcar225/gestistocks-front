@@ -17,5 +17,6 @@ interface StockFormDataInterface {
 	active: boolean
 	quantity: number,
 	product?: BaseOptionType,
-	purchase_price?: number
+	purchase_price?: number,
+	low_quantity_threshold?: number
 }

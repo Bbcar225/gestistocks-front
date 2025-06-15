@@ -17,6 +17,7 @@ export default function StockForm({onSuccess, product, ...props}: StockFormProps
 	const [notificationInstance, contextHolder] = notification.useNotification(config);
 	const reqProductCreateStock = useProductCreateStock(Number(product?.id))
 	const productSelected = Form.useWatch('product', form);
+	const purchasePrice = Form.useWatch('purchase_price', form)
 	
 	const handleFinish = (values: StockFormDataInterface) => {
 		if (values?.product) {
@@ -65,7 +66,7 @@ export default function StockForm({onSuccess, product, ...props}: StockFormProps
 	>
 		{contextHolder}
 		<Row gutter={isMobile ? 0 : [12, 12]}>
-			<Col span={isMobile ? 24 : 12}>
+			<Col span={isMobile ? 24 : 8}>
 				<Form.Item<StockFormDataInterface>
 					label="Produit"
 					name="product"
@@ -78,7 +79,22 @@ export default function StockForm({onSuccess, product, ...props}: StockFormProps
 				</Form.Item>
 			</Col>
 			
-			<Col span={isMobile ? 24 : 12}>
+			{form.getFieldValue('purchase_price') && <Col span={isMobile ? 24 : 8}>
+		<Form.Item<StockFormDataInterface>
+			label="Prix d'achat"
+			name="purchase_price"
+		>
+		  <InputNumber
+			  style={{
+								width: "100%",
+							}}
+			  suffix="Fr"
+			  disabled={true}
+		  />
+		</Form.Item>
+	  </Col>}
+			
+			<Col span={isMobile ? 24 : 8}>
 				<Form.Item<StockFormDataInterface>
 					label="Dépôt"
 					name="warehouse_id"
@@ -87,23 +103,10 @@ export default function StockForm({onSuccess, product, ...props}: StockFormProps
 					<SelectWarehouse/>
 				</Form.Item>
 			</Col>
-			
-			<Col span={isMobile ? 24 : 6}>
-				<Form.Item<StockFormDataInterface>
-					label="Prix d'achat"
-					name="purchase_price"
-				>
-					<InputNumber
-						style={{
-							width: "100%",
-						}}
-						suffix="Fr"
-						disabled={true}
-					/>
-				</Form.Item>
-			</Col>
-			
-			<Col span={isMobile ? 24 : 6}>
+		</Row>
+		
+		<Row gutter={isMobile ? 0 : [12, 12]}>
+			<Col span={isMobile ? 24 : 7}>
 				<Form.Item<StockFormDataInterface>
 					label="Prix de vente"
 					name="price"
@@ -118,7 +121,7 @@ export default function StockForm({onSuccess, product, ...props}: StockFormProps
 				</Form.Item>
 			</Col>
 			
-			<Col span={isMobile ? 24 : 6}>
+			<Col span={isMobile ? 24 : 7}>
 				<Form.Item<StockFormDataInterface>
 					label="Quantité du stock"
 					name="quantity"
@@ -133,7 +136,21 @@ export default function StockForm({onSuccess, product, ...props}: StockFormProps
 				</Form.Item>
 			</Col>
 			
-			<Col span={isMobile ? 24 : 4}>
+			<Col span={isMobile ? 24 : 7}>
+				<Form.Item<StockFormDataInterface>
+					label="Stock faible"
+					name="quantity"
+				>
+					<InputNumber
+						style={{
+							width: "100%",
+						}}
+						suffix={`${product?.unit.name}`}
+					/>
+				</Form.Item>
+			</Col>
+			
+			<Col span={isMobile ? 24 : 3}>
 				<Form.Item<StockFormDataInterface>
 					label="Stock de vente ?"
 					name="active"

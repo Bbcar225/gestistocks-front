@@ -7,6 +7,7 @@ interface PurchaseInterface {
 	created_at: string
 	updated_at: string
 	supplier: SupplierInterface
+	contact: ContactInterface
 	items: PurchaseItem[]
 	items_count?: number
 }
@@ -38,6 +39,7 @@ interface PurchaseItemRemoveFormData {
 
 interface PurchaseCartInterface {
 	supplier?: BaseOptionType,
+	contact?: BaseOptionType,
 	reference?: string,
 	items?: PurchaseItemCartItemInterface[],
 	date?: string,

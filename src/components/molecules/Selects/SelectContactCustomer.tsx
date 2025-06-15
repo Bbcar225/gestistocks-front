@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {filterOptionSelect} from "../../../utils/formUtils.ts";
 import {useCustomerGetOne} from "../../../hooks/Api/tenant/CustomerHookAPI.ts";
 
-export default function SelectContact({customerId, enabled, disabled, labelInValue, ...props}: {
+export default function SelectContactCustomer({customerId, enabled, disabled, labelInValue, ...props}: {
 	customerId: number,
 	enabled: boolean,
 	disabled?: boolean,

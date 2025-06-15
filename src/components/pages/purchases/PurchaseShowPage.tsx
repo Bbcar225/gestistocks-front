@@ -24,6 +24,7 @@ import {FaEdit} from "react-icons/fa";
 import {formatPrice} from "../../../utils/priceUtils.ts";
 import useRoutesPurchase from "../../../hooks/routes/PurchaseRoutesHook.ts";
 import useRoutesProduct from "../../../hooks/routes/ProductRoutesHook.ts";
+import {BiSolidContact} from "react-icons/bi";
 
 export default function PurchaseShowPage() {
 	const {setSidebar} = useAppStore()
@@ -109,6 +110,18 @@ const PurchaseDescriptions = ({purchase}: { purchase: PurchaseInterface }) => {
 					}}
 				>
 					{purchase.supplier.name}
+				</Link>
+			</Typography.Title>
+		</div>
+		
+		<div>
+			<BiSolidContact className='text-[30px]'/>
+			Contact
+			<Typography.Title level={5}>
+				<Link
+					href={`tel:${purchase.contact.phoneNumber}`}
+				>
+					{`${purchase.contact.name} - ${purchase.contact.phoneNumber}`}
 				</Link>
 			</Typography.Title>
 		</div>

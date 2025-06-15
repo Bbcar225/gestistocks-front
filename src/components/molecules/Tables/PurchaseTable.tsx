@@ -46,7 +46,7 @@ export default function PurchaseTable({purchases, loading = false, ...props}: {
 								setSupplier(row.supplier)
 							}}
 						>
-							{row.supplier.name}
+							{`${row.supplier.name} - ${row.contact.name}`}
 						</Typography.Link>
 					}
 				},

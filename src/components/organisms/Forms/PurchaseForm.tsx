@@ -17,6 +17,7 @@ import {
 import {config} from "../../../constants/notifcationConstant.ts";
 import {successCreate, successDelete, successUpdate} from "../../../constants/textsConstant.ts";
 import {HiPlusCircle} from "react-icons/hi";
+import SelectContactSupplier from "../../molecules/Selects/SelectContactSupplier.tsx";
 
 export default function PurchaseForm({onSuccess, purchase, ...props}: {
 	onSuccess?: (data?: { purchase?: PurchaseInterface }) => void;
@@ -31,6 +32,7 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 	const reqPurchaseItemsUpdate = usePurchaseItemsUpdate(purchaseId)
 	const reqPurchaseItemsRemove = usePurchaseItemsRemove(purchaseId)
 	const isLoading = reqPurchaseCreate.isLoading || reqPurchaseUpdate.isLoading || reqPurchaseItemsCreate.isLoading || reqPurchaseItemsUpdate.isLoading || reqPurchaseItemsRemove.isLoading
+	const supplier = Form.useWatch('supplier', form)
 	
 	const handleFinish = (values: PurchaseCartInterface) => {
 		if (values?.items && values?.items?.length <= 0) {
@@ -42,6 +44,7 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 		const formData = {
 			date: String(values.date),
 			supplier_id: Number(values.supplier?.value),
+			contact_id: Number(values.contact?.value),
 			reference: values.reference,
 			items: values?.items?.map(item => {
 				return {
@@ -153,6 +156,10 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 					label: purchase.supplier.name,
 					value: purchase.supplier.id
 				},
+				contact: {
+					label: purchase.contact.name,
+					value: purchase.contact.id
+				},
 				reference: purchase.reference,
 				items: purchase.items.length ? purchase.items.map((item) => {
 					return {
@@ -196,7 +203,7 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 	>
 		{contextHolder}
 		<Row gutter={isMobile ? 0 : 12}>
-			<Col span={isMobile ? 24 : 8}>
+			<Col span={isMobile ? 24 : 6}>
 				<Form.Item
 					label='Date'
 					name='date'
@@ -209,7 +216,7 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 				</Form.Item>
 			</Col>
 			
-			<Col span={isMobile ? 24 : 8}>
+			<Col span={isMobile ? 24 : 6}>
 				<Form.Item
 					label='Fournisseur'
 					name='supplier'
@@ -218,11 +225,34 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 					<SelectScrollInfiniteSupplier
 						className="w-full"
 						allowClear={false}
+						onChange={() => {
+							const data = form.getFieldsValue()
+							
+							form.setFieldsValue({
+								...data,
+								contact: undefined
+							})
+						}}
 					/>
 				</Form.Item>
 			</Col>
 			
-			<Col span={isMobile ? 24 : 8}>
+			<Col span={isMobile ? 24 : 6}>
+				<Form.Item
+					label='Contact'
+					name='contact'
+					rules={[{required: true}]}
+				>
+					<SelectContactSupplier
+						supplierId={Number(supplier?.value)}
+						enabled={!!supplier}
+						disabled={!supplier}
+						labelInValue={true}
+					/>
+				</Form.Item>
+			</Col>
+			
+			<Col span={isMobile ? 24 : 6}>
 				<Form.Item
 					label='Référence'
 					name='reference'
@@ -232,11 +262,13 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 					/>
 				</Form.Item>
 			</Col>
-			
-			<Divider orientation='start'>
-				Produits
-			</Divider>
-			
+		</Row>
+		
+		<Divider orientation='start'>
+			Produits
+		</Divider>
+		
+		<Row gutter={isMobile ? 0 : 12}>
 			<Col span={24}>
 				<Form.List
 					name="items"

@@ -16,7 +16,7 @@ import {isMobile} from "react-device-detect";
 import {useEffect, useState} from "react";
 import {useAppStore} from "../../store/useAppStore.ts";
 import SelectScrollInfiniteCustomer from "../molecules/Selects/SelectScrollInfiniteCustomer.tsx";
-import SelectContact from "../molecules/Selects/SelectContact.tsx";
+import SelectContactCustomer from "../molecules/Selects/SelectContactCustomer.tsx";
 import ProductsCard, {ProductForm} from "../molecules/ProductsCard.tsx";
 import SearchInput from "../atoms/SearchInput.tsx";
 import SelectCategory from "../molecules/Selects/SelectCategory.tsx";
@@ -156,7 +156,7 @@ export default function PosPage() {
 							rules={[{required: true}]}
 							name='contact'
 						>
-							<SelectContact
+							<SelectContactCustomer
 								customerId={Number(data?.customer?.value)}
 								enabled={!!data?.customer}
 								disabled={!data?.customer}

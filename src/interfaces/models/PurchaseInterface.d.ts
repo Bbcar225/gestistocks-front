@@ -13,7 +13,7 @@ interface PurchaseInterface {
 
 interface PurchaseFormDataInterface {
 	supplier_id: number
-	reference: string
+	reference?: string
 	items: PurchaseItemFormDataInterface[]
 	date: string
 }

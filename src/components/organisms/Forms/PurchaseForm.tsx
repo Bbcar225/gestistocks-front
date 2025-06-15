@@ -42,7 +42,7 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 		const formData = {
 			date: String(values.date),
 			supplier_id: Number(values.supplier?.value),
-			reference: String(values.reference),
+			reference: values.reference,
 			items: values?.items?.map(item => {
 				return {
 					product_id: Number(item?.product?.value),
@@ -226,7 +226,6 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 				<Form.Item
 					label='Référence'
 					name='reference'
-					rules={[{required: true}]}
 				>
 					<Input
 						placeholder="Référence"

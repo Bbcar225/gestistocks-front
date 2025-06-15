@@ -138,7 +138,7 @@ export default function StockForm({onSuccess, product, ...props}: StockFormProps
 			<Col span={isMobile ? 24 : 7}>
 				<Form.Item<StockFormDataInterface>
 					label="Stock faible"
-					name="quantity"
+					name="low_quantity_threshold"
 				>
 					<InputNumber
 						style={{

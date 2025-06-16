@@ -33,6 +33,7 @@ import {useSaleCreate, useSaleUpdate} from "../../hooks/Api/tenant/SaleHookAPI.t
 import {successCreate} from "../../constants/textsConstant.ts";
 import {useLocation} from "react-router-dom";
 import useRoutesSale from "../../hooks/routes/SaleRoutesHook.ts";
+import ButtonDownloadInvoiceSale from "../atoms/ButtonDownloadInvoiceSale.tsx";
 
 export default function PosPage() {
 	const {setSidebar} = useAppStore()
@@ -320,13 +321,6 @@ const ResumeCart = ({form, loading, sale, setSale}: {
 
 			<Button
 				type='primary'
-				icon={<BsCartCheckFill/>}
-			>
-			  Reçu
-			</Button>
-
-			<Button
-				type='primary'
 				icon={<BsEye/>}
 				onClick={() => routesSale.goToShow({id: sale.id})}
 				variant='filled'
@@ -367,6 +361,9 @@ const ResumeCart = ({form, loading, sale, setSale}: {
 									status="success"
 									title="Vente validée avec succès."
 									subTitle={`Vente #${sale.reference}`}
+									extra={<ButtonDownloadInvoiceSale
+										id={sale.id}
+									/>}
 								/> :
 								<Result
 									status="404"

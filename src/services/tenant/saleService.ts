@@ -14,6 +14,11 @@ const saleService = {
 	Update: (id: number, data: SaleFormData): Promise<ResponseApiInterface<SaleInterface>> => {
 		return service.put(`/tenant/sales/${id}`, data)
 	},
+	DownloadInvoice: (id: number): Promise<Blob> => {
+		return service.get(`/tenant/sales/${id}/invoice`, {
+			responseType: 'blob',
+		})
+	}
 }
 
 export default saleService

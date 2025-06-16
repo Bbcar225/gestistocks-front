@@ -8,6 +8,7 @@ import {SaleInterface} from "../../../interfaces/models/SaleInterface";
 import useSaleStore from "../../../store/useSaleStore.ts";
 import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
 import useRoutesSale from "../../../hooks/routes/SaleRoutesHook.ts";
+import ButtonDownloadInvoiceSale from "../../atoms/ButtonDownloadInvoiceSale.tsx";
 
 export default function SaleTable({sales, loading = false, ...props}: { sales: SaleInterface[], loading?: boolean }) {
 	const {setFieldQueryParams, pagination, queryParams} = useSaleStore()
@@ -71,6 +72,11 @@ export default function SaleTable({sales, loading = false, ...props}: { sales: S
 							icon={<FaEye/>}
 							type="primary"
 							onClick={() => routesSale.goToShow({id: row.id})}
+						/>
+						
+						<ButtonDownloadInvoiceSale
+							id={row.id}
+							text={null}
 						/>
 					</Space>
 				}

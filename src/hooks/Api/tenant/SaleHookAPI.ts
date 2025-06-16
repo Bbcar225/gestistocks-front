@@ -34,3 +34,7 @@ export const useSaleGetOne = (params?: HookApiInterface) => {
 export const useSaleUpdate = (id: number) => {
 	return useMutation((formData: SaleFormData) => saleService.Update(id, formData))
 }
+
+export const useSaleDownloadInvoice = () => {
+	return useMutation((formData: { id: number }) => saleService.DownloadInvoice(formData.id))
+}

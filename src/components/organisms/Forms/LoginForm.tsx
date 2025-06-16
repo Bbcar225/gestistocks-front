@@ -47,7 +47,7 @@ export default function LoginForm() {
 			autoComplete="off"
 			layout='vertical'
 			initialValues={{
-				email: "tenant1@example.com",
+				email: "tenant-0@example.com",
 				password: "password"
 			}}
 		>

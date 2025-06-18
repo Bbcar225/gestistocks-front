@@ -1,7 +1,9 @@
 import Title from "antd/es/typography/Title";
 import {Menus} from "./Menus.tsx";
-import {Layout} from "antd";
+import {Image, Layout, Space} from "antd";
 import React from "react";
+import {useUserStore} from "../../store/useUserStore.ts";
+import useRoutesIndex from "../../hooks/routes/IndexRoutesHook.ts";
 
 const siderStyle: React.CSSProperties = {
 	overflow: 'auto',
@@ -19,6 +21,9 @@ export default function Sidebar({collapsed, setCollapsed}: {
 	collapsed: boolean,
 	setCollapsed: (collapsed: boolean) => void
 }) {
+	const {tenant, user} = useUserStore()
+	const routesIndex = useRoutesIndex()
+	
 	return <Layout.Sider
 		breakpoint="lg"
 		collapsedWidth="0"
@@ -29,16 +34,38 @@ export default function Sidebar({collapsed, setCollapsed}: {
 		collapsed={collapsed}
 		style={siderStyle}
 	>
-		<div style={{
-			textAlign: 'center',
-			position: 'sticky',
-			top: 0,
-			background: '#001529',
-			zIndex: 10
-		}}>
-			<Title className='text-center' style={{color: 'white'}}>
-				BM
-			</Title>
+		<div
+			style={{
+				textAlign: 'center',
+				position: 'sticky',
+				top: 0,
+				background: '#001529',
+				zIndex: 10,
+				marginBottom: 7
+			}}
+		>
+			<Space
+				className='p-1 cursor-pointer'
+				onClick={routesIndex.goToDashboard}
+			>
+				<Image
+					src={tenant?.gallery?.url}
+					preview={false}
+					width={45}
+					height={45}
+					className='!rounded-full !object-cover'
+				/>
+				
+				<Title
+					level={5}
+					className='!text-white !m-0'
+					ellipsis={{
+						rows: 2
+					}}
+				>
+					{user?.name}
+				</Title>
+			</Space>
 		</div>
 		<div
 			style={{

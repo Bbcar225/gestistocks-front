@@ -48,10 +48,10 @@ export default function ProductIndexPage() {
 
 	  <Col span={24}>
 		<Card
-			title="Équivalences d'unités"
+			title="Historique du stock"
 		>
-		  <UnitEquivalenceTable
-			  unitEquivalences={product.unit_equivalences}
+		  <StockTable
+			  data={product.stocks}
 			  unit={product.unit}
 		  />
 		</Card>
@@ -59,10 +59,10 @@ export default function ProductIndexPage() {
 
 	  <Col span={24}>
 		<Card
-			title="Historique du stock"
+			title="Équivalences d'unités"
 		>
-		  <StockTable
-			  data={product.stocks}
+		  <UnitEquivalenceTable
+			  unitEquivalences={product.unit_equivalences}
 			  unit={product.unit}
 		  />
 		</Card>

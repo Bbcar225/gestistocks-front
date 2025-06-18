@@ -1,22 +1,15 @@
 import {Select} from "antd";
 import {useEffect, useState} from "react";
 import {useWarehouseGetAll} from "../../../hooks/Api/tenant/WarehouseHookAPI.ts";
-import {useWarehouseStore} from "../../../store/useWarehouseStore.ts";
 import {filterOptionSelect} from "../../../utils/formUtils.ts";
 
 export default function SelectWarehouse({...props}) {
-	const {setFieldQueryParams, resetQueryParams, queryParams} = useWarehouseStore()
-	const reqGetData = useWarehouseGetAll({queryParams})
+	const reqGetData = useWarehouseGetAll({
+		queryParams: {
+			per_page: 5000000
+		}
+	})
 	const [options, setOptions] = useState<BaseOptionType[]>([]);
-	
-	useEffect(() => {
-		setFieldQueryParams({field: 'per_page', value: 5000000});
-		
-		return () => {
-			resetQueryParams()
-		};
-	}, [resetQueryParams, setFieldQueryParams]);
-	
 	
 	useEffect(() => {
 		if (reqGetData.isSuccess) {

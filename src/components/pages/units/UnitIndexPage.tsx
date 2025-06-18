@@ -13,9 +13,11 @@ import {useQueryClient} from "react-query";
 
 export default function UnitIndexPage() {
 	const {setSidebar} = useAppStore()
-	const reqUnitGetAll = useUnitGetAll()
-	const [units, setUnits] = useState<UnitInterface[]>([])
 	const {pagination, queryParams, setFieldPagination, setFieldQueryParams, setUnit} = useUnitStore()
+	const reqUnitGetAll = useUnitGetAll({
+		queryParams
+	})
+	const [units, setUnits] = useState<UnitInterface[]>([])
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	
 	useEffect(() => {

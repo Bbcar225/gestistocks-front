@@ -1,6 +1,5 @@
 import {useMutation, useQuery} from "react-query";
 import unitService from "../../../services/tenant/unitService.ts";
-import {useUnitStore} from "../../../store/useUnitStore.ts";
 
 export const queriesClientsUnit = {
 	useUnitGetAll: 'useUnitGetAll',
@@ -8,11 +7,9 @@ export const queriesClientsUnit = {
 }
 
 export const useUnitGetAll = (params?: HookApiInterface) => {
-	const {queryParams} = useUnitStore()
-	
 	return useQuery(
-		[queriesClientsUnit.useUnitGetAll, queryParams],
-		() => unitService.getAll(queryParams),
+		[queriesClientsUnit.useUnitGetAll, params?.queryParams],
+		() => unitService.getAll(params?.queryParams),
 		{enabled: params?.enabled}
 	)
 }

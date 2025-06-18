@@ -22,7 +22,6 @@ import useRoutesPurchase from "../../hooks/routes/PurchaseRoutesHook.ts";
 import useRoutesCustomer from "../../hooks/routes/CustomerRoutesHook.ts";
 import useRoutesSale from "../../hooks/routes/SaleRoutesHook.ts";
 import {IoMdSettings} from "react-icons/io";
-import {ImProfile} from "react-icons/im";
 import {useAuthLogout} from "../../hooks/Api/tenant/AuthHookAPI.ts";
 import {useTokenStore, useUserStore} from "../../store/useUserStore.ts";
 import useRoutesAccount from "../../hooks/routes/AccountRoutesHook.ts";
@@ -196,16 +195,6 @@ export function Menus({collapsed, setCollapsed}: {
 					onClick: () => {
 						if (isMobile) setCollapsed(!collapsed);
 						routesAccount.goToAccount()
-					},
-				},
-				{
-					key: "Mon profil",
-					label: "Mon profil",
-					icon: <ImProfile/>,
-					pathmatch: "/profil",
-					onClick: () => {
-						if (isMobile) setCollapsed(!collapsed);
-						routesWarehouse.goToIndex()
 					},
 				},
 				{

@@ -4,7 +4,7 @@ import {useAppStore} from "../../../store/useAppStore.ts";
 import GalleryForm from "../Forms/GalleryForm.tsx";
 import useGalleryStore from "../../../store/useGalleryStore.ts";
 
-export default function ImageGalleryModal() {
+export default function ImageGalleryModal({...props}) {
 	const {openModal, setOpenModal} = useAppStore()
 	const {setGallery} = useGalleryStore()
 	
@@ -14,6 +14,7 @@ export default function ImageGalleryModal() {
 		onCancel={() => setOpenModal(false)}
 		footer={null}
 		width={1000}
+		{...props}
 	>
 		<Tabs
 			type="card"
@@ -23,6 +24,7 @@ export default function ImageGalleryModal() {
 					label: "Gallérie",
 					children: <Gallery
 						preview={false}
+						{...props}
 					/>,
 				},
 				{
@@ -33,6 +35,7 @@ export default function ImageGalleryModal() {
 							setGallery(gallery);
 							setOpenModal(false)
 						}}
+						{...props}
 					/>
 				}
 			]}

@@ -1,12 +1,14 @@
-import {Button, Col, Flex, Form, Input, notification, Row, Select, UploadFile} from "antd";
+import {Button, Col, Flex, Form, Input, notification, Row, UploadFile} from "antd";
 import {useEffect} from "react";
 import {successCreate} from "../../../constants/textsConstant.ts";
 import {useGalleryCreate} from "../../../hooks/Api/tenant/GalleryHookAPI.ts";
-import {galleryTypes} from "../../../constants/formConstant.ts";
 import ImageUpload from "../ImageUpload.tsx";
 import {normFile} from "../../../utils/formUtils.ts";
+import SelectGalleryTypes from "../../molecules/Selects/SelectGalleryTypes.tsx";
 
-export default function GalleryForm({onSuccess, ...props}: { onSuccess?: (data: {gallery?: GalleryInterface}) => void; }) {
+export default function GalleryForm({onSuccess, ...props}: {
+	onSuccess?: (data: { gallery?: GalleryInterface }) => void;
+}) {
 	const [form] = Form.useForm();
 	const [api, contextHolder] = notification.useNotification();
 	const reqGalleryCreate = useGalleryCreate()
@@ -44,7 +46,7 @@ export default function GalleryForm({onSuccess, ...props}: { onSuccess?: (data: 
 			})
 			form.resetFields()
 			
-			onSuccess?.({ gallery: res.data });
+			onSuccess?.({gallery: res.data});
 		}
 	}, [api, form, reqGalleryCreate.data, reqGalleryCreate.isSuccess]);
 	
@@ -53,9 +55,6 @@ export default function GalleryForm({onSuccess, ...props}: { onSuccess?: (data: 
 		layout="vertical"
 		onFinish={handleFinish}
 		disabled={reqGalleryCreate.isLoading}
-		initialValues={{
-			type: 'products'
-		}}
 		{...props}
 	>
 		<Row>
@@ -65,9 +64,7 @@ export default function GalleryForm({onSuccess, ...props}: { onSuccess?: (data: 
 					name="type"
 					rules={[{required: true}]}
 				>
-					<Select
-						options={galleryTypes}
-					/>
+					<SelectGalleryTypes/>
 				</Form.Item>
 			</Col>
 			

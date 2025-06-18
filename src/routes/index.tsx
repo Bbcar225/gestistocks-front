@@ -12,6 +12,7 @@ import supplierRoutes from "./supplierRoutes.ts";
 import purchaseRoutes from "./purchaseRoutes.ts";
 import customerRoutes from "./customerRoutes.ts";
 import saleRoutes from "./saleRoutes.ts";
+import accountRoutes from "./accountRoutes.ts";
 
 const index: RouteObject[] = [
 	{
@@ -57,6 +58,7 @@ const index: RouteObject[] = [
 	...purchaseRoutes,
 	...customerRoutes,
 	...saleRoutes,
+	...accountRoutes,
 ]
 
 export default index;

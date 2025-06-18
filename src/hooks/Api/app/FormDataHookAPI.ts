@@ -3,7 +3,8 @@ import formDataService from "../../../services/app/formDataService.ts";
 
 export const formDataHookQueriesClients = {
 	useFormDataGetCountries: 'useFormDataGetCountries',
-	useFormDataGetPositions: 'useFormDataGetPositions'
+	useFormDataGetPositions: 'useFormDataGetPositions',
+	useFormDataGetTypesGallery: 'useFormDataGetTypesGallery'
 }
 
 export const useFormDataGetCountries = (params?: HookApiInterface) => {
@@ -20,6 +21,16 @@ export const useFormDataGetPositions = (params?: HookApiInterface) => {
 	return useQuery(
 		[formDataHookQueriesClients.useFormDataGetPositions],
 		() => formDataService.GetPositions(),
+		{
+			enabled: params?.enabled
+		}
+	)
+}
+
+export const useFormDataGetTypesGallery = (params?: HookApiInterface) => {
+	return useQuery(
+		[formDataHookQueriesClients.useFormDataGetTypesGallery],
+		() => formDataService.GetTypesGallery(),
 		{
 			enabled: params?.enabled
 		}

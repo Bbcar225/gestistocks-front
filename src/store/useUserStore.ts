@@ -3,17 +3,27 @@ import {persist} from "zustand/middleware";
 
 interface UserStoreInterface {
 	user?: UserInterface,
-	setUser: (user: UserInterface) => void;
+	tenant?: TenantInterface
+	setUser: (user?: UserInterface) => void;
+	setTenant: (tenant?: TenantInterface) => void;
 }
 
 export const useUserStore = create<UserStoreInterface>()(persist(
 	(set) => ({
 		user: undefined,
-		setUser: (user: UserInterface) =>
+		setUser: (user) =>
 			set((state) => ({
 				...state,
 				user
-			}))
+			})),
+		setTenant: (tenant) => {
+			return set((state) => {
+				return {
+					...state,
+					tenant
+				}
+			})
+		}
 	}),
 	{
 		name: "user",
@@ -22,13 +32,13 @@ export const useUserStore = create<UserStoreInterface>()(persist(
 
 interface TokenStoreInterface {
 	token?: string,
-	setToken: (token: string) => void
+	setToken: (token?: string) => void
 }
 
 export const useTokenStore = create<TokenStoreInterface>()(persist((set) => {
 	return {
 		token: undefined,
-		setToken: (token: string) => {
+		setToken: (token) => {
 			set((state) => {
 				return {
 					...state,

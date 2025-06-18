@@ -12,4 +12,4 @@ interface GalleryFormDataInterface {
 	name?: string
 }
 
-type TGalleryType = "products"
+type TGalleryType = "products" | "tenants"

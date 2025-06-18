@@ -2,7 +2,8 @@ import {create} from "zustand";
 
 interface GalleryStoreInterface {
 	queryParams: RequestApiInterface & {
-		search?: string
+		search?: string,
+		type?: TGalleryType
 	},
 	pagination: {
 		total?: number

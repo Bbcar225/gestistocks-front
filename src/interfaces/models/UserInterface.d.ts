@@ -19,3 +19,12 @@ interface LoginResponseInterface {
 	token_type: string
 	user: UserInterface
 }
+
+interface AccountFormDataInterface {
+	gallery_id: number
+	name: string
+	email: string
+	phoneNumber: string
+	address: string
+	notice_invoice: string
+}

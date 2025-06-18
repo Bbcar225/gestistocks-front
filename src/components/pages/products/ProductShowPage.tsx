@@ -76,7 +76,6 @@ export default function ProductIndexPage() {
 
 const DescriptionsProduct = ({product}: { product: ProductInterface }) => {
 	const routesProduct = useRoutesProduct()
-	
 	const items: DescriptionsProps['items'] = [
 		{
 			key: 'ID',
@@ -121,6 +120,7 @@ const DescriptionsProduct = ({product}: { product: ProductInterface }) => {
 		items={items}
 		column={isMobile ? 1 : 3}
 	/>
+	
 }
 
 const DescriptionsProductSale = ({product}: { product: ProductInterface }) => {

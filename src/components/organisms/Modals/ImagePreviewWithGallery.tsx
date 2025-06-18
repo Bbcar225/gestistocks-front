@@ -4,7 +4,7 @@ import ImageGalleryModal from './ImageGalleryModal.tsx';
 import useGalleryStore from "../../../store/useGalleryStore.ts";
 import {useAppStore} from "../../../store/useAppStore.ts";
 
-export default function ImagePreviewWithGallery() {
+export default function ImagePreviewWithGallery({...props}) {
 	const {gallery} = useGalleryStore()
 	const {setOpenModal} = useAppStore()
 	
@@ -32,7 +32,7 @@ export default function ImagePreviewWithGallery() {
 				</Button>
 			</Space>
 			
-			<ImageGalleryModal/>
+			<ImageGalleryModal {...props}/>
 		</>
 	);
 }

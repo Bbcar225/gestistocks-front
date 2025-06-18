@@ -20,6 +20,7 @@ export function ProductForm({onSuccess, product, ...props}: {
 	const reqProductCreate = useProductCreate()
 	const reqProductUpdate = useProductUpdate(Number(product?.id))
 	const isLoading = reqProductCreate.isLoading || reqProductUpdate.isLoading
+	const {setFieldQueryParams} = useGalleryStore()
 	
 	const handleFinish = (values: ProductFormDataInterface) => {
 		if (!gallery) {
@@ -88,7 +89,13 @@ export function ProductForm({onSuccess, product, ...props}: {
 		} else {
 			form.resetFields()
 		}
-	}, [form, product, setGallery]);
+		
+		setFieldQueryParams({field: 'type', value: 'products'})
+		
+		return () => {
+			setFieldQueryParams({field: 'type', value: undefined})
+		}
+	}, [form, product, setFieldQueryParams, setGallery]);
 	
 	return <Form
 		form={form}
@@ -151,7 +158,11 @@ export function ProductForm({onSuccess, product, ...props}: {
 			
 			<Col span={12}>
 				<Form.Item label="Image" required>
-					<ImagePreviewWithGallery/>
+					<ImagePreviewWithGallery
+						initialValues={{
+							type: 'products'
+						}}
+					/>
 				</Form.Item>
 			</Col>
 			

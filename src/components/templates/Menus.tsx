@@ -1,12 +1,12 @@
-import {Menu} from "antd";
+import {Menu, Spin} from "antd";
 import {AiFillDashboard} from "react-icons/ai";
 import {GrCatalog, GrGallery} from "react-icons/gr";
-import {MdAcUnit, MdCalculate} from "react-icons/md";
+import {MdAccountCircle, MdAcUnit, MdCalculate} from "react-icons/md";
 import {isMobile} from 'react-device-detect';
 import {BiSolidCategory, BiSolidPurchaseTag} from "react-icons/bi";
 import {ReactNode, useMemo} from "react";
 import {useLocation} from "react-router-dom";
-import {RiProductHuntLine} from "react-icons/ri";
+import {RiLogoutBoxFill, RiProductHuntLine} from "react-icons/ri";
 import {FaWarehouse} from "react-icons/fa";
 import {TbUserDollar} from "react-icons/tb";
 import {FaComputer, FaUsersViewfinder} from "react-icons/fa6";
@@ -21,14 +21,20 @@ import useRoutesSupplier from "../../hooks/routes/SupplierRoutesHook.ts";
 import useRoutesPurchase from "../../hooks/routes/PurchaseRoutesHook.ts";
 import useRoutesCustomer from "../../hooks/routes/CustomerRoutesHook.ts";
 import useRoutesSale from "../../hooks/routes/SaleRoutesHook.ts";
+import {IoMdSettings} from "react-icons/io";
+import {ImProfile} from "react-icons/im";
+import {useAuthLogout} from "../../hooks/Api/tenant/AuthHookAPI.ts";
+import {useTokenStore, useUserStore} from "../../store/useUserStore.ts";
+import useRoutesAccount from "../../hooks/routes/AccountRoutesHook.ts";
 
 type MenuItem = {
 	key: string;
-	label: string;
+	label: ReactNode;
 	icon?: ReactNode;
 	pathmatch?: string;
 	onClick?: () => void;
 	children?: MenuItem[];
+	disabled?: boolean;
 };
 
 export function Menus({collapsed, setCollapsed}: {
@@ -45,9 +51,12 @@ export function Menus({collapsed, setCollapsed}: {
 	const routesPurchase = useRoutesPurchase()
 	const routesCustomer = useRoutesCustomer()
 	const routesSale = useRoutesSale()
-	
 	const location = useLocation();
 	const currentPath = location.pathname;
+	const reqAuthLogout = useAuthLogout()
+	const {setUser} = useUserStore()
+	const {setToken} = useTokenStore()
+	const routesAccount = useRoutesAccount()
 	
 	const items: MenuItem[] = [
 		{
@@ -170,6 +179,47 @@ export function Menus({collapsed, setCollapsed}: {
 					onClick: () => {
 						if (isMobile) setCollapsed(!collapsed);
 						routesPurchase.goToIndex();
+					},
+				},
+			],
+		},
+		{
+			key: "Réglages",
+			label: "Réglages",
+			icon: <IoMdSettings/>,
+			children: [
+				{
+					key: "Mon compte",
+					label: "Mon compte",
+					icon: <MdAccountCircle/>,
+					pathmatch: "/account",
+					onClick: () => {
+						if (isMobile) setCollapsed(!collapsed);
+						routesAccount.goToAccount()
+					},
+				},
+				{
+					key: "Mon profil",
+					label: "Mon profil",
+					icon: <ImProfile/>,
+					pathmatch: "/profil",
+					onClick: () => {
+						if (isMobile) setCollapsed(!collapsed);
+						routesWarehouse.goToIndex()
+					},
+				},
+				{
+					key: "Déconnexion",
+					label: reqAuthLogout.isLoading ? <Spin size='small'/> : "Déconnexion",
+					icon: <RiLogoutBoxFill/>,
+					disabled: reqAuthLogout.isLoading,
+					onClick: () => {
+						reqAuthLogout.mutate(undefined, {
+							onSuccess: () => {
+								setUser(undefined)
+								setToken(undefined)
+							}
+						})
 					},
 				},
 			],

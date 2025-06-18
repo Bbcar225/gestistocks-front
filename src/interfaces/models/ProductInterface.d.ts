@@ -23,3 +23,9 @@ interface ProductFormDataInterface {
 	sku: string,
 	active?: boolean
 }
+
+interface ProductQueryParamsInterface extends RequestApiInterface {
+	search?: string,
+	category_id?: number,
+	salable?: 'yes' | 'no'
+}

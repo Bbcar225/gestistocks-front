@@ -7,7 +7,7 @@ export const productQueriesClients = {
 	useProductGetAllUnitEquivalence: 'useProductGetAllUnitEquivalence'
 }
 
-export const useProductGetAll = (params?: HookApiInterface) => {
+export const useProductGetAll = (params?: HookApiInterface<ProductQueryParamsInterface>) => {
 	return useQuery(
 		[productQueriesClients.useProductGetAll, params?.queryParams],
 		() => productService.GetAll(params?.queryParams),

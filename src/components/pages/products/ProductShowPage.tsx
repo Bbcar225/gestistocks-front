@@ -154,7 +154,7 @@ const DescriptionsProductSale = ({product}: { product: ProductInterface }) => {
 		{
 			key: 'Santé du stock',
 			label: 'Santé du stock',
-			children: <Badge status='processing' color={product?.stock?.low_quantity ? 'red' : 'green'}/>,
+			children: <Badge status='processing' color={product?.stock?.low_quantity || typeof product?.stock?.low_quantity === 'undefined' ? 'red' : 'green'}/>,
 		},
 	];
 	

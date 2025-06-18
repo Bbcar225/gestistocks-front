@@ -52,10 +52,10 @@ export default function ProductTable({loading, products, columns, ...props}: {
 					const stock = row.stock
 					const unit = row.unit
 					return <Tag
-						color={stock.low_quantity ? 'red' : 'green'}
+						color={stock?.low_quantity || typeof stock?.low_quantity === 'undefined' ? 'red' : 'green'}
 						className='font-bold'
 					>
-						{`${stock?.quantity} ${unit.name}`}
+						{`${stock?.quantity || 0} ${unit.name}`}
 					</Tag>
 				}
 			},

@@ -45,7 +45,7 @@ export default function Sidebar({collapsed, setCollapsed}: {
 			}}
 		>
 			<Space
-				className='p-1 cursor-pointer'
+				className='px-1 py-2 cursor-pointer'
 				onClick={routesIndex.goToDashboard}
 			>
 				<Image

@@ -2,9 +2,9 @@ interface AppStoreInterface {
 	title?: string
 }
 
-interface HookApiInterface {
+interface HookApiInterface<QueryParams = RequestApiInterface> {
 	enabled?: boolean,
 	id?: number|string,
-	queryParams?: RequestApiInterface,
+	queryParams?: QueryParams,
 }
 

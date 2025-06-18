@@ -29,7 +29,10 @@ import useRoutesProduct from "../../hooks/routes/ProductRoutesHook.ts";
 export default function ProductsCard({...props}) {
 	const {setFieldQueryParams, queryParams, setFieldPagination, pagination} = useProductStore()
 	const reqProductGetAll = useProductGetAll({
-		queryParams
+		queryParams: {
+			...queryParams,
+			salable: 'yes'
+		}
 	})
 	const [products, setProducts] = useState<ProductInterface[]>([])
 	const [product, setProduct] = useState<ProductInterface | undefined>(undefined)
@@ -248,7 +251,17 @@ export const ProductForm = ({product, onClose, initialValues, inToCart, ...props
 						</Form.Item>
 						<Form.Item
 							name='quantity'
-							rules={[{required: true}]}
+							rules={[
+								{
+									required: true,
+									message: 'Le champ quantité est obligatoire.',
+								},
+								{
+									type: 'number',
+									max: product?.stock?.quantity,
+									message: `La quantité ne peut pas dépasser ${product?.stock?.quantity} ${product?.unit.name}.`,
+								}
+							]}
 						>
 							<InputNumber
 								variant='underlined'

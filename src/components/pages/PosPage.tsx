@@ -34,6 +34,8 @@ import {successCreate} from "../../constants/textsConstant.ts";
 import {useLocation} from "react-router-dom";
 import useRoutesSale from "../../hooks/routes/SaleRoutesHook.ts";
 import ButtonDownloadInvoiceSale from "../atoms/ButtonDownloadInvoiceSale.tsx";
+import {useQueryClient} from "react-query";
+import {productQueriesClients} from "../../hooks/Api/tenant/ProductHookAPI.ts";
 
 export default function PosPage() {
 	const {setSidebar} = useAppStore()
@@ -46,6 +48,7 @@ export default function PosPage() {
 	const reqSaleUpdate = useSaleUpdate(Number(sale?.id))
 	const routesSale = useRoutesSale()
 	const [newSale, setNewSale] = useState<SaleInterface | undefined>(undefined)
+	const queryClient = useQueryClient()
 	
 	const handleFinish = (values: CartInterface) => {
 		const formData: SaleFormData = {
@@ -85,6 +88,7 @@ export default function PosPage() {
 				})
 				clearCart(form)
 				setNewSale(data)
+				queryClient.invalidateQueries(productQueriesClients.useProductGetAll).then()
 			}
 		})
 	}

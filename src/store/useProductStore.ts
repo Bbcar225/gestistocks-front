@@ -1,10 +1,7 @@
 import {create} from "zustand";
 
 interface ProductStoreInterface {
-	queryParams: RequestApiInterface & {
-		search?: string,
-		category_id?: number
-	},
+	queryParams: ProductQueryParamsInterface,
 	pagination: {
 		total?: number
 	},

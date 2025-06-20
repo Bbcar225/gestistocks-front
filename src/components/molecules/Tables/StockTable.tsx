@@ -2,7 +2,7 @@ import {Table} from "antd";
 import {formatPrice} from "../../../utils/priceUtils.ts";
 import dayjs from "dayjs";
 import ToggleActiveStock from "../ToggleActiveStock.tsx";
-import {formatDate} from "../../../constants/dateConstant.ts";
+import {formatDateWithHour} from "../../../constants/dateConstant.ts";
 
 export default function StockTable({data, unit, ...props}: {
 	data: StockInterface[],
@@ -58,7 +58,7 @@ export default function StockTable({data, unit, ...props}: {
 				key: 'Date',
 				title: 'Date',
 				render: (_, row) => {
-					return dayjs(row.created_at).format(formatDate)
+					return dayjs(row.created_at).format(formatDateWithHour)
 				}
 			},
 		]}

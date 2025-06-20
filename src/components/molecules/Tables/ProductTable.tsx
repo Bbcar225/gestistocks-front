@@ -55,7 +55,7 @@ export default function ProductTable({loading, products, columns, ...props}: {
 						color={stock?.low_quantity || typeof stock?.low_quantity === 'undefined' ? 'red' : 'green'}
 						className='font-bold'
 					>
-						{`${stock?.quantity || 0} ${unit.name}`}
+						{`${row.quantity || 0} ${unit.name}`}
 					</Tag>
 				}
 			},

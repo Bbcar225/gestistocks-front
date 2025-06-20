@@ -258,8 +258,8 @@ export const ProductForm = ({product, onClose, initialValues, inToCart, ...props
 								},
 								{
 									type: 'number',
-									max: product?.stock?.quantity,
-									message: `La quantité ne peut pas dépasser ${product?.stock?.quantity} ${product?.unit.name}.`,
+									max: product.quantity,
+									message: `La quantité ne peut pas dépasser ${product.quantity} ${product?.unit.name}.`,
 								}
 							]}
 						>

@@ -138,7 +138,7 @@ const DescriptionsProductSale = ({product}: { product: ProductInterface }) => {
 		{
 			key: 'Quantité en stock',
 			label: 'Quantité en stock',
-			children: <p>{`${product?.stock?.quantity || notDefined} ${product.unit.name}`}</p>,
+			children: <p>{`${product?.quantity || notDefined} ${product.unit.name}`}</p>,
 		},
 		{
 			key: 'Dépot du stock',

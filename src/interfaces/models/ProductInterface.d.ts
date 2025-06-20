@@ -5,6 +5,7 @@ interface ProductInterface {
 	name: string
 	sku: string
 	active: boolean
+	quantity: number
 	created_at: string
 	updated_at: string
 	unit: UnitInterface

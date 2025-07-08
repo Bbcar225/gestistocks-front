@@ -26,7 +26,6 @@ interface ProductFormDataInterface {
 }
 
 interface ProductQueryParamsInterface extends RequestApiInterface {
-	search?: string,
 	category_id?: number,
 	salable?: 'yes' | 'no'
 }

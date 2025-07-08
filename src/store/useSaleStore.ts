@@ -1,11 +1,9 @@
 import {create} from "zustand";
 import dayjs from "dayjs";
-import {SaleInterface} from "../interfaces/models/SaleInterface";
+import {SaleInterface, SaleQueryParamsInterface} from "../interfaces/models/SaleInterface";
 
 interface SaleStoreInterface {
-	queryParams: RequestApiInterface & {
-		search?: string
-	},
+	queryParams: SaleQueryParamsInterface,
 	pagination: {
 		total?: number
 	},
@@ -21,6 +19,7 @@ interface SaleStoreInterface {
 	}) => void,
 	setSale: (sale?: SaleInterface) => void,
 	resetQueryParams: () => void,
+	setQueryParams: (queryParams: SaleQueryParamsInterface) => void
 }
 
 const queryParams = {
@@ -75,6 +74,16 @@ const useSaleStore = create<SaleStoreInterface>((set) => {
 				return {
 					...state,
 					queryParams
+				}
+			})
+		},
+		setQueryParams: (queryParams) => {
+			return set((state) => {
+				return {
+					...state,
+					queryParams: {
+						...state.queryParams, ...queryParams
+					}
 				}
 			})
 		}

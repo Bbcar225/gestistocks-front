@@ -16,3 +16,13 @@ interface BaseOptionType {
 }
 
 type TModal = 'create' | 'read' | 'update' | 'delete' | 'other' | undefined
+
+interface BaseFilterProps<T, ReactNode> {
+	title: string;
+	formElement: ReactNode;
+	handleFinish: (values: T) => void;
+	handleReset: () => void;
+	initialValues?: T
+}
+
+type QueryParamsFilter = Record<string, QueryParam>;

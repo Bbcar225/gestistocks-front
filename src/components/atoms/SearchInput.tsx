@@ -1,22 +1,23 @@
-import {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {Input} from "antd";
 import {debounce} from "lodash";
 import {BiSearch} from "react-icons/bi";
 import {useLocation} from "react-router-dom";
 
-export default function SearchInput({handleChange, defaultValue, onClear, ...props}: {
-	handleChange: (value?: string) => void,
-	defaultValue?: string,
-	onClear?: () => void
+export default function SearchInput({
+	                                    handleChange, defaultValue, onClear, ...props
+                                    }: {
+	handleChange?: (value?: string) => void;
+	defaultValue?: string;
+	onClear?: () => void;
 }) {
-	const [searchTerm, setSearchTerm] = useState(defaultValue);
+	const [searchTerm, setSearchTerm] = useState<string | undefined>(defaultValue);
 	const location = useLocation();
 	
-	const debounceSearch = useMemo(() => {
-		const loadOptions = (value: string) => {
-			handleChange(value);
-		};
-		return debounce(loadOptions, 800);
+	const debouncedHandleChange = useMemo(() => {
+		return debounce((value?: string) => {
+			handleChange?.(value?.trim() === '' ? undefined : value);
+		}, 800);
 	}, [handleChange]);
 	
 	useEffect(() => {
@@ -27,22 +28,29 @@ export default function SearchInput({handleChange, defaultValue, onClear, ...pro
 		setSearchTerm(undefined);
 	}, [location]);
 	
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const value = event.target.value;
+		setSearchTerm(value);
+		debouncedHandleChange(value);
+	};
+	
+	const handleClear = () => {
+		onClear?.();
+		setSearchTerm(undefined);
+		handleChange?.(undefined);
+	};
+	
 	return (
 		<Input
 			value={searchTerm}
-			onChange={(event) => {
-				setSearchTerm(event.target.value);
-				debounceSearch(event.target.value);
-			}}
+			onChange={handleInputChange}
 			suffix={<BiSearch/>}
 			type="search"
 			allowClear
 			placeholder="Rechercher"
-			onClear={() => {
-				onClear?.()
-				setSearchTerm(undefined)
-			}}
+			onPressEnter={(e) => e.preventDefault()}
 			{...props}
+			onClear={handleClear}
 		/>
 	);
 }

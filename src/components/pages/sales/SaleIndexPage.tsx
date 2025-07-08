@@ -7,12 +7,14 @@ import {useSaleGetAll} from "../../../hooks/Api/tenant/SaleHookAPI.ts";
 import {SaleInterface} from "../../../interfaces/models/SaleInterface";
 import SaleTable from "../../molecules/Tables/SaleTable.tsx";
 import useRoutesIndex from "../../../hooks/routes/IndexRoutesHook.ts";
+import SaleFilter from "../../molecules/SaleFilter.tsx";
+import {cleanQueryParams} from "../../../utils/reqApiUtils.ts";
 
 export default function SaleIndexPage() {
 	const {setSidebar} = useAppStore()
 	const {queryParams, setFieldPagination} = useSaleStore()
 	const reqSaleGetAll = useSaleGetAll({
-		queryParams
+		queryParams: cleanQueryParams(queryParams)
 	})
 	const [sales, setSales] = useState<SaleInterface[]>([])
 	const routesIndex = useRoutesIndex()
@@ -52,5 +54,7 @@ export default function SaleIndexPage() {
 		<Col span={24}>
 			<SaleTable sales={sales}/>
 		</Col>
+		
+		<SaleFilter />
 	</Row>
 }

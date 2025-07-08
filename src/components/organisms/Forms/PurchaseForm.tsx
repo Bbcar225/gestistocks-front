@@ -200,6 +200,7 @@ export default function PurchaseForm({onSuccess, purchase, ...props}: {
 				unit_price: undefined,
 			}]
 		}}
+		scrollToFirstError
 		{...props}
 	>
 		{contextHolder}

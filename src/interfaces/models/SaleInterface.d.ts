@@ -42,3 +42,10 @@ export interface SaleItemFormData {
 	id?: number,
 	destroy?: boolean
 }
+
+interface SaleQueryParamsInterface extends RequestApiInterface {
+	customer_id?: number,
+	customer?: BaseOptionType
+	start_date?: string,
+	end_date?: string,
+}

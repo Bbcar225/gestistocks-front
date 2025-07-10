@@ -15,3 +15,7 @@ interface SupplierFormData {
 	city: string
 	address: string
 }
+
+interface SupplierQueryParamsInterface extends RequestApiInterface {
+
+}

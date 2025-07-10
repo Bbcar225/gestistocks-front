@@ -6,13 +6,17 @@ import {IoIosAddCircle} from "react-icons/io";
 import {useProductStore} from "../../../store/useProductStore.ts";
 import ProductTable from "../../molecules/Tables/ProductTable.tsx";
 import useRoutesProduct from "../../../hooks/routes/ProductRoutesHook.ts";
+import ProductFilter from "../../organisms/Filters/ProductFilter.tsx";
+import {cleanQueryParams} from "../../../utils/reqApiUtils.ts";
 
 export default function ProductIndexPage() {
 	const {setSidebar} = useAppStore()
 	const [products, setProducts] = useState<ProductInterface[]>([])
 	const {goToProductCreate} = useRoutesProduct()
 	const {queryParams, setFieldPagination} = useProductStore()
-	const reqProductGetAll = useProductGetAll({queryParams})
+	const reqProductGetAll = useProductGetAll({
+		queryParams: cleanQueryParams(queryParams)
+	})
 	
 	useEffect(() => {
 		setSidebar({field: 'title', value: 'Produits'})
@@ -47,5 +51,7 @@ export default function ProductIndexPage() {
 				loading={reqProductGetAll.isLoading}
 			/>
 		</Col>
+		
+		<ProductFilter/>
 	</Row>
 }

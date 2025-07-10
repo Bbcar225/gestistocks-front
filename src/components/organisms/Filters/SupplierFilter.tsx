@@ -1,15 +1,15 @@
 import {Form} from "antd";
 import BaseFilter from "../../molecules/BaseFilter.tsx";
 import SearchInput from "../../atoms/SearchInput.tsx";
-import {useCustomerStore} from "../../../store/useCustomerStore.ts";
 import SelectCountry from "../../molecules/Selects/SelectCountry.tsx";
+import {useSupplierStore} from "../../../store/useSupplierStore.ts";
 
-export default function CustomerFilter() {
-	const {setQueryParams, queryParams, resetQueryParams} = useCustomerStore()
+export default function SupplierFilter() {
+	const {setQueryParams, queryParams, resetQueryParams} = useSupplierStore()
 	
-	return <BaseFilter<CustomerQueryParamsInterface>
+	return <BaseFilter<SupplierQueryParamsInterface>
 		title="Filtre"
-		formElement={<CustomerFilterForm/>}
+		formElement={<FilterForm/>}
 		handleFinish={(values) => setQueryParams(values)}
 		handleReset={() => {
 			resetQueryParams()
@@ -18,7 +18,7 @@ export default function CustomerFilter() {
 	/>
 }
 
-const CustomerFilterForm = () => {
+const FilterForm = () => {
 	return <>
 		<Form.Item
 			label="Recherche"

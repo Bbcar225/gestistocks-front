@@ -13,12 +13,16 @@ import {MdContactPhone} from "react-icons/md";
 import ContactTable from "../../molecules/Tables/ContactTable.tsx";
 import {RiUserAddFill} from "react-icons/ri";
 import ContactFormModal from "../../organisms/Modals/ContactFormModal.tsx";
+import SupplierFilter from "../../organisms/Filters/SupplierFilter.tsx";
+import {cleanQueryParams} from "../../../utils/reqApiUtils.ts";
 
 export default function SupplierIndexPage() {
 	const {setSidebar, setOpenModal, setTypeModal, typeModal} = useAppStore()
 	const [supplies, setSupplies] = useState<SupplierInterface[]>([])
 	const {pagination, queryParams, supplier, setFieldPagination, setFieldQueryParams, setSupplier} = useSupplierStore()
-	const reqSupplierGetAll = useSupplierGetAll({queryParams})
+	const reqSupplierGetAll = useSupplierGetAll({
+		queryParams: cleanQueryParams(queryParams)
+	})
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	
 	useEffect(() => {
@@ -148,6 +152,8 @@ export default function SupplierIndexPage() {
 		}}/>}
 		{(typeModal === 'create' || typeModal === 'update') && <SupplierFormModal/>}
 		{(typeModal === 'other' && supplier) && <ContactTableModal/>}
+		
+		<SupplierFilter/>
 	</Row>
 }
 

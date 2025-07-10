@@ -1,16 +1,15 @@
 import {DatePicker, Form} from "antd";
 import BaseFilter from "../../molecules/BaseFilter.tsx";
-import {SaleQueryParamsInterface} from "../../../interfaces/models/SaleInterface";
 import SearchInput from "../../atoms/SearchInput.tsx";
-import SelectScrollInfiniteCustomer from "../../molecules/Selects/SelectScrollInfiniteCustomer.tsx";
-import useSaleStore from "../../../store/useSaleStore.ts";
+import {usePurchaseStore} from "../../../store/usePurchaseStore.ts";
+import SelectScrollInfiniteSupplier from "../../molecules/Selects/SelectScrollInfiniteSupplier.tsx";
 
-export default function SaleFilter() {
-	const {setQueryParams, queryParams, resetQueryParams} = useSaleStore()
+export default function PurchaseFilter() {
+	const {setQueryParams, queryParams, resetQueryParams} = usePurchaseStore()
 	
-	return <BaseFilter<SaleQueryParamsInterface>
+	return <BaseFilter<PurchaseQueryParamsInterface>
 		title="Filtre"
-		formElement={<SaleFilterForm/>}
+		formElement={<FilterForm/>}
 		handleFinish={(values) => setQueryParams(values)}
 		handleReset={() => {
 			resetQueryParams()
@@ -19,20 +18,20 @@ export default function SaleFilter() {
 	/>
 }
 
-const SaleFilterForm = () => {
+const FilterForm = () => {
 	return <>
 		<Form.Item
 			label="Recherche"
-			name="search"
+			name="reference"
 		>
 			<SearchInput/>
 		</Form.Item>
 		
 		<Form.Item
-			label="Client"
-			name="customer_id"
+			label="Fournisseur"
+			name="supplier_id"
 		>
-			<SelectScrollInfiniteCustomer/>
+			<SelectScrollInfiniteSupplier/>
 		</Form.Item>
 		
 		<Form.Item

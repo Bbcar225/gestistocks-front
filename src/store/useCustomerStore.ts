@@ -1,5 +1,4 @@
 import {create} from "zustand";
-import {SaleQueryParamsInterface} from "../interfaces/models/SaleInterface";
 
 interface CustomerStoreInterface {
 	queryParams: CustomerQueryParamsInterface,
@@ -19,7 +18,7 @@ interface CustomerStoreInterface {
 	setCustomer: (customer?: CustomerInterface) => void,
 	resetQueryParams: () => void,
 	updateContactOfCustomer: (contact: ContactInterface) => void,
-	setQueryParams: (queryParams: SaleQueryParamsInterface) => void,
+	setQueryParams: (queryParams: CustomerQueryParamsInterface) => void,
 }
 
 const queryParams = {

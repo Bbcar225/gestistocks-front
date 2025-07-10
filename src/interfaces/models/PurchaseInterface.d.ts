@@ -54,3 +54,7 @@ interface PurchaseItemCartItemInterface {
 	deleted?: boolean,
 	id?: number
 }
+
+interface PurchaseQueryParamsInterface extends RequestApiInterface {
+
+}

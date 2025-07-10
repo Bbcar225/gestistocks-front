@@ -6,12 +6,14 @@ import {usePurchaseGetAll} from "../../../hooks/Api/tenant/PurchaseHookAPI.ts";
 import PurchaseTable from "../../molecules/Tables/PurchaseTable.tsx";
 import {usePurchaseStore} from "../../../store/usePurchaseStore.ts";
 import useRoutesPurchase from "../../../hooks/routes/PurchaseRoutesHook.ts";
+import PurchaseFilter from "../../organisms/Filters/PurchaseFilter.tsx";
+import {cleanQueryParams} from "../../../utils/reqApiUtils.ts";
 
 export default function PurchaseIndexPage() {
 	const {setSidebar} = useAppStore()
 	const {queryParams, setFieldPagination} = usePurchaseStore()
 	const reqPurchaseGetAll = usePurchaseGetAll({
-		queryParams
+		queryParams: cleanQueryParams(queryParams)
 	})
 	const [purchases, setPurchases] = useState<PurchaseInterface[]>([])
 	const routesPurchase = useRoutesPurchase()
@@ -54,5 +56,7 @@ export default function PurchaseIndexPage() {
 				loading={reqPurchaseGetAll.isLoading}
 			/>
 		</Col>
+		
+		<PurchaseFilter/>
 	</Row>
 }

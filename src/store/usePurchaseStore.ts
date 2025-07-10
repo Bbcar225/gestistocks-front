@@ -2,9 +2,7 @@ import {create} from "zustand";
 import dayjs from "dayjs";
 
 interface PurchaseStoreInterface {
-	queryParams: RequestApiInterface & {
-		search?: string
-	},
+	queryParams: PurchaseQueryParamsInterface,
 	pagination: {
 		total?: number
 	},
@@ -24,7 +22,8 @@ interface PurchaseStoreInterface {
 	setFieldCart: ({field, value}: {
 		field: keyof PurchaseCartInterface,
 		value?: unknown
-	}) => void
+	}) => void,
+	setQueryParams: (queryParams: PurchaseQueryParamsInterface) => void,
 }
 
 const queryParams = {
@@ -89,6 +88,16 @@ export const usePurchaseStore = create<PurchaseStoreInterface>((set) => {
 					cart: {
 						...state.cart,
 						[field]: value
+					}
+				}
+			})
+		},
+		setQueryParams: (queryParams) => {
+			return set((state) => {
+				return {
+					...state,
+					queryParams: {
+						...state.queryParams, ...queryParams
 					}
 				}
 			})

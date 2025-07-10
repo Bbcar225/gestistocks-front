@@ -1,9 +1,7 @@
 import {create} from "zustand";
 
 interface SupplierStoreInterface {
-	queryParams: RequestApiInterface & {
-		search?: string
-	},
+	queryParams: SupplierQueryParamsInterface,
 	pagination: {
 		total?: number
 	},
@@ -19,7 +17,8 @@ interface SupplierStoreInterface {
 	}) => void,
 	setSupplier: (supplier?: SupplierInterface) => void,
 	resetQueryParams: () => void,
-	updateContactOfSupplier: (contact: ContactInterface) => void
+	updateContactOfSupplier: (contact: ContactInterface) => void,
+	setQueryParams: (queryParams: SupplierQueryParamsInterface) => void,
 }
 
 const queryParams = {
@@ -96,6 +95,16 @@ export const useSupplierStore = create<SupplierStoreInterface>((set) => {
 					supplier
 				}
 			})
-		}
+		},
+		setQueryParams: (queryParams) => {
+			return set((state) => {
+				return {
+					...state,
+					queryParams: {
+						...state.queryParams, ...queryParams
+					}
+				}
+			})
+		},
 	}
 })

@@ -16,12 +16,13 @@ interface ProductStoreInterface {
 		value?: number
 	}) => void,
 	setProduct: (product?: ProductInterface) => void,
-	resetQueryParams: () => void
+	resetQueryParams: () => void,
+	setQueryParams: (queryParams: ProductQueryParamsInterface) => void,
 }
 
-const queryParams = {
+const queryParams: ProductQueryParamsInterface = {
 	page: 1,
-	per_page: 20
+	per_page: 20,
 }
 
 const pagination = {
@@ -70,6 +71,16 @@ export const useProductStore = create<ProductStoreInterface>((set) => {
 					queryParams
 				}
 			})
-		}
+		},
+		setQueryParams: (queryParams) => {
+			return set((state) => {
+				return {
+					...state,
+					queryParams: {
+						...state.queryParams, ...queryParams
+					}
+				}
+			})
+		},
 	}
 })

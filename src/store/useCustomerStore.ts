@@ -1,9 +1,8 @@
 import {create} from "zustand";
+import {SaleQueryParamsInterface} from "../interfaces/models/SaleInterface";
 
 interface CustomerStoreInterface {
-	queryParams: RequestApiInterface & {
-		search?: string
-	},
+	queryParams: CustomerQueryParamsInterface,
 	pagination: {
 		total?: number
 	},
@@ -19,7 +18,8 @@ interface CustomerStoreInterface {
 	}) => void,
 	setCustomer: (customer?: CustomerInterface) => void,
 	resetQueryParams: () => void,
-	updateContactOfCustomer: (contact: ContactInterface) => void
+	updateContactOfCustomer: (contact: ContactInterface) => void,
+	setQueryParams: (queryParams: SaleQueryParamsInterface) => void,
 }
 
 const queryParams = {
@@ -96,6 +96,16 @@ export const useCustomerStore = create<CustomerStoreInterface>((set) => {
 					customer
 				}
 			})
-		}
+		},
+		setQueryParams: (queryParams) => {
+			return set((state) => {
+				return {
+					...state,
+					queryParams: {
+						...state.queryParams, ...queryParams
+					}
+				}
+			})
+		},
 	}
 })

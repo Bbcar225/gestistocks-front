@@ -6,12 +6,16 @@ import {useCustomerStore} from "../../../store/useCustomerStore.ts";
 import {useCustomerGetAll} from "../../../hooks/Api/tenant/CustomerHookAPI.ts";
 import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
 import CustomerTable from "../../molecules/Tables/CustomerTable.tsx";
+import CustomerFilter from "../../organisms/Filters/CustomerFilter.tsx";
+import {cleanQueryParams} from "../../../utils/reqApiUtils.ts";
 
 export default function CustomerIndexPage() {
 	const {setSidebar} = useAppStore()
 	const [customers, setCustomers] = useState<CustomerInterface[]>([])
 	const {queryParams, setFieldPagination, setCustomer} = useCustomerStore()
-	const reqCustomerGetAll = useCustomerGetAll({queryParams})
+	const reqCustomerGetAll = useCustomerGetAll({
+		queryParams: cleanQueryParams(queryParams)
+	})
 	const routesCustomer = useRoutesCustomer()
 	
 	useEffect(() => {
@@ -43,6 +47,8 @@ export default function CustomerIndexPage() {
 		<Col span={24}>
 			<CustomerTable customers={customers} loading={reqCustomerGetAll.isLoading}/>
 		</Col>
+		
+		<CustomerFilter/>
 	</Row>
 }
 

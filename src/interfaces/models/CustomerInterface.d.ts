@@ -15,3 +15,7 @@ interface CustomerFormData {
 	city?: string | string[]
 	address?: string
 }
+
+interface CustomerQueryParamsInterface extends RequestApiInterface {
+	country?: string,
+}

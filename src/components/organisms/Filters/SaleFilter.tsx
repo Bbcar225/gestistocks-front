@@ -1,9 +1,9 @@
 import {DatePicker, Form} from "antd";
-import BaseFilter from "./BaseFilter.tsx";
-import {SaleQueryParamsInterface} from "../../interfaces/models/SaleInterface";
-import SearchInput from "../atoms/SearchInput.tsx";
-import SelectScrollInfiniteCustomer from "./Selects/SelectScrollInfiniteCustomer.tsx";
-import useSaleStore from "../../store/useSaleStore.ts";
+import BaseFilter from "../../molecules/BaseFilter.tsx";
+import {SaleQueryParamsInterface} from "../../../interfaces/models/SaleInterface";
+import SearchInput from "../../atoms/SearchInput.tsx";
+import SelectScrollInfiniteCustomer from "../../molecules/Selects/SelectScrollInfiniteCustomer.tsx";
+import useSaleStore from "../../../store/useSaleStore.ts";
 
 export default function SaleFilter() {
 	const {setQueryParams, queryParams, resetQueryParams} = useSaleStore()

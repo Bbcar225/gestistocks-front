@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {useFormDataGetCountries} from "../../../hooks/Api/app/FormDataHookAPI.ts";
 import {filterOptionSelect} from "../../../utils/formUtils.ts";
 
-export default function SelectCountry({...props}) {
+export default function SelectCountry({withoutCity = false, ...props}: { withoutCity?: boolean }) {
 	const reqGetData = useFormDataGetCountries()
 	const [options, setOptions] = useState<BaseOptionType[]>([]);
 	
@@ -15,7 +15,7 @@ export default function SelectCountry({...props}) {
 			const options: BaseOptionType[] = data.map((item) => {
 				return {
 					label: item.name,
-					value: item.name
+					value: withoutCity ? item.name.replace(/\s*\(.*?\)\s*/g, "").trim() : item.name
 				}
 			})
 			
@@ -28,6 +28,7 @@ export default function SelectCountry({...props}) {
 		options={options}
 		showSearch
 		filterOption={filterOptionSelect}
+		placeholder="Pays"
 		{...props}
 	/>
 }

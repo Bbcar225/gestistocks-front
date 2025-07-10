@@ -11,7 +11,9 @@ const theme: ThemeConfig = {
 		colorBgBase: '#F8F9FA', // Fond général,
 		fontSize: 15,
 	},
-	components: {}
+	components: {
+	
+	}
 };
 
 export default theme;

@@ -5,6 +5,7 @@ import {Button, Space, Table} from "antd";
 import {FaEye} from "react-icons/fa";
 import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
 import {useCustomerStore} from "../../../store/useCustomerStore.ts";
+import PaymentFormModal from "../../organisms/Modals/PaymentFormModal.tsx";
 
 export default function CustomerTable({loading, customers, ...props}: {
 	loading?: boolean,
@@ -62,11 +63,24 @@ export default function CustomerTable({loading, customers, ...props}: {
 				render: (_, row) => <Space
 					direction='horizontal'
 				>
-					<Button
-						type="primary"
-						icon={<FaEye/>}
-						onClick={() => routesCustomer.goToShow({id: row.id})}
-					/>
+					<Space
+						direction='horizontal'
+					>
+						<Button
+							type="primary"
+							icon={<FaEye/>}
+							onClick={() => routesCustomer.goToShow({id: row.id})}
+						/>
+						
+						<PaymentFormModal
+							initialValues={{
+								customer_id: {
+									label: row.name,
+									value: row.id
+								}
+							}}
+						/>
+					</Space>
 				</Space>
 			},
 		]}

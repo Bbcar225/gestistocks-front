@@ -1,6 +1,5 @@
 import {create} from "zustand";
 import dayjs from "dayjs";
-import {SaleInterface} from "../interfaces/models/SaleInterface";
 import {FormInstance} from "antd";
 
 interface CartStoreInterface {

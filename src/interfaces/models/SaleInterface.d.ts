@@ -35,7 +35,7 @@ interface SaleFormData {
 	items: SaleItemFormData[]
 }
 
-export interface SaleItemFormData {
+interface SaleItemFormData {
 	product_id: number
 	quantity: number
 	unit_price: number,

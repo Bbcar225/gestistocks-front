@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import {formatDate} from "../../../constants/dateConstant.ts";
 import {FaEye} from "react-icons/fa";
 import {tablePagination} from "../../../constants/tableConstant.ts";
-import {SaleInterface} from "../../../interfaces/models/SaleInterface";
 import useSaleStore from "../../../store/useSaleStore.ts";
 import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
 import useRoutesSale from "../../../hooks/routes/SaleRoutesHook.ts";

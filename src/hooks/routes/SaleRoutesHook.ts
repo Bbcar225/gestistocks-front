@@ -1,7 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import {useAppStore} from "../../store/useAppStore.ts";
 import {useUserStore} from "../../store/useUserStore.ts";
-import {SaleInterface} from "../../interfaces/models/SaleInterface";
 
 const useRoutesSale = () => {
 	const navigate = useNavigate();

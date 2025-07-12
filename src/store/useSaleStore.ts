@@ -1,6 +1,5 @@
 import {create} from "zustand";
 import dayjs from "dayjs";
-import {SaleInterface, SaleQueryParamsInterface} from "../interfaces/models/SaleInterface";
 
 interface SaleStoreInterface {
 	queryParams: SaleQueryParamsInterface,

@@ -28,7 +28,6 @@ import {formatPrice} from "../../utils/priceUtils.ts";
 import {config} from "../../constants/notifcationConstant.ts";
 import React from "react";
 import dayjs from "dayjs";
-import {SaleFormData, SaleInterface} from "../../interfaces/models/SaleInterface";
 import {useSaleCreate, useSaleUpdate} from "../../hooks/Api/tenant/SaleHookAPI.ts";
 import {successCreate} from "../../constants/textsConstant.ts";
 import {useLocation} from "react-router-dom";

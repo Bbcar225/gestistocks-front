@@ -21,7 +21,6 @@ import {BsCalendar2DateFill} from "react-icons/bs";
 import {FaEdit} from "react-icons/fa";
 import {formatPrice} from "../../../utils/priceUtils.ts";
 import {useSaleGetOne} from "../../../hooks/Api/tenant/SaleHookAPI.ts";
-import {SaleInterface, SaleItemInterface} from "../../../interfaces/models/SaleInterface";
 import {BiSolidContact} from "react-icons/bi";
 import {FaMoneyBillTrendUp} from "react-icons/fa6";
 import useCartStore from "../../../store/useCartStore.ts";

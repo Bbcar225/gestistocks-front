@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useAppStore} from "../../../store/useAppStore.ts";
 import {Button, Card, Col, Descriptions, DescriptionsProps, Row, Spin} from "antd";
 import {customerQueriesClients, useCustomerGetOne} from "../../../hooks/Api/tenant/CustomerHookAPI.ts";
@@ -13,6 +13,9 @@ import ContactFormModal from "../../organisms/Modals/ContactFormModal.tsx";
 import {useCustomerStore} from "../../../store/useCustomerStore.ts";
 import {useQueryClient} from "react-query";
 import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
+import PaymentTable from "../../molecules/Tables/PaymentTable.tsx";
+import {usePaymentGetAll} from "../../../hooks/Api/tenant/PaymentHookAPI.ts";
+import PaymentFormModal from "../../organisms/Modals/PaymentFormModal.tsx";
 
 export default function CustomerShowPage() {
 	const {setSidebar} = useAppStore()
@@ -24,6 +27,16 @@ export default function CustomerShowPage() {
 	const routesCustomer = useRoutesCustomer()
 	const {openModal, setOpenModal} = useAppStore()
 	const queryClient = useQueryClient()
+	const [payments, setPayments] = useState<PaymentInterface[]>([])
+	const reqPaymentGetAll = usePaymentGetAll({
+		queryParams: {
+			customer_id: customerId
+		},
+		enabled: !!customerId,
+		onSuccess: ({data}) => {
+			setPayments(data?.data || [])
+		}
+	})
 	
 	useEffect(() => {
 		setSidebar({field: 'title', value: `Détails clients ${customer ? `: ${customer?.name}` : ''}`})
@@ -58,7 +71,7 @@ export default function CustomerShowPage() {
 				</Card>
 			</Col>
 			
-			<Col span={24}>
+			<Col span={12}>
 				<Card
 					title='Contacts du client'
 					extra={<>
@@ -73,8 +86,29 @@ export default function CustomerShowPage() {
 						</Button>
 					</>}
 				>
-					{customer && <ContactTable contacts={customer?.contacts || []}/>}
+					{customer && <ContactTable
+			  contacts={customer?.contacts || []}
+		  />}
 				</Card>
+			</Col>
+			
+			<Col span={12}>
+				<Spin spinning={reqPaymentGetAll.isLoading}>
+					{customer && <Card
+			  title='Liste des paiements'
+			  extra={<PaymentFormModal
+								childrenBtn='Nouveau paiement'
+								initialValues={{
+									customer_id: {
+										label: customer?.name,
+										value: customer?.id
+									}
+								}}
+							/>}
+		  >
+						{customer && <PaymentTable payments={payments}/>}
+		  </Card>}
+				</Spin>
 			</Col>
 			
 			<ContactFormModal

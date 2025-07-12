@@ -35,6 +35,7 @@ import useRoutesSale from "../../hooks/routes/SaleRoutesHook.ts";
 import ButtonDownloadInvoiceSale from "../atoms/ButtonDownloadInvoiceSale.tsx";
 import {useQueryClient} from "react-query";
 import {productQueriesClients} from "../../hooks/Api/tenant/ProductHookAPI.ts";
+import PaymentFormModal from "../organisms/Modals/PaymentFormModal.tsx";
 
 export default function PosPage() {
 	const {setSidebar} = useAppStore()
@@ -364,9 +365,26 @@ const ResumeCart = ({form, loading, sale, setSale}: {
 									status="success"
 									title="Vente validée avec succès."
 									subTitle={`Vente #${sale.reference}`}
-									extra={<ButtonDownloadInvoiceSale
-										id={sale.id}
-									/>}
+									extra={<Space>
+										<ButtonDownloadInvoiceSale
+											id={sale.id}
+										/>
+										
+										<PaymentFormModal
+											initialValues={{
+												customer_id: {
+													label: sale?.customer?.name,
+													value: sale.customer_id
+												},
+												sale_id: {
+													label: sale.reference,
+													value: sale.id
+												},
+												amount: sale.total_price
+											}}
+											childrenBtn="Nouveau paiement"
+										/>
+									</Space>}
 								/> :
 								<Result
 									status="404"
@@ -387,7 +405,7 @@ const FilterProductsCart = () => {
 		<Row gutter={[12, 12]} className='!w-full'>
 			<Col span={isMobile ? 24 : 12}>
 				<SearchInput
-					defaultValue={queryParams.search}
+					defaultValue={String(queryParams.search)}
 					handleChange={(value) => setFieldQueryParams({
 						field: 'search',
 						value,

@@ -6,8 +6,9 @@ import {cleanQueryParams} from "../../../utils/reqApiUtils.ts";
 import {successCreate} from "../../../constants/textsConstant.ts";
 import SelectScrollInfiniteSale from "../../molecules/Selects/SelectScrollInfiniteSale.tsx";
 
-export default function PaymentForm({onSuccess, ...props}: {
-	onSuccess?: ({data}: { data?: PaymentInterface }) => void
+export default function PaymentForm({onSuccess, initialValues, ...props}: {
+	onSuccess?: ({data}: { data?: PaymentInterface }) => void,
+	initialValues?: PaymentFormDataInterface
 }) {
 	const [form] = Form.useForm();
 	const [api, contextHolder] = notification.useNotification();
@@ -32,6 +33,7 @@ export default function PaymentForm({onSuccess, ...props}: {
 		form={form}
 		layout="vertical"
 		onFinish={handleFinish}
+		initialValues={initialValues}
 		{...props}
 	>
 		{contextHolder}

@@ -1,6 +1,5 @@
 import {useMutation, useQuery} from "react-query";
 import saleService from "../../../services/tenant/saleService.ts";
-import {SaleFormData} from "../../../interfaces/models/SaleInterface";
 
 export const saleQueriesClients = {
 	useSaleGetAll: 'useSaleGetAll',

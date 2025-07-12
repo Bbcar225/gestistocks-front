@@ -8,6 +8,7 @@ import useSaleStore from "../../../store/useSaleStore.ts";
 import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
 import useRoutesSale from "../../../hooks/routes/SaleRoutesHook.ts";
 import ButtonDownloadInvoiceSale from "../../atoms/ButtonDownloadInvoiceSale.tsx";
+import PaymentFormModal from "../../organisms/Modals/PaymentFormModal.tsx";
 
 export default function SaleTable({sales, loading = false, ...props}: { sales: SaleInterface[], loading?: boolean }) {
 	const {setFieldQueryParams, pagination, queryParams} = useSaleStore()
@@ -76,6 +77,20 @@ export default function SaleTable({sales, loading = false, ...props}: { sales: S
 						<ButtonDownloadInvoiceSale
 							id={row.id}
 							text={null}
+						/>
+						
+						<PaymentFormModal
+							initialValues={{
+								customer_id: {
+									label: row?.customer?.name,
+									value: row.customer_id
+								},
+								sale_id: {
+									label: row.reference,
+									value: row.id
+								},
+								amount: row.total_price
+							}}
 						/>
 					</Space>
 				}

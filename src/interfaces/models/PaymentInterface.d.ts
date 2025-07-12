@@ -14,7 +14,12 @@ interface PaymentInterface {
 }
 
 interface PaymentFormDataInterface {
-  customer_id: number
-  amount: number
-  sale_id?: number
+  customer_id: number|BaseOptionType
+  amount?: number
+  sale_id?: number|BaseOptionType
+}
+
+interface PaymentQueryParams extends RequestApiInterface {
+	customer_id?: number,
+	sale_id?: number
 }

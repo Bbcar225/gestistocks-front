@@ -1,12 +1,19 @@
-import {Button, Space, Table} from "antd";
+import {Button, notification, Space, Table} from "antd";
 import dayjs from "dayjs";
 import {formatDate} from "../../../constants/dateConstant.ts";
 import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
 import {formatPrice} from "../../../utils/priceUtils.ts";
-import {notDefined} from "../../../constants/textsConstant.ts";
+import {notDefined, successDelete} from "../../../constants/textsConstant.ts";
 import useRoutesSale from "../../../hooks/routes/SaleRoutesHook.ts";
+import DeleteButton from "../../atoms/DeleteButton.tsx";
+import {paymentQueriesClients, usePaymentDelete} from "../../../hooks/Api/tenant/PaymentHookAPI.ts";
+import {useQueryClient} from "react-query";
+import PaymentFormModal from "../../organisms/Modals/PaymentFormModal.tsx";
 
-export default function PaymentTable({payments, ...props}: { payments: PaymentInterface[] }) {
+export default function PaymentTable({payments, loading, ...props}: {
+	payments: PaymentInterface[],
+	loading?: boolean
+}) {
 	const routesCustomer = useRoutesCustomer()
 	const routesSale = useRoutesSale()
 	
@@ -62,8 +69,14 @@ export default function PaymentTable({payments, ...props}: { payments: PaymentIn
 					key: 'Options',
 					title: 'Option',
 					render: (_, row) => {
-						console.log(row)
-						return <Space>
+						return <Space direction='horizontal'>
+							<PaymentFormModal
+								initialValues={{
+									amount: row.amount,
+								}}
+								payment={row}
+							/>
+							<Delete payment={row}/>
 						</Space>
 					}
 				},
@@ -74,7 +87,30 @@ export default function PaymentTable({payments, ...props}: { payments: PaymentIn
 			scroll={{
 				x: true
 			}}
+			loading={loading}
 			{...props}
 		/>
+	</>
+}
+
+const Delete = ({payment}: { payment: PaymentInterface }) => {
+	const reqPaymentDelete = usePaymentDelete(payment.id)
+	const [api, contextHolder] = notification.useNotification();
+	const queryClient = useQueryClient()
+	
+	return <>
+		<DeleteButton
+			loading={reqPaymentDelete.isLoading}
+			handleConfirm={() => reqPaymentDelete.mutate(undefined, {
+				onSuccess: () => {
+					api.success({
+						message: successDelete
+					})
+					reqPaymentDelete.reset()
+					queryClient.invalidateQueries(paymentQueriesClients.usePaymentGetAll).then()
+				}
+			})}
+		/>
+		{contextHolder}
 	</>
 }

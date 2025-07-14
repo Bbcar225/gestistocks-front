@@ -14,7 +14,7 @@ interface PaymentInterface {
 }
 
 interface PaymentFormDataInterface {
-  customer_id: number|BaseOptionType
+  customer_id?: number|BaseOptionType
   amount?: number
   sale_id?: number|BaseOptionType
 }

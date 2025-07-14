@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useAppStore} from "../../../store/useAppStore.ts";
-import {Button, Card, Col, Descriptions, DescriptionsProps, Row, Spin} from "antd";
+import {Button, Card, Col, Descriptions, DescriptionsProps, Row, Space, Spin} from "antd";
 import {customerQueriesClients, useCustomerGetOne} from "../../../hooks/Api/tenant/CustomerHookAPI.ts";
 import {useParams} from "react-router-dom";
 import {FaEdit} from "react-icons/fa";
@@ -30,7 +30,7 @@ export default function CustomerShowPage() {
 	const [payments, setPayments] = useState<PaymentInterface[]>([])
 	const reqPaymentGetAll = usePaymentGetAll({
 		queryParams: {
-			customer_id: customerId
+			customer_id: Number(customerId)
 		},
 		enabled: !!customerId,
 		onSuccess: ({data}) => {
@@ -74,7 +74,9 @@ export default function CustomerShowPage() {
 			<Col span={12}>
 				<Card
 					title='Contacts du client'
-					extra={<>
+					extra={<Space
+						direction='horizontal'
+					>
 						<Button
 							type='link'
 							icon={<RiUserAddFill/>}
@@ -84,7 +86,7 @@ export default function CustomerShowPage() {
 						>
 							Nouveau contact
 						</Button>
-					</>}
+					</Space>}
 				>
 					{customer && <ContactTable
 			  contacts={customer?.contacts || []}
@@ -93,22 +95,23 @@ export default function CustomerShowPage() {
 			</Col>
 			
 			<Col span={12}>
-				<Spin spinning={reqPaymentGetAll.isLoading}>
-					{customer && <Card
-			  title='Liste des paiements'
-			  extra={<PaymentFormModal
-								childrenBtn='Nouveau paiement'
-								initialValues={{
-									customer_id: {
-										label: customer?.name,
-										value: customer?.id
-									}
-								}}
-							/>}
-		  >
-						{customer && <PaymentTable payments={payments}/>}
-		  </Card>}
-				</Spin>
+				<Card
+					title='Liste des paiements'
+					extra={<PaymentFormModal
+						childrenBtn='Nouveau paiement'
+						initialValues={{
+							customer_id: {
+								label: String(customer?.name),
+								value: Number(customer?.id)
+							}
+						}}
+					/>}
+				>
+					<PaymentTable
+						payments={payments}
+						loading={reqPaymentGetAll.isLoading}
+					/>
+				</Card>
 			</Col>
 			
 			<ContactFormModal

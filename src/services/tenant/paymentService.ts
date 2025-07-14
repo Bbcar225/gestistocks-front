@@ -7,6 +7,9 @@ const paymentService = {
 	GetAll: (params: RequestApiInterface = {}): Promise<ResponseApiInterface<ResponsePaginateInterface<PaymentInterface[]>>> => {
 		return service.get(`/tenant/payments`, {params})
 	},
+	Delete: (id: number): Promise<ResponseApiInterface<PaymentInterface>> => {
+		return service.delete(`/tenant/payments/${id}`)
+	}
 }
 
 export default paymentService

@@ -1,11 +1,13 @@
 import {ReactNode, useState} from "react";
 import {Button, Modal, Tooltip} from "antd";
-import {FaMoneyBillWave} from "react-icons/fa";
+import {FaEdit, FaMoneyBillWave} from "react-icons/fa";
 import PaymentForm from "../Forms/PaymentForm.tsx";
 
-export default function PaymentFormModal({initialValues, childrenBtn, ...props}: {
+export default function PaymentFormModal({initialValues, childrenBtn, onSuccess, payment, ...props}: {
 	initialValues?: PaymentFormDataInterface,
-	childrenBtn?: ReactNode
+	childrenBtn?: ReactNode,
+	onSuccess?: (res?: { data?: PaymentInterface }) => void,
+	payment?: PaymentInterface
 }) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	
@@ -25,11 +27,11 @@ export default function PaymentFormModal({initialValues, childrenBtn, ...props}:
 		<>
 			<Tooltip title="Paiement">
 				<Button
-					type="primary"
+					type={payment ? "default" : "primary"}
 					onClick={showModal}
-					icon={<FaMoneyBillWave/>}
-					variant="filled"
-					color="green"
+					icon={payment ? <FaEdit/> : <FaMoneyBillWave/>}
+					variant={payment ? "solid" : "filled"}
+					{...(payment ? {} : {color: "green"})}
 				>
 					{childrenBtn}
 				</Button>
@@ -45,6 +47,7 @@ export default function PaymentFormModal({initialValues, childrenBtn, ...props}:
 				<PaymentForm
 					onSuccess={() => {
 						setIsModalOpen(false);
+						onSuccess?.()
 					}}
 					initialValues={initialValues}
 					{...props}

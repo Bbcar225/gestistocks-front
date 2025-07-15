@@ -8,7 +8,7 @@ export default function SelectScrollInfiniteUnit({ ...props }) {
   async function getData({ search, page }: RequestApiInterface) {
     const params = {
       search,
-      perPage: 10,
+      per_page: 10,
       page
     };
     

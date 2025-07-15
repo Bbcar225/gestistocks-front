@@ -1,14 +1,15 @@
 import {useState} from "react";
 import SelectInfiniteScroll from "../../atoms/SelectInfinitScroll.tsx";
 import customerService from "../../../services/tenant/customerService.ts";
+import {SelectProps} from "rc-select/lib/Select";
 
-export default function SelectScrollInfiniteCustomer({...props}) {
+export default function SelectScrollInfiniteCustomer({...props}: Partial<SelectProps>) {
 	const [link, setLink] = useState<string | undefined>(undefined);
 	
 	async function getData({search, page}: RequestApiInterface) {
 		const params = {
 			search,
-			perPage: 10,
+			per_page: 10,
 			page,
 			sort_by: 'name',
 			sort_direction: 'asc',

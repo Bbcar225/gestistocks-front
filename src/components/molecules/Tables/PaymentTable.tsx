@@ -71,9 +71,6 @@ export default function PaymentTable({payments, loading, ...props}: {
 					render: (_, row) => {
 						return <Space direction='horizontal'>
 							<PaymentFormModal
-								initialValues={{
-									amount: row.amount,
-								}}
 								payment={row}
 							/>
 							<Delete payment={row}/>

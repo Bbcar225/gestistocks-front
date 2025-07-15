@@ -50,6 +50,7 @@ export default function PaymentFormModal({initialValues, childrenBtn, onSuccess,
 						onSuccess?.()
 					}}
 					initialValues={initialValues}
+					payment={payment}
 					{...props}
 				/>
 			</Modal>

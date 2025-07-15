@@ -9,6 +9,9 @@ const paymentService = {
 	},
 	Delete: (id: number): Promise<ResponseApiInterface<PaymentInterface>> => {
 		return service.delete(`/tenant/payments/${id}`)
+	},
+	Update: (id: number, data: PaymentFormDataInterface): Promise<ResponseApiInterface<PaymentInterface>> => {
+		return service.put(`/tenant/payments/${id}`, data)
 	}
 }
 

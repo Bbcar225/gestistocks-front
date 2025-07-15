@@ -23,3 +23,7 @@ export const usePaymentGetAll = (params?: HookApiInterface<PaymentQueryParams, R
 export const usePaymentDelete = (id: number) => {
 	return useMutation(() => paymentService.Delete(id))
 }
+
+export const usePaymentUpdate = (id: number) => {
+	return useMutation((formData: PaymentFormDataInterface) => paymentService.Update(id, formData))
+}

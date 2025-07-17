@@ -4,6 +4,8 @@ interface CustomerInterface {
   country: string
   city: string
   address: string
+	sale_sum: number
+	payment_sum: number
   created_at: string
   updated_at: string
   contacts: ContactInterface[]

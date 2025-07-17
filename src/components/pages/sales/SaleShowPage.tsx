@@ -27,6 +27,8 @@ import useCartStore from "../../../store/useCartStore.ts";
 import useRoutesIndex from "../../../hooks/routes/IndexRoutesHook.ts";
 import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
 import useRoutesProduct from "../../../hooks/routes/ProductRoutesHook.ts";
+import PaymentTable from "../../molecules/Tables/PaymentTable.tsx";
+import {useGetListPayment} from "../../../hooks/usePaymentHook.ts";
 
 export default function SaleShowPage() {
 	const {setSidebar} = useAppStore()
@@ -37,6 +39,12 @@ export default function SaleShowPage() {
 	const [sale, setSale] = useState<SaleInterface | undefined>(undefined)
 	const {setDataBySale, setSale: setSaleStore} = useCartStore()
 	const routesIndex = useRoutesIndex()
+	const reqGetListPayment = useGetListPayment({
+		additionalQueryParams: {
+			sale_id: sale?.id
+		},
+		enabled: !!sale?.id
+	})
 	
 	const handleEdit = () => {
 		if (sale) {
@@ -83,6 +91,17 @@ export default function SaleShowPage() {
 				>
 					<SaleItems
 						items={sale?.items || []}
+					/>
+				</Card>
+			</Col>
+			
+			<Col span={24}>
+				<Card
+					title="Liste des paiements"
+				>
+					<PaymentTable
+						payments={reqGetListPayment.payments}
+						loading={reqGetListPayment.isLoading}
 					/>
 				</Card>
 			</Col>

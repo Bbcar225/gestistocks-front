@@ -3,6 +3,7 @@ import BaseFilter from "../../molecules/BaseFilter.tsx";
 import SearchInput from "../../atoms/SearchInput.tsx";
 import {useProductStore} from "../../../store/useProductStore.ts";
 import SelectCategory from "../../molecules/Selects/SelectCategory.tsx";
+import SelectWarehouse from "../../molecules/Selects/SelectWarehouse.tsx";
 
 export default function ProductFilter() {
 	const {setQueryParams, queryParams, resetQueryParams} = useProductStore()
@@ -73,6 +74,16 @@ const FilterForm = () => {
 		>
 			<SelectCategory
 				allowClear
+			/>
+		</Form.Item>
+		
+		<Form.Item
+			label="Dépôt"
+			name="warehouse_id"
+		>
+			<SelectWarehouse
+				allowClear
+				placeholder="Dépôt"
 			/>
 		</Form.Item>
 	</>

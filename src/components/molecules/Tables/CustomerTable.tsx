@@ -6,6 +6,9 @@ import {FaEye} from "react-icons/fa";
 import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
 import {useCustomerStore} from "../../../store/useCustomerStore.ts";
 import PaymentFormModal from "../../organisms/Modals/PaymentFormModal.tsx";
+import PaymentStatus from "../PaymentStatus.tsx";
+import {useQueryClient} from "react-query";
+import {customerQueriesClients} from "../../../hooks/Api/tenant/CustomerHookAPI.ts";
 
 export default function CustomerTable({loading, customers, ...props}: {
 	loading?: boolean,
@@ -13,6 +16,7 @@ export default function CustomerTable({loading, customers, ...props}: {
 }) {
 	const routesCustomer = useRoutesCustomer()
 	const {pagination, queryParams, setFieldQueryParams} = useCustomerStore()
+	const queryClient = useQueryClient()
 	
 	return <Table
 		className="text-nowrap"
@@ -53,6 +57,15 @@ export default function CustomerTable({loading, customers, ...props}: {
 				render: (_, row) => row.address
 			},
 			{
+				key: 'Paiement',
+				title: 'Statut paiements',
+				render: (_, row) => <PaymentStatus
+					payment_sum={row.payment_sum}
+					sale_sum={row.sale_sum}
+					className='!p-1 !font-bold'
+				/>
+			},
+			{
 				key: 'date',
 				title: 'Date',
 				render: (_, row) => dayjs(row.created_at).format(formatDate),
@@ -60,6 +73,7 @@ export default function CustomerTable({loading, customers, ...props}: {
 			{
 				key: 'options',
 				title: 'Options',
+				fixed: 'right',
 				render: (_, row) => <Space
 					direction='horizontal'
 				>
@@ -79,6 +93,7 @@ export default function CustomerTable({loading, customers, ...props}: {
 									value: row.id
 								}
 							}}
+							onSuccess={() => queryClient.invalidateQueries(customerQueriesClients.useCustomerGetAll).then()}
 						/>
 					</Space>
 				</Space>

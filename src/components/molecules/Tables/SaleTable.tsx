@@ -1,5 +1,4 @@
 import {Button, Space, Table, Typography} from "antd";
-import {formatPrice} from "../../../utils/priceUtils.ts";
 import dayjs from "dayjs";
 import {formatDate} from "../../../constants/dateConstant.ts";
 import {FaEye} from "react-icons/fa";
@@ -9,6 +8,7 @@ import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
 import useRoutesSale from "../../../hooks/routes/SaleRoutesHook.ts";
 import ButtonDownloadInvoiceSale from "../../atoms/ButtonDownloadInvoiceSale.tsx";
 import PaymentFormModal from "../../organisms/Modals/PaymentFormModal.tsx";
+import PaymentStatus from "../PaymentStatus.tsx";
 
 export default function SaleTable({sales, loading = false, ...props}: { sales: SaleInterface[], loading?: boolean }) {
 	const {setFieldQueryParams, pagination, queryParams} = useSaleStore()
@@ -52,9 +52,11 @@ export default function SaleTable({sales, loading = false, ...props}: { sales: S
 			{
 				key: "Montant total",
 				title: "Montant total",
-				render: (_, row) => {
-					return formatPrice(row.total_price)
-				}
+				render: (_, row) => <PaymentStatus
+					sale_sum={row.total_price}
+					payment_sum={row.payment_sum}
+					className='!font-bold'
+				/>
 			},
 			{
 				key: "Date",

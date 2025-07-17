@@ -3,10 +3,11 @@ import {Input} from "antd";
 import {debounce} from "lodash";
 import {BiSearch} from "react-icons/bi";
 import {useLocation} from "react-router-dom";
+import {InputProps} from "antd/es/input/Input";
 
 export default function SearchInput({
 	                                    handleChange, defaultValue, onClear, ...props
-                                    }: {
+                                    }: Partial<InputProps> & {
 	handleChange?: (value?: string) => void;
 	defaultValue?: string;
 	onClear?: () => void;

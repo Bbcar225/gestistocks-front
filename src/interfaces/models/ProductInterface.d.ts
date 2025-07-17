@@ -28,5 +28,6 @@ interface ProductFormDataInterface {
 interface ProductQueryParamsInterface extends RequestApiInterface {
 	category_id?: number,
 	salable?: 'yes' | 'no',
-	active?: 'yes' | 'no'
+	active?: 'yes' | 'no',
+	warehouse_id?: BaseOptionType | number
 }

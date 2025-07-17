@@ -8,6 +8,7 @@ import {config} from "../../../constants/notifcationConstant.ts";
 import {useProductCreate, useProductUpdate} from "../../../hooks/Api/tenant/ProductHookAPI.ts";
 import {successCreate, successUpdate} from "../../../constants/textsConstant.ts";
 import {useProductStore} from "../../../store/useProductStore.ts";
+import {isMobile} from "react-device-detect";
 
 export function ProductForm({onSuccess, product, ...props}: {
 	onSuccess?: () => void;
@@ -107,7 +108,7 @@ export function ProductForm({onSuccess, product, ...props}: {
 		<Row
 			gutter={[12, 12]}
 		>
-			<Col span={12}>
+			<Col span={isMobile ? 24 : 12}>
 				<Form.Item<ProductFormDataInterface>
 					label="Nom"
 					name="name"
@@ -117,7 +118,7 @@ export function ProductForm({onSuccess, product, ...props}: {
 				</Form.Item>
 			</Col>
 			
-			<Col span={12}>
+			<Col span={isMobile ? 24 : 12}>
 				<Form.Item<ProductFormDataInterface>
 					label="SKU"
 					name="sku"
@@ -127,7 +128,7 @@ export function ProductForm({onSuccess, product, ...props}: {
 				</Form.Item>
 			</Col>
 			
-			<Col span={12}>
+			<Col span={isMobile ? 24 : 12}>
 				<Form.Item<ProductFormDataInterface>
 					label="Unité de base"
 					name="unit_id"
@@ -137,7 +138,7 @@ export function ProductForm({onSuccess, product, ...props}: {
 				</Form.Item>
 			</Col>
 			
-			<Col span={12}>
+			<Col span={isMobile ? 24 : 12}>
 				<Form.Item<ProductFormDataInterface>
 					label="Catégorie"
 					name="category_id"
@@ -147,7 +148,7 @@ export function ProductForm({onSuccess, product, ...props}: {
 				</Form.Item>
 			</Col>
 			
-			{product && <Col span={12}>
+			{product && <Col span={isMobile ? 24 : 12}>
 		<Form.Item<StockFormDataInterface>
 			label="Active ?"
 			name="active"
@@ -156,7 +157,7 @@ export function ProductForm({onSuccess, product, ...props}: {
 		</Form.Item>
 	  </Col>}
 			
-			<Col span={12}>
+			<Col span={isMobile ? 24 : 12}>
 				<Form.Item label="Image" required>
 					<ImagePreviewWithGallery
 						initialValues={{

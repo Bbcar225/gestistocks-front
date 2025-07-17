@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useAppStore} from "../../../store/useAppStore.ts";
 import {Button, Card, Col, Descriptions, DescriptionsProps, Row, Space, Spin} from "antd";
 import {customerQueriesClients, useCustomerGetOne} from "../../../hooks/Api/tenant/CustomerHookAPI.ts";
@@ -14,8 +14,9 @@ import {useCustomerStore} from "../../../store/useCustomerStore.ts";
 import {useQueryClient} from "react-query";
 import useRoutesCustomer from "../../../hooks/routes/CustomerRoutesHook.ts";
 import PaymentTable from "../../molecules/Tables/PaymentTable.tsx";
-import {usePaymentGetAll} from "../../../hooks/Api/tenant/PaymentHookAPI.ts";
 import PaymentFormModal from "../../organisms/Modals/PaymentFormModal.tsx";
+import {useGetListPayment} from "../../../hooks/usePaymentHook.ts";
+import PaymentStatus from "../../molecules/PaymentStatus.tsx";
 
 export default function CustomerShowPage() {
 	const {setSidebar} = useAppStore()
@@ -27,15 +28,11 @@ export default function CustomerShowPage() {
 	const routesCustomer = useRoutesCustomer()
 	const {openModal, setOpenModal} = useAppStore()
 	const queryClient = useQueryClient()
-	const [payments, setPayments] = useState<PaymentInterface[]>([])
-	const reqPaymentGetAll = usePaymentGetAll({
-		queryParams: {
-			customer_id: Number(customerId)
+	const reqGetListPayment = useGetListPayment({
+		additionalQueryParams: {
+			customer_id: customer?.id
 		},
-		enabled: !!customerId,
-		onSuccess: ({data}) => {
-			setPayments(data?.data || [])
-		}
+		enabled: !!customer?.id
 	})
 	
 	useEffect(() => {
@@ -71,7 +68,7 @@ export default function CustomerShowPage() {
 				</Card>
 			</Col>
 			
-			<Col span={12}>
+			<Col span={24}>
 				<Card
 					title='Contacts du client'
 					extra={<Space
@@ -94,7 +91,7 @@ export default function CustomerShowPage() {
 				</Card>
 			</Col>
 			
-			<Col span={12}>
+			<Col span={24}>
 				<Card
 					title='Liste des paiements'
 					extra={<PaymentFormModal
@@ -105,11 +102,12 @@ export default function CustomerShowPage() {
 								value: Number(customer?.id)
 							}
 						}}
+						onSuccess={() => queryClient.invalidateQueries(customerQueriesClients.useCustomerGetOne).then()}
 					/>}
 				>
 					<PaymentTable
-						payments={payments}
-						loading={reqPaymentGetAll.isLoading}
+						payments={reqGetListPayment.payments}
+						loading={reqGetListPayment.isLoading}
 					/>
 				</Card>
 			</Col>
@@ -148,6 +146,14 @@ export const CustomerDescriptions = ({customer}: { customer: CustomerInterface }
 		{
 			label: 'Adresse',
 			children: <p>{customer.address}</p>,
+		},
+		{
+			label: 'Statut de paiement',
+			children: <PaymentStatus
+				payment_sum={customer.payment_sum}
+				sale_sum={customer.sale_sum}
+				className='!font-bold'
+			/>,
 		},
 		{
 			label: 'Date',

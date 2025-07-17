@@ -6,6 +6,7 @@ interface SaleInterface {
 	total_price: number
 	items_count: number
 	date: string
+	payment_sum: number
 	created_at: string
 	updated_at: string
 	customer: CustomerInterface
